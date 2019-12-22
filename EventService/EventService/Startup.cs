@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using EventService.Commands;
+using EventService.Consumers;
 using EventService.Models;
+using EventService.Services;
+using GreenPipes;
 using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -32,6 +36,28 @@ namespace EventService
             services.AddDbContext<EventsDbContext>(x => x.UseInMemoryDatabase("EventDb"));
             services.AddControllers();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            services.AddScoped<IEventService, Services.EventService>();
+
+            services.AddScoped<AddEventConsumer>();
+
+            services.AddMassTransit(x =>
+            {
+                x.AddConsumer<AddEventConsumer>();
+            });
+
+            services.AddSingleton(provider => Bus.Factory.CreateUsingRabbitMq(cfg =>
+            {
+                cfg.Host("localhost", "/", h => { });
+                cfg.ReceiveEndpoint("event-service", e =>
+                {
+                    e.PrefetchCount = 16;
+                    e.UseMessageRetry(x => x.Interval(2, 100));
+
+                    e.Consumer<AddEventConsumer>(provider);
+                    EndpointConvention.Map<AddEvent>(e.InputAddress);
+                });
+            }));
 
             services.AddSingleton<IPublishEndpoint>(provider => provider.GetRequiredService<IBusControl>());
             services.AddSingleton<ISendEndpointProvider>(provider => provider.GetRequiredService<IBusControl>());
