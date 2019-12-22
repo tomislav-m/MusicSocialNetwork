@@ -33,7 +33,7 @@ namespace EventService.Services
         public async Task<IEnumerable<Event>> GetEventsByArtist(int artistId)
         {
             return await _context.Events
-                .Where(x => x.EventParticipants.Select(y => y.ArtistId).Contains(artistId))
+                .Where(x => x.Headliners.Concat(x.Supporters).Contains(artistId))
                 .ToListAsync();
         }
 

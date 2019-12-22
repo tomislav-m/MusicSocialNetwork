@@ -1,23 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
-using EventService.Commands;
 using EventService.Consumers;
+using EventService.MessageContracts;
 using EventService.Models;
 using EventService.Services;
 using GreenPipes;
 using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using System;
 
 namespace EventService
 {
@@ -40,10 +34,12 @@ namespace EventService
             services.AddScoped<IEventService, Services.EventService>();
 
             services.AddScoped<AddEventConsumer>();
+            services.AddScoped<GetEventConsumer>();
 
             services.AddMassTransit(x =>
             {
                 x.AddConsumer<AddEventConsumer>();
+                x.AddConsumer<GetEventConsumer>();
             });
 
             services.AddSingleton(provider => Bus.Factory.CreateUsingRabbitMq(cfg =>
@@ -56,6 +52,10 @@ namespace EventService
 
                     e.Consumer<AddEventConsumer>(provider);
                     EndpointConvention.Map<AddEvent>(e.InputAddress);
+
+                    e.Consumer<GetEventConsumer>(provider);
+                    EndpointConvention.Map<GetEvent>(e.InputAddress);
+                    EndpointConvention.Map<GetEventsByArtist>(e.InputAddress);
                 });
             }));
 
@@ -63,6 +63,9 @@ namespace EventService
             services.AddSingleton<ISendEndpointProvider>(provider => provider.GetRequiredService<IBusControl>());
             services.AddSingleton<IBus>(provider => provider.GetRequiredService<IBusControl>());
 
+            services.AddScoped(provider => provider.GetRequiredService<IBus>().CreateRequestClient<AddEvent>());
+            services.AddScoped(provider => provider.GetRequiredService<IBus>().CreateRequestClient<GetEvent>());
+            services.AddScoped(provider => provider.GetRequiredService<IBus>().CreateRequestClient<GetEventsByArtist>());
             services.AddSingleton<IHostedService, BusService>();
         }
 

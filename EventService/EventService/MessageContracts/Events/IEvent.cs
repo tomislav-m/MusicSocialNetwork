@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EventService.MessageContracts
+namespace MessageContracts
 {
     public interface IEvent
     {

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace EventService.MessageContracts
 {
-    public class EventAdded : IEvent
+    public class EventEvent : IEvent
     {
         public int Id { get; set; }
         public string EventType { get; set; }
@@ -12,12 +12,13 @@ namespace EventService.MessageContracts
         public DateTime Date { get; set; }
         public ICollection<int> Headliners { get; set; }
         public ICollection<int> Supporters { get; set; }
-        public string Type => nameof(EventAdded);
+        public string Type => nameof(EventEvent);
         public DateTime CreatedAt { get; }
 
-        public EventAdded()
+        public EventEvent()
         {
             CreatedAt = DateTime.Now;
         }
+
     }
 }

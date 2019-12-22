@@ -8,6 +8,6 @@ namespace EventService.Models
             : base(options) { }
 
         public DbSet<Event> Events { get; set; }
-        public DbSet<EventParticipant> EventParticipants { get; set; }
+        public DbSet<Venue> Venues { get; set; }
     }
 }

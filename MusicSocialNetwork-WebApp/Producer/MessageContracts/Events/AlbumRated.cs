@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MessageContract;
+using System;
 
 namespace CatalogService.MessageContract
 {

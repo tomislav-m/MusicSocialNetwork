@@ -1,4 +1,5 @@
 ﻿using CatalogService.MessageContract;
+using MessageContract;
 using System;
 
 namespace MusicService.MessageContracts

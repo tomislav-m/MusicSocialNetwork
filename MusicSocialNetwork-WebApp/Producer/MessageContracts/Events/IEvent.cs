@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CatalogService.MessageContract
+namespace MessageContract
 {
     public interface IEvent
     {

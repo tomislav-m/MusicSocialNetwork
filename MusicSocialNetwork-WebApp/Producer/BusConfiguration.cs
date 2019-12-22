@@ -1,11 +1,8 @@
 ﻿using CatalogService.MessageContract;
-using EventService.Commands;
-using EventService.Events;
 using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
 using MusicService.MessageContracts;
 using System;
-using System.Collections.Generic;
 using UserService.MessageContracts;
 
 namespace Producer
@@ -55,8 +52,6 @@ namespace Producer
 
 
             var eventServiceAddress = new Uri("rabbitmq://localhost/event-service");
-            services.AddScoped<IRequestClient<AddEvent, EventAdded>>(x =>
-                new MessageRequestClient<AddEvent, EventAdded>(x.GetRequiredService<IBus>(), eventServiceAddress, timeout, timeout));
 
             bus.Start();
         }
