@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using CatalogService.Helpers;
-using CatalogService.MessageContracts;
 using CatalogService.Models;
 using CatalogService.Services;
+using Common.MessageContracts.Catalog.Commands;
+using Common.MessageContracts.Catalog.Events;
 using MassTransit;
 using System.Threading.Tasks;
 

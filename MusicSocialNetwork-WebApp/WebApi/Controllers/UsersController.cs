@@ -1,8 +1,9 @@
-﻿using MassTransit;
+﻿using Common.MessageContracts.User.Commands;
+using Common.MessageContracts.User.Events;
+using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Threading.Tasks;
-using UserService.MessageContracts;
 
 namespace WebApi.Controllers
 {

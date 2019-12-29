@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29519.181
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicService.Service", "MusicService\MusicService.Service.csproj", "{6002FCD6-5ABC-44D4-9DBA-FD793F3584B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicService.Service", "MusicService\MusicService.Service.csproj", "{6002FCD6-5ABC-44D4-9DBA-FD793F3584B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicService.DomainModel", "MusicService.DomainModel\MusicService.DomainModel.csproj", "{DD386726-B61E-4775-9BF3-79E786EB992A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicService.DomainModel", "MusicService.DomainModel\MusicService.DomainModel.csproj", "{DD386726-B61E-4775-9BF3-79E786EB992A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "..\Common\Common\Common.csproj", "{D329AFC6-5EBB-4B63-BC48-2A5BC76FC1B3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{DD386726-B61E-4775-9BF3-79E786EB992A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD386726-B61E-4775-9BF3-79E786EB992A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DD386726-B61E-4775-9BF3-79E786EB992A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D329AFC6-5EBB-4B63-BC48-2A5BC76FC1B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D329AFC6-5EBB-4B63-BC48-2A5BC76FC1B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D329AFC6-5EBB-4B63-BC48-2A5BC76FC1B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D329AFC6-5EBB-4B63-BC48-2A5BC76FC1B3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

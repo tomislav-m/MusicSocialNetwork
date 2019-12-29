@@ -2,8 +2,9 @@
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 using UserService.Helpers;
-using UserService.MessageContracts;
 using UserService.Services;
+using Common.MessageContracts.User.Commands;
+using Common.MessageContracts.User.Events;
 
 namespace UserService.Consumers
 {

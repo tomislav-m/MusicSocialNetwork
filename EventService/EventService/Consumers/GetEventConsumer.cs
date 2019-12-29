@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using EventService.MessageContracts;
+using Common.MessageContracts.Event.Commands;
+using Common.MessageContracts.Event.Events;
 using EventService.Services;
 using MassTransit;
 using System.Collections.Generic;

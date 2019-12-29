@@ -1,3 +1,9 @@
+using AutoMapper;
+using Common.MessageContracts.User.Commands;
+using Common.Services;
+using GreenPipes;
+using MassTransit;
+using MassTransit.ExtensionsDependencyInjectionIntegration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -9,15 +15,10 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Text;
 using System.Threading.Tasks;
+using UserService.Consumers;
 using UserService.Helpers;
 using UserService.Models;
 using UserService.Services;
-using AutoMapper;
-using MassTransit;
-using GreenPipes;
-using UserService.Consumers;
-using MassTransit.ExtensionsDependencyInjectionIntegration;
-using UserService.MessageContracts;
 
 namespace UserService
 {

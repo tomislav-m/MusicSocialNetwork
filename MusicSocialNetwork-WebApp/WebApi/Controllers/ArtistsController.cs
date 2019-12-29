@@ -1,14 +1,15 @@
-﻿using MassTransit;
+﻿using Common.MessageContracts.Music.Commands;
+using Common.MessageContracts.Music.Events;
+using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MusicService.MessageContracts;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using WebApi.Model;
 using Artist = WebApi.Model.Artist;
-using ArtistEvent = MusicService.MessageContracts.Artist;
+using ArtistEvent = Common.MessageContracts.Music.Events.Artist;
 
 namespace WebApi.Controllers
 {

@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29519.181
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicketingService", "TicketingService\TicketingService.csproj", "{A33D4F9F-8C23-4927-BDFF-61A8C254C189}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "..\Common\Common\Common.csproj", "{40CAC8BB-E4FA-40B0-99F9-E88BEFD5C635}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A33D4F9F-8C23-4927-BDFF-61A8C254C189}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A33D4F9F-8C23-4927-BDFF-61A8C254C189}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A33D4F9F-8C23-4927-BDFF-61A8C254C189}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A33D4F9F-8C23-4927-BDFF-61A8C254C189}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40CAC8BB-E4FA-40B0-99F9-E88BEFD5C635}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40CAC8BB-E4FA-40B0-99F9-E88BEFD5C635}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40CAC8BB-E4FA-40B0-99F9-E88BEFD5C635}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40CAC8BB-E4FA-40B0-99F9-E88BEFD5C635}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {770728C5-A680-40B8-9FDD-C2A5594D700E}
+	EndGlobalSection
+EndGlobal

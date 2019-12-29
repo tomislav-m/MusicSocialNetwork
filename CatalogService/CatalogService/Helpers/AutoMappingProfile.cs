@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
-using CatalogService.MessageContracts;
 using CatalogService.Models;
+using Common.MessageContracts.Catalog.Commands;
+using Common.MessageContracts.Catalog.Events;
 
 namespace CatalogService.Helpers
 {

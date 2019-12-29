@@ -1,6 +1,7 @@
 using AutoMapper;
+using Common.MessageContracts.Event.Commands;
+using Common.Services;
 using EventService.Consumers;
-using EventService.MessageContracts;
 using EventService.Models;
 using EventService.Services;
 using GreenPipes;

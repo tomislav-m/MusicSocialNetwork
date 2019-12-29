@@ -1,4 +1,6 @@
 using AutoMapper;
+using Common.MessageContracts.Music.Commands;
+using Common.Services;
 using GreenPipes;
 using MassTransit;
 using Microsoft.AspNetCore.Builder;
@@ -8,7 +10,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MusicService.DomainModel;
-using MusicService.MessageContracts;
 using MusicService.Service.Consumers;
 using MusicService.Service.Services;
 using System;

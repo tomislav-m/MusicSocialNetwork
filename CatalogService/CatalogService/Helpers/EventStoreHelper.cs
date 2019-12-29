@@ -2,6 +2,8 @@
 using CatalogService.MessageContracts;
 using CatalogService.Models;
 using CatalogService.Services;
+using Common.MessageContracts;
+using Common.MessageContracts.Catalog.Events;
 using EventStore.ClientAPI;
 using Newtonsoft.Json;
 using System;

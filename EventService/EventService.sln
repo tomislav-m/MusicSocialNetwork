@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29519.181
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventService", "EventService\EventService.csproj", "{D0EEDA85-84B3-43FF-81EB-16B71F1E91DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventService", "EventService\EventService.csproj", "{D0EEDA85-84B3-43FF-81EB-16B71F1E91DC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "..\Common\Common\Common.csproj", "{500EF107-BCDE-4E96-8357-CA3EF2F4B4C3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{D0EEDA85-84B3-43FF-81EB-16B71F1E91DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D0EEDA85-84B3-43FF-81EB-16B71F1E91DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D0EEDA85-84B3-43FF-81EB-16B71F1E91DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{500EF107-BCDE-4E96-8357-CA3EF2F4B4C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{500EF107-BCDE-4E96-8357-CA3EF2F4B4C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{500EF107-BCDE-4E96-8357-CA3EF2F4B4C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{500EF107-BCDE-4E96-8357-CA3EF2F4B4C3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

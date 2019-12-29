@@ -1,9 +1,10 @@
-﻿using CatalogService.MessageContract;
+﻿using Common.MessageContracts.Catalog.Commands;
+using Common.MessageContracts.Catalog.Events;
+using Common.MessageContracts.Music.Commands;
+using Common.MessageContracts.Music.Events;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MusicService.MessageContracts;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 using WebApi.Model;
 using WebApi.Model.InternalModels;
 using Album = WebApi.Model.Album;
-using AlbumEvent = MusicService.MessageContracts.Album;
+using AlbumEvent = Common.MessageContracts.Music.Events.Album;
 
 namespace WebApi.Controllers
 {

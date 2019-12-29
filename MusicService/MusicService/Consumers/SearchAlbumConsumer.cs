@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
+using Common.MessageContracts.Music.Commands;
+using Common.MessageContracts.Music.Events;
 using MassTransit;
-using MusicService.DomainModel;
-using MusicService.MessageContracts;
 using MusicService.Service.Services;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace MusicService.Service.Consumers

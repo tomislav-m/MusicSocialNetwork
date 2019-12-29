@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using MusicService.MessageContracts;
+using Common.MessageContracts.Music.Commands;
+using Common.MessageContracts.Music.Events;
 
 namespace MusicService.Service.Helpers
 {

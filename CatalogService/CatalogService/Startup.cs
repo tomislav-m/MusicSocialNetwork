@@ -4,6 +4,8 @@ using CatalogService.Helpers;
 using CatalogService.MessageContracts;
 using CatalogService.Models;
 using CatalogService.Services;
+using Common.MessageContracts.Catalog.Commands;
+using Common.Services;
 using GreenPipes;
 using MassTransit;
 using Microsoft.AspNetCore.Builder;

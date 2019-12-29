@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
+using Common.MessageContracts.Music.Commands;
+using Common.MessageContracts.Music.Events;
 using MassTransit;
-using MusicService.MessageContracts;
 using MusicService.Service.Services;
 using System.Threading.Tasks;
 using Artist = MusicService.DomainModel.Artist;
