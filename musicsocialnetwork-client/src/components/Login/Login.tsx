@@ -1,39 +1,29 @@
 import React from 'react';
 import { Form, Button } from 'semantic-ui-react';
-import { ILoginState } from '../../models/User';
-import autobind from 'autobind-decorator';
+import { inject, observer } from 'mobx-react';
+import UserStore from '../../stores/UserStore';
 
-export default class Login extends React.Component<{}, ILoginState> {
-  public state: ILoginState = {
-    data: { Username: '', Password: '' }
-  };
+interface LoginProps {
+  userStore?: UserStore;
+}
 
-  @autobind
-  private _handleUsernameChange(event: any) {
-    const newUsername = event.target.value;
-    const data = {...this.state.data, Username: newUsername};
-    this.setState({ data });
-  }
-
-  @autobind
-  private _handlePasswordChange(event: any) {
-    const newPassword = event.target.value;
-    const data = {...this.state.data, Password: newPassword};
-    this.setState({ data });
-  }
-
+@inject('userStore')
+@observer
+export default class Login extends React.Component<LoginProps> {
   public render() {
+  const userStore = this.props.userStore;
+
     return (
       <Form>
         <Form.Field>
           <label>Username</label>
-          <input type="text" value={this.state.data.Username} onChange={this._handleUsernameChange} />
+          <input type="text" value={userStore?.loginData.Username} onChange={userStore?.handleUsernameChange} />
         </Form.Field>
         <Form.Field>
           <label>Password</label>
-          <input type="password" value={this.state.data.Password} onChange={this._handlePasswordChange} />
+          <input type="password" value={userStore?.loginData.Password} onChange={userStore?.handlePasswordChange} />
         </Form.Field>
-        <Button type="submit">Submit</Button>
+        <Button type="submit" disabled={!userStore?.isReadyToLogin}>Submit</Button>
       </Form>
     );
   }
