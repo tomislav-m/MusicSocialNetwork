@@ -13,11 +13,13 @@ namespace EventService.Consumers
     {
         private readonly IEventService _eventService;
         private readonly IMapper _mapper;
+        private readonly EventStoreService _eventStoreService;
 
-        public AddEventConsumer(IEventService eventService, IMapper mapper)
+        public AddEventConsumer(IEventService eventService, IMapper mapper, EventStoreService eventStoreService)
         {
             _eventService = eventService;
             _mapper = mapper;
+            _eventStoreService = eventStoreService;
         }
 
         public async Task Consume(ConsumeContext<AddEvent> context)
@@ -29,9 +31,9 @@ namespace EventService.Consumers
                 var eventModel = await _eventService.AddEvent(_mapper.Map<AddEvent, Event>(message));
                 var @event = _mapper.Map<Event, EventAdded>(eventModel);
                 await context.RespondAsync(@event);
-                //add to event store
+                _eventStoreService.AddEventToStream(@event, "event-stream");
             }
-            catch (Exception exc)
+            catch
             {
                 await context.RespondAsync(null);
             }

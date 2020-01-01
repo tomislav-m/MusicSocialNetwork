@@ -68,6 +68,8 @@ namespace EventService
             services.AddScoped(provider => provider.GetRequiredService<IBus>().CreateRequestClient<GetEvent>());
             services.AddScoped(provider => provider.GetRequiredService<IBus>().CreateRequestClient<GetEventsByArtist>());
             services.AddSingleton<IHostedService, BusService>();
+
+            services.AddScoped<EventStoreService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

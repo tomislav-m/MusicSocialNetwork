@@ -24,8 +24,11 @@ namespace EventService.Services
 
         public async Task<Event> AddEvent(Event @event)
         {
-            await _context.AddAsync(@event);
-            await _context.SaveChangesAsync();
+            if ((await GetEvent(@event.Id)) == null)
+            {
+                await _context.AddAsync(@event);
+                await _context.SaveChangesAsync();
+            }
 
             return @event;
         }

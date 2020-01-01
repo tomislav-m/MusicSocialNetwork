@@ -11,6 +11,8 @@ namespace EventService.Helpers
         {
             CreateMap<AddEvent, Event>();
             CreateMap<Event, EventAdded>();
+
+            CreateMap<EventAdded, Event>();
         }
     }
 }
