@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Common.MessageContracts.Music.Events
 {
@@ -17,5 +18,11 @@ namespace Common.MessageContracts.Music.Events
         public ICollection<TrackFound> Tracks { get; set; }
 
         public string Type => nameof(Album);
+        public DateTime CreatedAt { get; set; }
+
+        public Album()
+        {
+            CreatedAt = DateTime.Now;
+        }
     }
 }

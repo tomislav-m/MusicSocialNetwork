@@ -1,56 +1,32 @@
 ﻿using AutoMapper;
 using CatalogService.MessageContracts;
 using CatalogService.Models;
-using CatalogService.Services;
-using Common.MessageContracts;
 using Common.MessageContracts.Catalog.Events;
+using Common.Services;
 using EventStore.ClientAPI;
 using Newtonsoft.Json;
-using System;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace CatalogService.Helpers
+namespace CatalogService.Services
 {
-    public class EventStoreHelper
+    public class EventStoreService : EventStoreServiceBase
     {
-        private static IEventStoreConnection connection;
         private readonly IMapper _mapper;
         private readonly IRatingService _ratingService;
-        private readonly ITagService _TagService;
+        private readonly ITagService _tagService;
 
-        public EventStoreHelper(
+        public EventStoreService(
             IRatingService ratingService,
-            ITagService TagService,
+            ITagService tagService,
             IMapper mapper)
         {
             _ratingService = ratingService;
-            _TagService = TagService;
+            _tagService = tagService;
             _mapper = mapper;
+            Init();
         }
 
-        public static async void Init()
-        {
-            connection = EventStoreConnection.Create(new Uri("tcp://admin:changeit@localhost:1113"));
-            await connection.ConnectAsync();
-        }
-
-        public static async void AddEventToStream(IEvent @event)
-        {
-            var myEvent = new EventData(Guid.NewGuid(), @event.Type, true,
-                            Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(@event)),
-                            Encoding.UTF8.GetBytes(@event.Type));
-
-            await connection.AppendToStreamAsync("catalog-stream", ExpectedVersion.Any, myEvent);
-        }
-
-        public async Task<ResolvedEvent[]> ReadFromStream()
-        {
-            var eventsSlice = await connection.ReadAllEventsForwardAsync(Position.Start, int.MaxValue, false);
-            return eventsSlice.Events;
-        }
-
-        public async void RecreateDb()
+        public override async void RecreateDb()
         {
             var events = await ReadFromStream();
             foreach (var @event in events)
@@ -67,12 +43,12 @@ namespace CatalogService.Helpers
                     case MessageContract.AlbumAdded:
                         var albumAdded = JsonConvert.DeserializeObject<AlbumAddedToTag>(
                             Encoding.UTF8.GetString(@event.Event.Data));
-                        await _TagService.AddToTag(_mapper.Map<AlbumAddedToTag, AlbumTag>(albumAdded));
+                        await _tagService.AddToTag(_mapper.Map<AlbumAddedToTag, AlbumTag>(albumAdded));
                         break;
                     case MessageContract.TagAdded:
                         var TagAddedEvent = JsonConvert.DeserializeObject<CustomTagAdded>(
                             Encoding.UTF8.GetString(@event.Event.Data));
-                        await _TagService.CreateTag(_mapper.Map<CustomTagAdded, Tag>(TagAddedEvent));
+                        await _tagService.CreateTag(_mapper.Map<CustomTagAdded, Tag>(TagAddedEvent));
                         break;
                     default:
                         break;

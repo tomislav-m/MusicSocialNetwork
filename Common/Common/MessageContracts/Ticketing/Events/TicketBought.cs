@@ -1,4 +1,6 @@
-﻿namespace Common.MessageContracts.Ticketing.Events
+﻿using System;
+
+namespace Common.MessageContracts.Ticketing.Events
 {
     public class TicketBought : IEvent
     {
@@ -7,5 +9,11 @@
         public int Count { get; set; }
 
         public string Type => nameof(TicketBought);
+        public DateTime CreatedAt { get; set; }
+
+        public TicketBought()
+        {
+            CreatedAt = DateTime.Now;
+        }
     }
 }

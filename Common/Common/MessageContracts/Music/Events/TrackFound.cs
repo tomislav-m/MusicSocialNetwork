@@ -1,4 +1,6 @@
-﻿namespace Common.MessageContracts.Music.Events
+﻿using System;
+
+namespace Common.MessageContracts.Music.Events
 {
     public class TrackFound : IEvent
     {
@@ -7,5 +9,11 @@
         public double Duration { get; set; }
 
         public string Type => nameof(TrackFound);
+        public DateTime CreatedAt { get; set; }
+
+        public TrackFound()
+        {
+            CreatedAt = DateTime.Now;
+        }
     }
 }

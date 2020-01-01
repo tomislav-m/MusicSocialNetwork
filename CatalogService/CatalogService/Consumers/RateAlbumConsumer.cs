@@ -13,11 +13,13 @@ namespace CatalogService.Consumers
     {
         private readonly IRatingService _service;
         private readonly IMapper _mapper;
+        private readonly EventStoreService _eventStoreService;
 
-        public RateAlbumConsumer(IRatingService service, IMapper mapper)
+        public RateAlbumConsumer(IRatingService service, IMapper mapper, EventStoreService eventStoreService)
         {
             _service = service;
             _mapper = mapper;
+            _eventStoreService = eventStoreService;
         }
 
         public async Task Consume(ConsumeContext<RateAlbum> context)
@@ -30,9 +32,9 @@ namespace CatalogService.Consumers
 
                 var @event = _mapper.Map<AlbumRating, AlbumRated>(rating);
                 await context.RespondAsync(@event);
-                //EventStoreHelper.AddEventToStream(@event);
+                _eventStoreService.AddEventToStream(@event, "catalog-stream");
             }
-            catch (Exception exc)
+            catch
             {
                 await context.RespondAsync(null);
             }

@@ -1,4 +1,6 @@
-﻿namespace Common.MessageContracts.Music.Events
+﻿using System;
+
+namespace Common.MessageContracts.Music.Events
 {
     public class AlbumFound : IEvent
     {
@@ -8,5 +10,11 @@
         public string CoverArtUrl { get; set; }
 
         public string Type => nameof(AlbumFound);
+        public DateTime CreatedAt { get; set; }
+
+        public AlbumFound()
+        {
+            CreatedAt = DateTime.Now;
+        }
     }
 }

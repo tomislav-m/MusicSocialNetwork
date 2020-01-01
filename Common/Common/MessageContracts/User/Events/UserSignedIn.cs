@@ -8,5 +8,11 @@ namespace Common.MessageContracts.User.Events
         public string Username { get; set; }
         public string Token { get; set; }
         public string Type => nameof(UserSignedIn);
+        public DateTime CreatedAt { get; set; }
+
+        public UserSignedIn()
+        {
+            CreatedAt = DateTime.Now;
+        }
     }
 }

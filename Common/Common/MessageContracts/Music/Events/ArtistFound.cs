@@ -1,4 +1,6 @@
-﻿namespace Common.MessageContracts.Music.Events
+﻿using System;
+
+namespace Common.MessageContracts.Music.Events
 {
     public class ArtistFound : IEvent
     {
@@ -7,5 +9,11 @@
         public string PhotoUrl { get; set; }
 
         public string Type => nameof(ArtistFound);
+        public DateTime CreatedAt { get; set; }
+
+        public ArtistFound()
+        {
+            CreatedAt = DateTime.Now;
+        }
     }
 }

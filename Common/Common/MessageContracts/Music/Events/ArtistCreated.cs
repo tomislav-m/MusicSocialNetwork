@@ -1,4 +1,6 @@
-﻿namespace Common.MessageContracts.Music.Events
+﻿using System;
+
+namespace Common.MessageContracts.Music.Events
 {
     public class ArtistCreated : IEvent
     {
@@ -14,5 +16,11 @@
         public string MbId { get; set; }
 
         public string Type => nameof(ArtistCreated);
+        public DateTime CreatedAt { get; set; }
+
+        public ArtistCreated()
+        {
+            CreatedAt = DateTime.Now;
+        }
     }
 }

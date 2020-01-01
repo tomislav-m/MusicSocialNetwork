@@ -12,11 +12,13 @@ namespace CatalogService.Consumers
     {
         private readonly ITagService _service;
         private readonly IMapper _mapper;
+        private readonly EventStoreService _eventStoreService;
 
-        public CustomTagConsumer(ITagService service, IMapper mapper)
+        public CustomTagConsumer(ITagService service, IMapper mapper, EventStoreService eventStoreService)
         {
             _service = service;
             _mapper = mapper;
+            _eventStoreService = eventStoreService;
         }
 
         public async Task Consume(ConsumeContext<AddCustomTag> context)
@@ -29,7 +31,7 @@ namespace CatalogService.Consumers
 
                 var @event = _mapper.Map<Tag, CustomTagAdded>(Tag);
                 await context.RespondAsync(@event);
-                //EventStoreHelper.AddEventToStream(@event);
+                _eventStoreService.AddEventToStream(@event, "catalog-stream");
             }
             catch
             {
@@ -48,7 +50,7 @@ namespace CatalogService.Consumers
 
                 var @event = _mapper.Map<AddToTag, AlbumAddedToTag>(message);
                 await context.RespondAsync(@event);
-                //EventStoreHelper.AddEventToStream(@event);
+                _eventStoreService.AddEventToStream(@event, "catalog-stream");
             }
             catch
             {

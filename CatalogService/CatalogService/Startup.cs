@@ -72,7 +72,7 @@ namespace CatalogService
             services.AddScoped(provider => provider.GetRequiredService<IBus>().CreateRequestClient<AddToTag>());
             services.AddSingleton<IHostedService, BusService>();
 
-            //EventStoreHelper.Init();
+            services.AddScoped<EventStoreService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

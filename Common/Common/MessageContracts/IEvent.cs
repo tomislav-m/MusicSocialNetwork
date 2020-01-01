@@ -5,6 +5,6 @@ namespace Common.MessageContracts
     public interface IEvent
     {
         public string Type { get; }
-        public DateTime CreatedAt => DateTime.Now;
+        public DateTime CreatedAt { get; set; }
     }
 }

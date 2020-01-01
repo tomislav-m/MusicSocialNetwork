@@ -12,5 +12,11 @@ namespace Common.MessageContracts.Event.Events
         public ICollection<int> Headliners { get; set; }
         public ICollection<int> Supporters { get; set; }
         public string Type => nameof(EventAdded);
+        public DateTime CreatedAt { get; set; }
+
+        public EventAdded()
+        {
+            CreatedAt = DateTime.Now;
+        }
     }
 }
