@@ -13,7 +13,7 @@ namespace UserService.Services
         Task<User> Authenticate(string username, string password);
         IEnumerable<User> GetAll();
         User GetById(int id);
-        User Create(User user, string password);
+        User Create(User user, string password = null);
         void Update(User user, string password = null);
         void Delete(int id);
     }
@@ -46,7 +46,7 @@ namespace UserService.Services
             return user;
         }
 
-        public User Create(User user, string password)
+        public User Create(User user, string password = null)
         {
             if (string.IsNullOrWhiteSpace(password))
                 throw new AppException("Password is required");
@@ -54,11 +54,14 @@ namespace UserService.Services
             if (_context.Users.Any(x => x.Username == user.Username))
                 throw new AppException("Username \"" + user.Username + "\" is already taken");
 
-            byte[] passwordHash, passwordSalt;
-            CreatePasswordHash(password, out passwordHash, out passwordSalt);
+            if (user.PasswordHash == null && user.PasswordSalt == null)
+            {
+                byte[] passwordHash, passwordSalt;
+                CreatePasswordHash(password, out passwordHash, out passwordSalt);
 
-            user.PasswordHash = passwordHash;
-            user.PasswordSalt = passwordSalt;
+                user.PasswordHash = passwordHash;
+                user.PasswordSalt = passwordSalt;
+            }
 
             _context.Users.Add(user);
             _context.SaveChanges();

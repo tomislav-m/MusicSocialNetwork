@@ -35,7 +35,7 @@ namespace UserService
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
-            services.AddDbContext<ApplicationDbContext>(x => x.UseInMemoryDatabase("TestDb"));
+            services.AddDbContext<ApplicationDbContext>(x => x.UseInMemoryDatabase("UserDb"));
             services.AddControllers();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -92,8 +92,8 @@ namespace UserService
                     e.UseMessageRetry(x => x.Interval(2, 100));
 
                     e.Consumer<UserConsumer>(provider);
-
                     EndpointConvention.Map<SignInUser>(e.InputAddress);
+                    EndpointConvention.Map<CreateUser>(e.InputAddress);
                 });
             }));
 
@@ -102,7 +102,10 @@ namespace UserService
             services.AddSingleton<IBus>(provider => provider.GetRequiredService<IBusControl>());
 
             services.AddScoped(provider => provider.GetRequiredService<IBus>().CreateRequestClient<SignInUser>());
+            services.AddScoped(provider => provider.GetRequiredService<IBus>().CreateRequestClient<CreateUser>());
             services.AddSingleton<IHostedService, BusService>();
+
+            services.AddScoped<EventStoreService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
