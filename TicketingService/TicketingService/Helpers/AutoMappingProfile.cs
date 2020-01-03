@@ -9,6 +9,8 @@ namespace TicketingService.Helpers
         public AutoMappingProfile()
         {
             CreateMap<Ticket, TicketBought>();
+            CreateMap<TicketBought, Ticket>()
+                .ForMember(d => d.DateTimeBought, o => o.MapFrom(s => s.CreatedAt));
             CreateMap<EventTicketsInfo, EventTickets>();
         }
     }
