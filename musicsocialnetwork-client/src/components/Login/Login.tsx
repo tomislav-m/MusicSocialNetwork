@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Button } from 'semantic-ui-react';
+import { Form, Button, Popup } from 'semantic-ui-react';
 import { inject, observer } from 'mobx-react';
 import UserStore from '../../stores/UserStore';
 
@@ -11,7 +11,26 @@ interface LoginProps {
 @observer
 export default class Login extends React.Component<LoginProps> {
   public render() {
-  const userStore = this.props.userStore;
+    const userStore = this.props.userStore;
+
+    return (
+      <div>
+        {userStore?.userData ? userStore.userData.Username :
+          <Popup
+            position="bottom center"
+            on="click"
+            pinned
+            trigger={ <Button inverted compact>Login</Button> }
+          >
+            {this.loginForm()}
+          </Popup>
+        }
+      </div>
+    );
+  }
+
+  private loginForm = (): JSX.Element => {
+    const userStore = this.props.userStore;
 
     return (
       <Form>
@@ -23,7 +42,11 @@ export default class Login extends React.Component<LoginProps> {
           <label>Password</label>
           <input type="password" value={userStore?.loginData.Password} onChange={userStore?.handlePasswordChange} />
         </Form.Field>
-        <Button type="submit" disabled={!userStore?.isReadyToLogin}>Submit</Button>
+        <Button
+          type="submit"
+          disabled={!userStore?.isReadyToLogin}
+          onClick={userStore?.handleLogin}>Submit
+        </Button>
       </Form>
     );
   }

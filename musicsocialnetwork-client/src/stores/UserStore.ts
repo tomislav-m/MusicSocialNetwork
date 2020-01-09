@@ -1,12 +1,16 @@
 import { observable, action, computed } from 'mobx';
-import { LoginData } from '../models/User';
+import { LoginData, UserData } from '../models/User';
 import autobind from 'autobind-decorator';
+import { loginData, userData } from '../data/UserDataMock';
 
 export default class UserStore {
   @observable loginData: LoginData = {
+    Id: 0,
     Username: '',
     Password: ''
   };
+
+  @observable userData: UserData | undefined = undefined;
 
   @autobind
   @action
@@ -18,6 +22,16 @@ export default class UserStore {
   @action
   handlePasswordChange(event: { target: HTMLInputElement }) {
     this.loginData.Password = event.target.value;
+  }
+
+  @autobind
+  @action
+  handleLogin() {
+    const user = loginData.find(x => x.Username === this.loginData.Username && x.Password === this.loginData.Password);
+    if (user) {
+      this.userData = userData.find(x => x.Id === user.Id);
+      console.log(this.userData?.Username);
+    }
   }
 
   @computed

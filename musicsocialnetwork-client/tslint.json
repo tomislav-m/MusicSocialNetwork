@@ -113,7 +113,6 @@
         "no-unsafe-finally": true,
         "no-unsupported-browser-code": false,
         "no-unused-expression": true,
-        "no-use-before-declare": true,
         "no-var-keyword": true,
         "no-var-requires": true,
         "no-void-expression": false,
@@ -180,7 +179,6 @@
         "typedef-whitespace": [
             false
         ],
-        "typeof-compare": true,
         "unified-signatures": true,
         "use-isnan": true,
         "variable-name": false,

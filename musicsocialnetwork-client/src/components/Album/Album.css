@@ -1,0 +1,13 @@
+.info {
+  padding-left: 10px;
+}
+
+.info-label {
+  min-width: 80px;
+  text-align: center;
+}
+
+.link-artist {
+  font-weight: bold;
+  color: black;
+}
