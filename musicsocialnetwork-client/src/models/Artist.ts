@@ -40,3 +40,8 @@ export let defaultArtistData: ArtistData = {
   Styles: [],
   Events: []
 };
+
+export let defaultArtistDataSimple: ArtistDataSimple = {
+  Id: 0,
+  Name: ''
+};

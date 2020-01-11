@@ -2,6 +2,8 @@ import React from 'react';
 import { EventData } from '../../models/Event';
 import { Table, Modal, Button, Icon, Grid, Label } from 'semantic-ui-react';
 import './EventList.css';
+import CreateEditEvent from './CreateEditEvent';
+import { ArtistDataSimple } from '../../models/Artist';
 
 interface EventProps {
   events: Array<EventData> | undefined;
@@ -20,6 +22,7 @@ export default class EventList extends React.Component<EventProps> {
             <Table.HeaderCell>Headliners</Table.HeaderCell>
             <Table.HeaderCell>Supporters</Table.HeaderCell>
             <Table.HeaderCell></Table.HeaderCell>
+            <Table.HeaderCell></Table.HeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>
@@ -30,6 +33,14 @@ export default class EventList extends React.Component<EventProps> {
                 <Table.Cell>{event.VenueName}</Table.Cell>
                 <Table.Cell>{this.arrayToList(event.Headliners)}</Table.Cell>
                 <Table.Cell>{this.arrayToList(event.Supporters)}</Table.Cell>
+                <Table.Cell>
+                  <Modal trigger={<Button icon compact><Icon name="edit" /></Button>}>
+                    <Modal.Header>Edit event</Modal.Header>
+                    <Modal.Content>
+                      <CreateEditEvent oldEvent={event} isEdit={true} onEventSave={() => null} />
+                      </Modal.Content>
+                  </Modal>
+                </Table.Cell>
                 <Table.Cell>
                   <Modal trigger={<Button size="mini" color="grey" icon><Icon name="angle right" size="big" /></Button>} closeIcon>
                     <Modal.Header>Event</Modal.Header>
@@ -75,9 +86,9 @@ export default class EventList extends React.Component<EventProps> {
     );
   }
 
-  private arrayToList(array: Array<string>) {
+  private arrayToList(array: Array<ArtistDataSimple>) {
     let list = '';
-    array.forEach((x, index) => {
+    array.map(x => x.Name).forEach((x, index) => {
       if (index > 0) {
         list += ',';
       }

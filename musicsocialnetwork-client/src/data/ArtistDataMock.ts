@@ -15,7 +15,7 @@ export let artistData: Array<ArtistData> = [
     Styles: undefined,
     Events: [
       {
-        Id: 1, Date: new Date(), Headliners: ['Iron Maiden'], Supporters: ['Dream Theater'], VenueName: 'Arena Zagreb'
+        Id: 1, Date: new Date(), Headliners: [{ Id: 1, Name: 'Iron Maiden' }], Supporters: [{ Id: 2, Name: 'Dream Theater' }], VenueName: 'Arena Zagreb'
       }
     ]
   },
