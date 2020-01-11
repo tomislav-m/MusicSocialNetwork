@@ -17,11 +17,15 @@ export let userData: Array<UserData> = [
   {
     Id: 1,
     Username: 'Admin',
-    Role: 'administrator'
+    Role: 'administrator',
+    Ratings: [
+      { AlbumId: 2, Rating: 9 }
+    ]
   },
   {
     Id: 2,
     Username: 'User',
-    Role: 'user'
+    Role: 'user',
+    Ratings: []
   }
 ];

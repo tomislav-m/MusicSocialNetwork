@@ -18,3 +18,22 @@ export interface AlbumRatingData {
   AverageRating: number;
   RatingCount: number;
 }
+
+export let defaultAlbumRatingData: AlbumRatingData = {
+  AverageRating: 0,
+  RatingCount: 0
+};
+
+export let defaultAlbumData: AlbumData = {
+  Id: 0,
+  Name: '',
+  CoverArtUrl: '',
+  Description: '',
+  ArtistId: 0,
+  Style: '',
+  Genre: '',
+  Format: '',
+  YearReleased: 0,
+  RatingData: defaultAlbumRatingData,
+  Tracks: []
+};

@@ -1,3 +1,5 @@
+import { RatingData } from './Catalog';
+
 export interface LoginData {
   Id: number;
   Username: string;
@@ -8,6 +10,7 @@ export interface UserData {
   Id: number;
   Username: string;
   Role: string;
+  Ratings: Array<RatingData>;
 }
 
 export interface ILoginState {

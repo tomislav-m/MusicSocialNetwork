@@ -1,9 +1,10 @@
 import React from 'react';
 import { observer, inject } from 'mobx-react';
 import ArtistStore from '../../stores/ArtistStore';
-import { Loader, Grid, Label, Icon, Segment, Table } from 'semantic-ui-react';
+import { Loader, Grid, Label, Icon, Segment, Table, Tab } from 'semantic-ui-react';
 import './Artist.css';
 import { Link } from 'react-router-dom';
+import EventList from '../Event/EventList';
 
 interface ArtistProps {
   artistStore?: ArtistStore;
@@ -39,9 +40,13 @@ export default class Artist extends React.Component<ArtistProps> {
     }
   }
 
+   private panes: any = [
+    { menuItem: 'Albums', render: () => <Tab.Pane>{this.renderAlbums()}</Tab.Pane> },
+    { menuItem: 'Events', render: () => <Tab.Pane><EventList events={this.props.artistStore?.artist?.Events} /></Tab.Pane> }
+  ];
+
   public render() {
     const artist = this.props.artistStore?.artist;
-    const albums = this.props.artistStore?.albums;
 
     const year = artist?.YearFormed !== 0 ? artist?.YearFormed : artist.YearBorn;
 
@@ -79,41 +84,48 @@ export default class Artist extends React.Component<ArtistProps> {
                     {artist.Genres?.map(x => <Label key={x} tag color="blue" size="tiny">{x}</Label>)}
                   </span>
                 </div>
-                <Table striped compact>
-                  <Table.Header>
-                    <Table.Row>
-                      <Table.HeaderCell></Table.HeaderCell>
-                      <Table.HeaderCell>Album</Table.HeaderCell>
-                      <Table.HeaderCell>No. of ratings</Table.HeaderCell>
-                      <Table.HeaderCell>Rating</Table.HeaderCell>
-                    </Table.Row>
-                  </Table.Header>
-
-                  <Table.Body>
-                    {albums && albums.map(album =>
-                      <Table.Row key={album.Id}>
-                        <Table.Cell width={1}>
-                          <Link to={`/Album/${album.Id}`}>
-                            <img src={album.CoverArtUrl} width={40} alt="Cover art" />
-                          </Link>
-                        </Table.Cell>
-                        <Table.Cell width={9} verticalAlign="middle">
-                          <Link to={`/Album/${album.Id}`}>
-                            {<strong>{album.Name}</strong>} {`(${album.YearReleased})`}
-                          </Link>
-                        </Table.Cell>
-                        <Table.Cell width={3}>{album.RatingData.RatingCount}</Table.Cell>
-                        <Table.Cell width={3}>{album.RatingData.AverageRating} / 10</Table.Cell>
-                      </Table.Row>
-                    )
-                    }
-                  </Table.Body>
-                </Table>
+                <Tab panes={this.panes} />
               </Grid.Column>
             </Grid.Row>
           </Grid>
         }
       </div>
+    );
+  }
+
+  private renderAlbums() {
+    const albums = this.props.artistStore?.albums;
+
+    return (
+      <Table striped compact>
+        <Table.Header>
+          <Table.Row>
+            <Table.HeaderCell></Table.HeaderCell>
+            <Table.HeaderCell>Album</Table.HeaderCell>
+            <Table.HeaderCell>No. of ratings</Table.HeaderCell>
+            <Table.HeaderCell>Rating</Table.HeaderCell>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
+          {albums && albums.map(album =>
+            <Table.Row key={album.Id}>
+              <Table.Cell width={1}>
+                <Link to={`/Album/${album.Id}`}>
+                  <img src={album.CoverArtUrl} width={40} alt="Cover art" />
+                </Link>
+              </Table.Cell>
+              <Table.Cell width={9} verticalAlign="middle">
+                <Link to={`/Album/${album.Id}`}>
+                  {<strong>{album.Name}</strong>} {`(${album.YearReleased})`}
+                </Link>
+              </Table.Cell>
+              <Table.Cell width={3}>{album.RatingData.RatingCount}</Table.Cell>
+              <Table.Cell width={3}>{album.RatingData.AverageRating} / 10</Table.Cell>
+            </Table.Row>
+          )
+          }
+        </Table.Body>
+      </Table>
     );
   }
 }

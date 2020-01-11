@@ -12,7 +12,12 @@ export let artistData: Array<ArtistData> = [
     YearBorn: 0,
     YearFormed: 1975,
     Genres: undefined,
-    Styles: undefined
+    Styles: undefined,
+    Events: [
+      {
+        Id: 1, Date: new Date(), Headliners: ['Iron Maiden'], Supporters: ['Dream Theater'], VenueName: 'Arena Zagreb'
+      }
+    ]
   },
   {
     Id: 2,
@@ -25,6 +30,7 @@ export let artistData: Array<ArtistData> = [
     YearBorn: 0,
     YearFormed: 1986,
     Genres: undefined,
-    Styles: undefined
+    Styles: undefined,
+    Events: []
   }
 ];

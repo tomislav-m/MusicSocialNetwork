@@ -34,8 +34,24 @@ export default class UserStore {
     }
   }
 
+  @autobind
+  @action
+  rateAlbum(albumId: number, rating: number) {
+    const prevRating = this.userData?.Ratings.find(x => x.AlbumId === albumId);
+    if (prevRating) {
+      prevRating.Rating = rating;
+    } else {
+      this.userData?.Ratings.push({ AlbumId: albumId, Rating: rating });
+    }
+  }
+
   @computed
   get isReadyToLogin(): boolean {
     return this.loginData.Password.length > 0 && this.loginData.Username.length > 0;
+  }
+
+  @computed
+  get isLoggedIn(): boolean {
+    return this.userData !== undefined;
   }
 }
