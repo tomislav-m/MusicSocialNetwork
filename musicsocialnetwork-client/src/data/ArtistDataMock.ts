@@ -1,4 +1,5 @@
 import { ArtistData } from '../models/Artist';
+import { eventData } from './EventDataMock';
 
 export let artistData: Array<ArtistData> = [
   {
@@ -13,24 +14,20 @@ export let artistData: Array<ArtistData> = [
     YearFormed: 1975,
     Genres: undefined,
     Styles: undefined,
-    Events: [
-      {
-        Id: 1, Date: new Date(), Headliners: [{ Id: 1, Name: 'Iron Maiden' }], Supporters: [{ Id: 2, Name: 'Dream Theater' }], VenueName: 'Arena Zagreb'
-      }
-    ]
+    Events: eventData
   },
   {
     Id: 2,
     Name: 'Dream Theater',
     PhotoUrl: 'https://www.theaudiodb.com/images/media/artist/thumb/tqsvpt1363622181.jpg',
     Bio: '',
-    Country: '',
-    FacebookUrl: '',
-    WebsiteUrl: '',
+    Country: 'Massachusetts, USA',
+    FacebookUrl: 'www.facebook.com/pages/Dream-Theater/7677942180',
+    WebsiteUrl: 'www.dreamtheater.net',
     YearBorn: 0,
     YearFormed: 1986,
     Genres: undefined,
     Styles: undefined,
-    Events: []
+    Events: eventData
   }
 ];

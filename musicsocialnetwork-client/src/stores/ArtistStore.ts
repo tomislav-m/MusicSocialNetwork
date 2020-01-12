@@ -11,7 +11,7 @@ export default class ArtistStore {
   @observable artist: ArtistData | undefined = undefined;
 
   albumsAll: Array<AlbumData> = albumData;
-  @observable albums: Array<AlbumData> | undefined = undefined;
+  @observable albums: Array<AlbumData> | undefined = albumData;
 
   @observable album: AlbumData | undefined = undefined;
 

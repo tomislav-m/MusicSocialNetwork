@@ -1,4 +1,5 @@
 import { RatingData } from './Catalog';
+import { EventData } from './Event';
 
 export interface LoginData {
   Id: number;
@@ -11,6 +12,7 @@ export interface UserData {
   Username: string;
   Role: string;
   Ratings: Array<RatingData>;
+  Events: Array<EventData>;
 }
 
 export interface ILoginState {
