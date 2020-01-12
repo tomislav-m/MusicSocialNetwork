@@ -38,7 +38,7 @@ export default class EventList extends React.Component<EventProps> {
                     <Modal.Header>Edit event</Modal.Header>
                     <Modal.Content>
                       <CreateEditEvent oldEvent={event} isEdit={true} onEventSave={() => null} />
-                      </Modal.Content>
+                    </Modal.Content>
                   </Modal>
                 </Table.Cell>
                 <Table.Cell>

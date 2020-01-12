@@ -41,7 +41,7 @@ export default class UserStore {
     if (prevRating) {
       prevRating.Rating = rating;
     } else {
-      this.userData?.Ratings.push({ AlbumId: albumId, Rating: rating });
+      this.userData?.Ratings.push({ AlbumId: albumId, Rating: rating, RatedAt: new Date() });
     }
   }
 

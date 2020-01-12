@@ -2,6 +2,7 @@ import React from 'react';
 import { Form, Button, Popup } from 'semantic-ui-react';
 import { inject, observer } from 'mobx-react';
 import UserStore from '../../stores/UserStore';
+import { Link } from 'react-router-dom';
 
 interface LoginProps {
   userStore?: UserStore;
@@ -15,12 +16,12 @@ export default class Login extends React.Component<LoginProps> {
 
     return (
       <div>
-        {userStore?.userData ? userStore.userData.Username :
+        {userStore?.userData ? <Link to={`/User/${userStore.userData.Id}`}>{userStore.userData.Username}</Link> :
           <Popup
             position="bottom center"
             on="click"
             pinned
-            trigger={ <Button inverted compact>Login</Button> }
+            trigger={<Button inverted compact>Login</Button>}
           >
             {this.loginForm()}
           </Popup>

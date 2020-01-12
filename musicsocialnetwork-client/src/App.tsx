@@ -11,6 +11,7 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import Artist from './components/Artist/Artist';
 import ArtistStore from './stores/ArtistStore';
 import Album from './components/Album/Album';
+import UserProfile from './components/User/UserProfile';
 
 class App extends React.Component {
   private userStore: UserStore = new UserStore();
@@ -28,7 +29,7 @@ class App extends React.Component {
                 <SearchComponent />
               </Provider>
             </Menu.Item>
-            <Menu.Item>
+            <Menu.Item header>
               <Provider userStore={this.userStore}>
                 <Login />
               </Provider>
@@ -43,6 +44,7 @@ class App extends React.Component {
           <Provider artistStore={this.artistStore} userStore={this.userStore}>
             <Route path="/Artist/:id" component={Artist} />
             <Route path="/Album/:id" component={Album} />
+            <Route path="/User/:id" component={UserProfile} />
           </Provider>
         </Container>
       </Router>

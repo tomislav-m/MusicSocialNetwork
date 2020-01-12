@@ -19,7 +19,7 @@ export let userData: Array<UserData> = [
     Username: 'Admin',
     Role: 'administrator',
     Ratings: [
-      { AlbumId: 2, Rating: 9 }
+      { AlbumId: 2, Rating: 9, RatedAt: new Date() }
     ]
   },
   {
