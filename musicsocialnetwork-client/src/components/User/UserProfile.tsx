@@ -1,7 +1,7 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import UserStore from '../../stores/UserStore';
-import { Grid, Table, Icon, Pagination } from 'semantic-ui-react';
+import { Grid, Table, Icon, Pagination, Divider } from 'semantic-ui-react';
 import ArtistStore from '../../stores/ArtistStore';
 import { albumData } from '../../data/AlbumDataMock';
 import { artistData } from '../../data/ArtistDataMock';
@@ -117,6 +117,9 @@ export default class UserProfile extends React.Component<UserProps, UserState> {
                 <Pagination activePage={this.state.eventsPage} totalPages={events.length / pageSize} onPageChange={this.handleEventsPageChange} />
               }
             </Grid.Column>
+          </Grid.Row>
+          <Divider horizontal>Comments</Divider>
+          <Grid.Row>
           </Grid.Row>
         </Grid>
       </div>

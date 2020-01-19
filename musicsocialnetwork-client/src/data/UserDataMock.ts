@@ -4,7 +4,7 @@ import { eventData } from './EventDataMock';
 export let loginData: Array<LoginData> = [
   {
     Id: 1,
-    Username: 'Admin',
+    Username: 'User',
     Password: 'admin'
   },
   {
@@ -17,7 +17,7 @@ export let loginData: Array<LoginData> = [
 export let userData: Array<UserData> = [
   {
     Id: 1,
-    Username: 'Admin',
+    Username: 'User',
     Role: 'administrator',
     Ratings: [
       { AlbumId: 2, Rating: 9, RatedAt: new Date('2020-01-01') },
@@ -27,7 +27,7 @@ export let userData: Array<UserData> = [
   },
   {
     Id: 2,
-    Username: 'User',
+    Username: 'User1',
     Role: 'user',
     Ratings: [],
     Events: []

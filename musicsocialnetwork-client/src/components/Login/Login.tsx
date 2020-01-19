@@ -46,7 +46,7 @@ export default class Login extends React.Component<LoginProps> {
         <Button
           type="submit"
           disabled={!userStore?.isReadyToLogin}
-          onClick={userStore?.handleLogin}>Submit
+          onClick={userStore?.handleLogin}>Log in
         </Button>
       </Form>
     );

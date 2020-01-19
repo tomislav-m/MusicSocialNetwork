@@ -1,10 +1,8 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using WebApi.Model;
 
 namespace WebApi
 {
@@ -21,9 +19,6 @@ namespace WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers().AddNewtonsoftJson();
-
-            services.AddEntityFrameworkNpgsql().AddDbContext<MusicDbContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString("MusicDbContext")));
 
             services.ConfigureBus();
         }

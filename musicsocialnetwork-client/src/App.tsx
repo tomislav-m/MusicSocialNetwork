@@ -34,6 +34,7 @@ class App extends React.Component {
                 <Login />
               </Provider>
             </Menu.Item>
+            <Menu.Item header>Logout</Menu.Item>
           </Container>
         </Menu>
 
