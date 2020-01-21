@@ -14,10 +14,7 @@ namespace CatalogService.Helpers
             CreateMap<AlbumRated, AlbumRating>();
             CreateMap<AlbumRating, AlbumRated>();
 
-            CreateMap<Tag, CustomTagAdded>();
-            CreateMap<CustomTagAdded, Tag>();
-
-            CreateMap<AddToTag, AlbumAddedToTag>();
+            CreateMap<AddToCollection, AlbumAddedToCollection>();
         }
     }
 }

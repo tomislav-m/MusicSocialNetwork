@@ -8,7 +8,7 @@ namespace CatalogService.Models
             : base(options) { }
 
         public DbSet<AlbumRating> AlbumRatings { get; set; }
-        public DbSet<AlbumTag> AlbumTags { get; set; }
+        public DbSet<UserAlbum> UserAlbums { get; set; }
         public DbSet<Tag> Tags { get; set; }
     }
 }

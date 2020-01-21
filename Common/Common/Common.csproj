@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="MessageContracts\Catalog\Commands\AddCustomTag.cs" />
+    <Compile Remove="MessageContracts\Catalog\Events\CustomTagAdded.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="EventStore.Client" Version="5.0.5" />
     <PackageReference Include="MassTransit" Version="6.0.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="3.1.0" />

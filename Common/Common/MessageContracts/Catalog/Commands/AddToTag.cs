@@ -1,8 +1,8 @@
 ﻿namespace Common.MessageContracts.Catalog.Commands
 {
-    public class AddToTag
+    public class AddToCollection
     {
         public int AlbumId { get; set; }
-        public int TagId { get; set; }
+        public int UserId { get; set; }
     }
 }

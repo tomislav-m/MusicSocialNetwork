@@ -1,5 +1,6 @@
 ﻿using CatalogService.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -7,7 +8,7 @@ namespace CatalogService.Services
 {
     public interface ITagService
     {
-        Task<Tag> AddToTag(AlbumTag albumTag);
+        Task<IEnumerable<UserAlbum>> AddToCollection(UserAlbum userAlbum);
         Task<Tag> CreateTag(Tag Tag);
         Task<Tag> GetTag(int TagId);
         Task<Tag> GetTag(string TagName, int userId);
@@ -22,14 +23,12 @@ namespace CatalogService.Services
             _context = context;
         }
 
-        public async Task<Tag> AddToTag(AlbumTag albumTag)
+        public async Task<IEnumerable<UserAlbum>> AddToCollection(UserAlbum userAlbum)
         {
-            await _context.AlbumTags.AddAsync(albumTag);
+            await _context.UserAlbums.AddAsync(userAlbum);
             await _context.SaveChangesAsync();
 
-            return await _context.Tags.Where(x => x.Id == albumTag.AlbumTagId)
-                //.Include(x => x.Albums)
-                .SingleOrDefaultAsync();
+            return await _context.UserAlbums.Where(x => x.UserId == userAlbum.UserId).ToListAsync();
         }
 
         public async Task<Tag> CreateTag(Tag Tag)

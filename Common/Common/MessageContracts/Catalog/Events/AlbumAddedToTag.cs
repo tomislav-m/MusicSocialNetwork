@@ -2,15 +2,14 @@
 
 namespace Common.MessageContracts.Catalog.Events
 {
-    public class AlbumAddedToTag : IEvent
+    public class AlbumAddedToCollection : IEvent
     {
         public int AlbumId { get; set; }
-        public int TagId { get; set; }
-        public string Type => nameof(AlbumAddedToTag);
+        public string Type => nameof(AlbumAddedToCollection);
 
         public DateTime CreatedAt { get; set; }
 
-        public AlbumAddedToTag()
+        public AlbumAddedToCollection()
         {
             CreatedAt = DateTime.Now;
         }

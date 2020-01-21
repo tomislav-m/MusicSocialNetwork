@@ -1,8 +1,8 @@
 ﻿namespace CatalogService.Models
 {
-    public class AlbumTag
+    public class UserAlbum
     {
         public int AlbumId { get; set; }
-        public int AlbumTagId { get; set; }
+        public int UserId { get; set; }
     }
 }

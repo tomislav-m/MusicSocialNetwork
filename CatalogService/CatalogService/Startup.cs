@@ -58,8 +58,7 @@ namespace CatalogService
                     EndpointConvention.Map<RateAlbum>(e.InputAddress);
 
                     e.Consumer<CustomTagConsumer>(provider);
-                    EndpointConvention.Map<AddCustomTag>(e.InputAddress);
-                    EndpointConvention.Map<AddToTag>(e.InputAddress);
+                    EndpointConvention.Map<AddToCollection>(e.InputAddress);
                 });
             }));
 
@@ -68,8 +67,7 @@ namespace CatalogService
             services.AddSingleton<IBus>(provider => provider.GetRequiredService<IBusControl>());
 
             services.AddScoped(provider => provider.GetRequiredService<IBus>().CreateRequestClient<RateAlbum>());
-            services.AddScoped(provider => provider.GetRequiredService<IBus>().CreateRequestClient<AddCustomTag>());
-            services.AddScoped(provider => provider.GetRequiredService<IBus>().CreateRequestClient<AddToTag>());
+            services.AddScoped(provider => provider.GetRequiredService<IBus>().CreateRequestClient<AddToCollection>());
             services.AddSingleton<IHostedService, BusService>();
 
             services.AddScoped<EventStoreService>();

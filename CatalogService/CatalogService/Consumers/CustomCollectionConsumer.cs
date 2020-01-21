@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CatalogService.Consumers
 {
-    public class CustomTagConsumer : IConsumer<AddCustomTag>, IConsumer<AddToTag>
+    public class CustomTagConsumer : IConsumer<AddToCollection>
     {
         private readonly ITagService _service;
         private readonly IMapper _mapper;
@@ -21,34 +21,16 @@ namespace CatalogService.Consumers
             _eventStoreService = eventStoreService;
         }
 
-        public async Task Consume(ConsumeContext<AddCustomTag> context)
+        public async Task Consume(ConsumeContext<AddToCollection> context)
         {
             var message = context.Message;
 
             try
             {
-                var Tag = await _service.CreateTag(new Tag { Name = message.Name, UserId = message.UserId });
+                var albumTag = new UserAlbum { AlbumId = message.AlbumId, UserId = message.UserId };
+                await _service.AddToCollection(albumTag);
 
-                var @event = _mapper.Map<Tag, CustomTagAdded>(Tag);
-                await context.RespondAsync(@event);
-                _eventStoreService.AddEventToStream(@event, "catalog-stream");
-            }
-            catch
-            {
-                await context.RespondAsync(null);
-            }
-        }
-
-        public async Task Consume(ConsumeContext<AddToTag> context)
-        {
-            var message = context.Message;
-
-            try
-            {
-                var albumTag = new AlbumTag { AlbumId = message.AlbumId, AlbumTagId = message.TagId };
-                await _service.AddToTag(albumTag);
-
-                var @event = _mapper.Map<AddToTag, AlbumAddedToTag>(message);
+                var @event = _mapper.Map<AddToCollection, AlbumAddedToCollection>(message);
                 await context.RespondAsync(@event);
                 _eventStoreService.AddEventToStream(@event, "catalog-stream");
             }
