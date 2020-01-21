@@ -6,19 +6,17 @@ using System.Threading.Tasks;
 
 namespace CatalogService.Services
 {
-    public interface ITagService
+    public interface ICollectionService
     {
         Task<IEnumerable<UserAlbum>> AddToCollection(UserAlbum userAlbum);
-        Task<Tag> CreateTag(Tag Tag);
-        Task<Tag> GetTag(int TagId);
-        Task<Tag> GetTag(string TagName, int userId);
+        Task<IEnumerable<UserAlbum>> GetCollection(int userId);
     }
 
-    public class TagService : ITagService
+    public class CollectionService : ICollectionService
     {
         private readonly ApplicationDbContext _context;
 
-        public TagService(ApplicationDbContext context)
+        public CollectionService(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -31,26 +29,9 @@ namespace CatalogService.Services
             return await _context.UserAlbums.Where(x => x.UserId == userAlbum.UserId).ToListAsync();
         }
 
-        public async Task<Tag> CreateTag(Tag Tag)
+        public async Task<IEnumerable<UserAlbum>> GetCollection(int userId)
         {
-            await _context.Tags.AddAsync(Tag);
-            await _context.SaveChangesAsync();
-
-            return Tag;
-        }
-
-        public async Task<Tag> GetTag(int TagId)
-        {
-            return await _context.Tags.Where(x => x.Id == TagId)
-                //.Include(x => x.Albums)
-                .SingleOrDefaultAsync();
-        }
-
-        public async Task<Tag> GetTag(string TagName, int userId)
-        {
-            return await _context.Tags.Where(x => x.Name == TagName && x.UserId == userId)
-                //.Include(x => x.Albums)
-                .SingleOrDefaultAsync();
+            return await _context.UserAlbums.Where(x => x.UserId == userId).ToListAsync();
         }
     }
 }

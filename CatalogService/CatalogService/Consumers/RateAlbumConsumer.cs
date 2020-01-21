@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CatalogService.Consumers
 {
-    public class RateAlbumConsumer : IConsumer<RateAlbum>
+    public class RateAlbumConsumer : IConsumer<RateAlbum>, IConsumer<GetAverageRating>
     {
         private readonly IRatingService _service;
         private readonly IMapper _mapper;
@@ -38,6 +38,11 @@ namespace CatalogService.Consumers
             {
                 await context.RespondAsync(null);
             }
+        }
+
+        public Task Consume(ConsumeContext<GetAverageRating> context)
+        {
+            throw new NotImplementedException();
         }
     }
 }

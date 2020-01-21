@@ -12,15 +12,15 @@ namespace CatalogService.Services
     {
         private readonly IMapper _mapper;
         private readonly IRatingService _ratingService;
-        private readonly ITagService _tagService;
+        private readonly ICollectionService _collectionService;
 
         public EventStoreService(
             IRatingService ratingService,
-            ITagService tagService,
+            ICollectionService collectionService,
             IMapper mapper)
         {
             _ratingService = ratingService;
-            _tagService = tagService;
+            _collectionService = collectionService;
             _mapper = mapper;
             Init();
         }
@@ -42,7 +42,7 @@ namespace CatalogService.Services
                     case MessageContract.AlbumAdded:
                         var albumAdded = JsonConvert.DeserializeObject<AlbumAddedToCollection>(
                             Encoding.UTF8.GetString(@event.Event.Data));
-                        await _tagService.AddToCollection(_mapper.Map<AlbumAddedToCollection, UserAlbum>(albumAdded));
+                        await _collectionService.AddToCollection(_mapper.Map<AlbumAddedToCollection, UserAlbum>(albumAdded));
                         break;
                     default:
                         break;
