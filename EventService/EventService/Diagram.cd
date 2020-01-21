@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="EventService.Models.Event">
+    <Position X="4.5" Y="1.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AgACAAAAAIAAAAAAAAAAAAAAAAAAAAABAQAAAAgAAAA=</HashCode>
+      <FileName>Models\Event.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

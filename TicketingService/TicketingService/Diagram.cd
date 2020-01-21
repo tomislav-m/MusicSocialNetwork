@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="TicketingService.Models.EventTicketsInfo">
+    <Position X="5.25" Y="2" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAgAQAAAAAAAAAAAAAACAAAAAAAAAAAAAABAAA=</HashCode>
+      <FileName>Models\EventTicketsInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TicketingService.Models.Ticket">
+    <Position X="7.25" Y="2" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABgAAAAAAAAAAAAAAwAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Ticket.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
