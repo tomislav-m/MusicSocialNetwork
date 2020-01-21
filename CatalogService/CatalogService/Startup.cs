@@ -38,12 +38,12 @@ namespace CatalogService
             services.AddScoped<ITagService, TagService>();
 
             services.AddScoped<RateAlbumConsumer>();
-            services.AddScoped<CustomTagConsumer>();
+            services.AddScoped<CollectionConsumer>();
 
             services.AddMassTransit(x =>
             {
                 x.AddConsumer<RateAlbumConsumer>();
-                x.AddConsumer<CustomTagConsumer>();
+                x.AddConsumer<CollectionConsumer>();
             });
 
             services.AddSingleton(provider => Bus.Factory.CreateUsingRabbitMq(cfg =>
@@ -57,7 +57,7 @@ namespace CatalogService
                     e.Consumer<RateAlbumConsumer>(provider);
                     EndpointConvention.Map<RateAlbum>(e.InputAddress);
 
-                    e.Consumer<CustomTagConsumer>(provider);
+                    e.Consumer<CollectionConsumer>(provider);
                     EndpointConvention.Map<AddToCollection>(e.InputAddress);
                 });
             }));
