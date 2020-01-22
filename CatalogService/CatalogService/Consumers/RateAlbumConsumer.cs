@@ -40,9 +40,18 @@ namespace CatalogService.Consumers
             }
         }
 
-        public Task Consume(ConsumeContext<GetAverageRating> context)
+        public async Task Consume(ConsumeContext<GetAverageRating> context)
         {
-            throw new NotImplementedException();
+            var message = context.Message;
+
+            try
+            {
+                var avgRating = await _service.GetAlbumAverageRating(message.AlbumId);
+                await context.RespondAsync(new AlbumAverageRating { AverageRating = avgRating });
+            }
+            catch
+            {
+            }
         }
     }
 }

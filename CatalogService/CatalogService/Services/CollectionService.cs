@@ -33,5 +33,15 @@ namespace CatalogService.Services
         {
             return await _context.UserAlbums.Where(x => x.UserId == userId).ToListAsync();
         }
+
+        public async Task<Dictionary<int, int>> GetPopularAlbums()
+        {
+            var dict = await _context.AlbumRatings
+                .GroupBy(x => x.AlbumId)
+                .ToDictionaryAsync(x => x.Key, x => x.Count());
+            return dict.OrderByDescending(x => x.Value)
+                .Take(1000)
+                .ToDictionary(x => x.Key, x => x.Value);
+        }
     }
 }

@@ -35,7 +35,7 @@ namespace CatalogService
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddScoped<IRatingService, RatingService>();
-            services.AddScoped<ITagService, TagService>();
+            services.AddScoped<ICollectionService, CollectionService>();
 
             services.AddScoped<RateAlbumConsumer>();
             services.AddScoped<CollectionConsumer>();
@@ -56,6 +56,7 @@ namespace CatalogService
 
                     e.Consumer<RateAlbumConsumer>(provider);
                     EndpointConvention.Map<RateAlbum>(e.InputAddress);
+                    EndpointConvention.Map<GetAverageRating>(e.InputAddress);
 
                     e.Consumer<CollectionConsumer>(provider);
                     EndpointConvention.Map<AddToCollection>(e.InputAddress);
@@ -67,6 +68,7 @@ namespace CatalogService
             services.AddSingleton<IBus>(provider => provider.GetRequiredService<IBusControl>());
 
             services.AddScoped(provider => provider.GetRequiredService<IBus>().CreateRequestClient<RateAlbum>());
+            services.AddScoped(provider => provider.GetRequiredService<IBus>().CreateRequestClient<GetAverageRating>());
             services.AddScoped(provider => provider.GetRequiredService<IBus>().CreateRequestClient<AddToCollection>());
             services.AddSingleton<IHostedService, BusService>();
 

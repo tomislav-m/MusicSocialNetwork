@@ -6,5 +6,6 @@ namespace Common.MessageContracts.Catalog.Commands
 {
     public class GetAverageRating
     {
+        public int AlbumId { get; set; }
     }
 }
