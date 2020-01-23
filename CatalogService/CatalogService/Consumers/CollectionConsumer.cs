@@ -10,11 +10,11 @@ namespace CatalogService.Consumers
 {
     public class CollectionConsumer : IConsumer<AddToCollection>
     {
-        private readonly ITagService _service;
+        private readonly ICollectionService _service;
         private readonly IMapper _mapper;
         private readonly EventStoreService _eventStoreService;
 
-        public CollectionConsumer(ITagService service, IMapper mapper, EventStoreService eventStoreService)
+        public CollectionConsumer(ICollectionService service, IMapper mapper, EventStoreService eventStoreService)
         {
             _service = service;
             _mapper = mapper;

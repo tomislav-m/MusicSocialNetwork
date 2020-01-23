@@ -10,6 +10,7 @@ namespace Common.MessageContracts.Ticketing.Events
 
         public string Type => nameof(TicketBought);
         public DateTime CreatedAt { get; set; }
+        public Exception Exception { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public TicketBought()
         {

@@ -13,6 +13,7 @@ namespace Common.MessageContracts.Event.Events
         public ICollection<int> Supporters { get; set; }
         public string Type => nameof(EventAdded);
         public DateTime CreatedAt { get; set; }
+        public Exception Exception { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public EventAdded()
         {

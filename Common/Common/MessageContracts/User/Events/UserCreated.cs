@@ -13,6 +13,7 @@ namespace Common.MessageContracts.User.Events
         public string Type => nameof(UserCreated);
 
         public DateTime CreatedAt { get; set; }
+        public Exception Exception { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public UserCreated()
         {

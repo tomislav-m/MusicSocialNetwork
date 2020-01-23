@@ -1,7 +1,5 @@
 using AutoMapper;
 using CatalogService.Consumers;
-using CatalogService.Helpers;
-using CatalogService.MessageContracts;
 using CatalogService.Models;
 using CatalogService.Services;
 using Common.MessageContracts.Catalog.Commands;

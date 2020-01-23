@@ -25,7 +25,7 @@ namespace CatalogService.Services
             Init();
         }
 
-        public override async void RecreateDb()
+        public override async void RecreateDbAsync()
         {
             var events = await ReadFromStream("catalog-stream");
             foreach (var @event in events)

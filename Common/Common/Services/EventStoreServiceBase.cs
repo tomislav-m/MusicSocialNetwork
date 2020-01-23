@@ -17,7 +17,7 @@ namespace Common.Services
             {
                 connection = EventStoreConnection.Create(new Uri("tcp://admin:changeit@localhost:1113"));
                 await connection.ConnectAsync();
-                RecreateDb();
+                RecreateDbAsync();
             }
         }
 
@@ -36,6 +36,6 @@ namespace Common.Services
             await connection.AppendToStreamAsync(stream, ExpectedVersion.Any, myEvent);
         }
 
-        public abstract void RecreateDb();
+        public abstract void RecreateDbAsync();
     }
 }

@@ -11,6 +11,7 @@ namespace Common.MessageContracts.Music.Events
 
         public string Type => nameof(AlbumFound);
         public DateTime CreatedAt { get; set; }
+        public Exception Exception { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public AlbumFound()
         {
