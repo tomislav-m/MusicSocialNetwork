@@ -7,6 +7,7 @@ using Common.MessageContracts.User.Commands;
 using Common.MessageContracts.User.Events;
 using UserService.Models;
 using AutoMapper;
+using System;
 
 namespace UserService.Consumers
 {
@@ -51,12 +52,19 @@ namespace UserService.Consumers
         public async Task Consume(ConsumeContext<CreateUser> context)
         {
             var message = context.Message;
-
             var user = _service.Create(new User { Username = message.Username, Role = message.Role }, message.Password);
-
             var userCreated = _mapper.Map<User, UserCreated>(user);
-            await context.RespondAsync(userCreated);
-            _eventStoreService.AddEventToStream(userCreated, "user-stream");
+
+            try
+            {
+                await context.RespondAsync(userCreated);
+                _eventStoreService.AddEventToStream(userCreated, "user-stream");
+            }
+            catch (Exception exc)
+            {
+                userCreated.Exception = exc;
+                await context.RespondAsync(userCreated);
+            }
         }
     }
 }

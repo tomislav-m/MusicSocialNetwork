@@ -8,11 +8,18 @@ export interface LoginData {
 }
 
 export interface UserData {
-  Id: number;
+  id: number;
+  username: string;
+  role: string;
+  ratings: Array<RatingData>;
+  events: Array<EventData>;
+  token?: string;
+}
+
+export interface RegisterData {
   Username: string;
+  Password: string;
   Role: string;
-  Ratings: Array<RatingData>;
-  Events: Array<EventData>;
 }
 
 export interface ILoginState {

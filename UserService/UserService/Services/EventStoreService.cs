@@ -17,10 +17,10 @@ namespace UserService.Services
         {
             _mapper = mapper;
             _service = service;
-            Init();
+            Init().Wait();
         }
 
-        public async override void RecreateDb()
+        public async override void RecreateDbAsync()
         {
             var events = await ReadFromStream("user-stream");
             foreach(var @event in events)

@@ -37,12 +37,12 @@ export default class UserProfile extends React.Component<UserProps, UserState> {
       ratingsPage: 1,
       eventsPage: 1,
       pageSize: props.pageSize || 5,
-      events: this.props.userStore?.userData?.Events
+      events: this.props.userStore?.userData?.events
     };
   }
 
   componentDidUpdate(prevProps: UserProps) {
-    if (this.props.userStore?.userData?.Ratings !== prevProps.userStore?.userData?.Ratings
+    if (this.props.userStore?.userData?.ratings !== prevProps.userStore?.userData?.ratings
       || this.state.albumRatings === undefined) {
       this.setState({
         albumRatings: this.mapAlbumRatings()
@@ -62,7 +62,7 @@ export default class UserProfile extends React.Component<UserProps, UserState> {
         }
         <Grid>
           <Grid.Row>
-            <h2>{this.props.userStore?.userData?.Username}</h2>
+            <h2>{this.props.userStore?.userData?.username}</h2>
           </Grid.Row>
           <Grid.Row divided>
             <Grid.Column width="9">
@@ -141,7 +141,7 @@ export default class UserProfile extends React.Component<UserProps, UserState> {
   }
 
   private mapAlbumRatings() {
-    return this.props.userStore?.userData?.Ratings.map(rating => {
+    return this.props.userStore?.userData?.ratings.map(rating => {
       const album = albumData.find(x => x.Id === rating.AlbumId);
       const artist = artistData.find(x => x.Id === album?.ArtistId);
       return {

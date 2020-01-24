@@ -1,7 +1,7 @@
 import { observable, action, computed } from 'mobx';
 import { LoginData, UserData } from '../models/User';
 import autobind from 'autobind-decorator';
-import { loginData, userData } from '../data/UserDataMock';
+import { authenticateAsync } from '../actions/User/UserActions';
 
 export default class UserStore {
   @observable loginData: LoginData = {
@@ -9,6 +9,8 @@ export default class UserStore {
     Username: '',
     Password: ''
   };
+
+  @observable isLoading: boolean = false;
 
   @observable userData: UserData | undefined = undefined;
 
@@ -27,21 +29,30 @@ export default class UserStore {
   @autobind
   @action
   handleLogin() {
-    const user = loginData.find(x => x.Username === this.loginData.Username && x.Password === this.loginData.Password);
-    if (user) {
-      this.userData = userData.find(x => x.Id === user.Id);
-      console.log(this.userData?.Username);
-    }
+    this.isLoading = true;
+    authenticateAsync(this.loginData)
+      .then(data => {
+        this.userData = { ...data.value };
+        this.isLoading = false;
+      })
+      .catch(err => console.log(err));
+  }
+
+  @autobind
+  @action
+  handleLogout() {
+    this.isLoading = false;
+    this.userData = undefined;
   }
 
   @autobind
   @action
   rateAlbum(albumId: number, rating: number) {
-    const prevRating = this.userData?.Ratings.find(x => x.AlbumId === albumId);
+    const prevRating = this.userData?.ratings.find(x => x.AlbumId === albumId);
     if (prevRating) {
       prevRating.Rating = rating;
     } else {
-      this.userData?.Ratings.push({ AlbumId: albumId, Rating: rating, RatedAt: new Date() });
+      this.userData?.ratings.push({ AlbumId: albumId, Rating: rating, RatedAt: new Date() });
     }
   }
 

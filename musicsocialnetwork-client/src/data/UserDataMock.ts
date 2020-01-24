@@ -16,20 +16,20 @@ export let loginData: Array<LoginData> = [
 
 export let userData: Array<UserData> = [
   {
-    Id: 1,
-    Username: 'User',
-    Role: 'administrator',
-    Ratings: [
+    id: 1,
+    username: 'User',
+    role: 'administrator',
+    ratings: [
       { AlbumId: 2, Rating: 9, RatedAt: new Date('2020-01-01') },
       { AlbumId: 1, Rating: 10, RatedAt: new Date() }
     ],
-    Events: eventData
+    events: eventData
   },
   {
-    Id: 2,
-    Username: 'User1',
-    Role: 'user',
-    Ratings: [],
-    Events: []
+    id: 2,
+    username: 'User1',
+    role: 'user',
+    ratings: [],
+    events: []
   }
 ];

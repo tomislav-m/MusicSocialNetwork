@@ -3,7 +3,7 @@ import 'semantic-ui-css/semantic.min.css';
 import './App.css';
 import { Menu, Container } from 'semantic-ui-react';
 import Login from './components/Login/Login';
-import { Provider } from 'mobx-react';
+import { Provider, observer } from 'mobx-react';
 import UserStore from './stores/UserStore';
 import SearchComponent from './components/Search/Search';
 import SearchStore from './stores/SearchStore';
@@ -13,6 +13,7 @@ import ArtistStore from './stores/ArtistStore';
 import Album from './components/Album/Album';
 import UserProfile from './components/User/UserProfile';
 
+@observer
 class App extends React.Component {
   private userStore: UserStore = new UserStore();
   private searchStore: SearchStore = new SearchStore();
@@ -29,12 +30,13 @@ class App extends React.Component {
                 <SearchComponent />
               </Provider>
             </Menu.Item>
-            <Menu.Item header>
-              <Provider userStore={this.userStore}>
-                <Login />
-              </Provider>
-            </Menu.Item>
-            <Menu.Item header>Logout</Menu.Item>
+            <Provider userStore={this.userStore}>
+              <Login />
+            </Provider>
+            {
+            this.userStore.isLoggedIn &&
+              <Menu.Item header onClick={this.userStore.handleLogout}>Logout</Menu.Item>
+            }
           </Container>
         </Menu>
 

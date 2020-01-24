@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Button, Popup } from 'semantic-ui-react';
+import { Form, Button, Popup, Menu } from 'semantic-ui-react';
 import { inject, observer } from 'mobx-react';
 import UserStore from '../../stores/UserStore';
 import { Link } from 'react-router-dom';
@@ -15,8 +15,9 @@ export default class Login extends React.Component<LoginProps> {
     const userStore = this.props.userStore;
 
     return (
-      <div>
-        {userStore?.userData ? <Link to={`/User/${userStore.userData.Id}`}>{userStore.userData.Username}</Link> :
+      <Menu.Item header>
+        {userStore?.userData ? <Link to={`/User/${userStore.userData.id}`}>{userStore.userData.username}</Link>
+          :
           <Popup
             position="bottom center"
             on="click"
@@ -26,7 +27,7 @@ export default class Login extends React.Component<LoginProps> {
             {this.loginForm()}
           </Popup>
         }
-      </div>
+      </Menu.Item>
     );
   }
 
@@ -37,15 +38,16 @@ export default class Login extends React.Component<LoginProps> {
       <Form>
         <Form.Field>
           <label>Username</label>
-          <input type="text" value={userStore?.loginData.Username} onChange={userStore?.handleUsernameChange} />
+          <input type="text" value={userStore?.loginData.Username} onChange={userStore?.handleUsernameChange} disabled={userStore?.isLoading} />
         </Form.Field>
         <Form.Field>
           <label>Password</label>
-          <input type="password" value={userStore?.loginData.Password} onChange={userStore?.handlePasswordChange} />
+          <input type="password" value={userStore?.loginData.Password} onChange={userStore?.handlePasswordChange} disabled={userStore?.isLoading} />
         </Form.Field>
         <Button
           type="submit"
           disabled={!userStore?.isReadyToLogin}
+          loading={userStore?.isLoading}
           onClick={userStore?.handleLogin}>Log in
         </Button>
       </Form>

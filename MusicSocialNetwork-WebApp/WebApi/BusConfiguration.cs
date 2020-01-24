@@ -52,10 +52,8 @@ namespace WebApi
 
             var catalogServiceAddress = new Uri("rabbitmq://localhost/catalog-service");
 
-            services.AddScoped<IRequestClient<AddCustomTag, CustomTagAdded>>(x =>
-                new MessageRequestClient<AddCustomTag, CustomTagAdded>(x.GetRequiredService<IBus>(), catalogServiceAddress, timeout, timeout));
-            services.AddScoped<IRequestClient<AddToTag, AlbumAddedToTag>>(x =>
-                new MessageRequestClient<AddToTag, AlbumAddedToTag>(x.GetRequiredService<IBus>(), catalogServiceAddress, timeout, timeout));
+            services.AddScoped<IRequestClient<AddToCollection, AlbumAddedToCollection>>(x =>
+                new MessageRequestClient<AddToCollection, AlbumAddedToCollection>(x.GetRequiredService<IBus>(), catalogServiceAddress, timeout, timeout));
             services.AddScoped<IRequestClient<RateAlbum, AlbumRated>>(x =>
                 new MessageRequestClient<RateAlbum, AlbumRated>(x.GetRequiredService<IBus>(), catalogServiceAddress, timeout, timeout));
 

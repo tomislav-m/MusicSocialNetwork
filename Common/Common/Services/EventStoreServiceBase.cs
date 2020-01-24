@@ -11,13 +11,24 @@ namespace Common.Services
     {
         private static IEventStoreConnection connection;
 
-        public async void Init()
+        public async Task Init()
         {
             if (connection == null)
             {
-                connection = EventStoreConnection.Create(new Uri("tcp://admin:changeit@localhost:1113"));
-                await connection.ConnectAsync();
-                RecreateDbAsync();
+                while (true)
+                {
+                    try
+                    {
+                        connection = EventStoreConnection.Create(new Uri("tcp://admin:changeit@localhost:1113"));
+                        await connection.ConnectAsync();
+                        RecreateDbAsync();
+                        break;
+                    }
+                    catch (Exception exc)
+                    {
+                        connection.Close();
+                    }
+                }
             }
         }
 

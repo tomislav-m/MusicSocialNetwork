@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Common.MessageContracts.User.Events;
 using UserService.Models;
 
 namespace UserService.Helpers
@@ -11,6 +12,8 @@ namespace UserService.Helpers
             CreateMap<RegisterModel, User>();
             CreateMap<UpdateModel, User>();
             CreateMap<AuthenticateModel, User>();
+            CreateMap<User, UserCreated>();
+            CreateMap<UserCreated, User>();
         }
     }
 }

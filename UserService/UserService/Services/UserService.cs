@@ -48,19 +48,22 @@ namespace UserService.Services
 
         public User Create(User user, string password = null)
         {
-            if (string.IsNullOrWhiteSpace(password))
-                throw new AppException("Password is required");
-
             if (_context.Users.Any(x => x.Username == user.Username))
                 throw new AppException("Username \"" + user.Username + "\" is already taken");
 
             if (user.PasswordHash == null && user.PasswordSalt == null)
             {
-                byte[] passwordHash, passwordSalt;
-                CreatePasswordHash(password, out passwordHash, out passwordSalt);
+                if (string.IsNullOrWhiteSpace(password))
+                    throw new AppException("Password is required");
 
-                user.PasswordHash = passwordHash;
-                user.PasswordSalt = passwordSalt;
+                if (user.PasswordHash == null && user.PasswordSalt == null)
+                {
+                    byte[] passwordHash, passwordSalt;
+                    CreatePasswordHash(password, out passwordHash, out passwordSalt);
+
+                    user.PasswordHash = passwordHash;
+                    user.PasswordSalt = passwordSalt;
+                }
             }
 
             _context.Users.Add(user);

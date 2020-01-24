@@ -107,7 +107,7 @@ export default class Album extends React.Component<AlbumProps> {
   }
 
   private getAlbumRating(id: number) {
-    const ratings = this.props.userStore?.userData?.Ratings;
+    const ratings = this.props.userStore?.userData?.ratings;
     const rating = ratings?.find(x => x.AlbumId === id);
 
     return rating ? rating.Rating : 0;
