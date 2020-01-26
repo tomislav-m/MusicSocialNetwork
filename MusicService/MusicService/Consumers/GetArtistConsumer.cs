@@ -31,7 +31,7 @@ namespace MusicService.Service.Consumers
             }
             catch (Exception exc)
             {
-                await context.RespondAsync(null);
+                await context.RespondAsync(new Artist { Exception = exc });
             }
         }
     }

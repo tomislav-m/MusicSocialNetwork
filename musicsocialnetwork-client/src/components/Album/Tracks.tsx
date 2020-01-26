@@ -16,11 +16,11 @@ export default class Tracks extends React.Component<TrackProps> {
         <Label ribbon>Track listing</Label>
         <List divided>
           {
-            tracks.map((track, index) => {
-              overallTime += track.Duration;
+            tracks?.map((track, index) => {
+              overallTime += track.duration;
               return (
                 <List.Item key={index}>
-                  <strong>{index + 1}. {track.Title}</strong> ({this.secondsToMinute(track.Duration)})
+                  <strong>{index + 1}. {track.title}</strong> ({this.secondsToMinute(track.duration)})
                 </List.Item>
               );
             })
@@ -37,7 +37,8 @@ export default class Tracks extends React.Component<TrackProps> {
 
   private secondsToMinute(seconds: number): string {
     const minutes = Math.floor(seconds / 60);
-    const remaining = (seconds % 60).toFixed(0);
+    let remaining = (seconds % 60).toFixed(0);
+    remaining = parseInt(remaining) < 10 ? '0' + remaining : remaining;
     return minutes + ':' + remaining;
   }
 }

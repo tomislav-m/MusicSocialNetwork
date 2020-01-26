@@ -1,6 +1,6 @@
 export interface Track {
-  Id: number;
-  Title: string;
-  Duration: number;
-  AlbumId: number;
+  id: number;
+  title: string;
+  duration: number;
+  albumId: number;
 }

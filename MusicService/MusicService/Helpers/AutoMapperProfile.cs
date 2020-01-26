@@ -19,9 +19,10 @@ namespace MusicService.Service.Helpers
             CreateMap<DomainModel.Album, Album>()
                 .ForMember(d => d.Format, s => s.MapFrom(x => x.Format.Title))
                 .ForMember(d => d.Style, s => s.MapFrom(x => x.Style.Title))
-                .ForMember(d => d.Genre, s => s.MapFrom(x => x.Genre.Title));
+                .ForMember(d => d.Genre, s => s.MapFrom(x => x.Genre.Title))
+                .ForMember(d => d.Tracks, s => s.MapFrom(x => x.Tracks));
 
-            CreateMap<DomainModel.Track, TrackFound>();
+            CreateMap<DomainModel.Track, Track>();
         }
     }
 }

@@ -35,7 +35,7 @@ namespace WebApi.Controllers
                     return NotFound();
                 }
 
-                return Ok(Json(result)); 
+                return Ok(result); 
             }
             catch (RequestTimeoutException)
             {

@@ -84,7 +84,7 @@ namespace WebApi.Controllers
         {
             try
             {
-                var result = await _requestClient.Request(new { searchTerm, page, size });
+                var result = await _requestClient.Request(new SearchArtist { SearchTerm = searchTerm, Page = page, Size = size });
 
                 if (result == null)
                 {

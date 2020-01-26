@@ -59,7 +59,7 @@ export default class SearchComponent extends React.Component<SearchProps, Search
   private mapSearchDataToResult = (searchData: Array<ArtistSearchData> | undefined) => {
     if (searchData !== undefined) {
       const result: Array<any> = [];
-      searchData.map(x => result.push({ title: x.Name, image: x.PhotoUrl, id: x.Id }));
+      searchData.map(x => result.push({ title: x.name, image: x.photoUrl, id: x.id }));
 
       return result;
     }

@@ -37,7 +37,7 @@ export default class CreateEditAlbum extends React.Component<CreateEditAlbumProp
       <Form>
         <Form.Field>
           <label>Name</label>
-          <Input type="date" value={album?.Name} />
+          <Input type="date" value={album?.name} />
         </Form.Field>
         <Form.Field>
           <label>Artist</label>
@@ -52,15 +52,15 @@ export default class CreateEditAlbum extends React.Component<CreateEditAlbumProp
         </Form.Field>
         <Form.Field>
           <label>Photo URL</label>
-          <Input type="text" value={album?.CoverArtUrl} />
+          <Input type="text" value={album?.coverArtUrl} />
         </Form.Field>
         <Form.Field>
           <label>Website URL</label>
-          <Input type="number" value={album?.YearReleased} />
+          <Input type="number" value={album?.yearReleased} />
         </Form.Field>
         <Form.Field>
           <label>Biography</label>
-          <Input type="textarea" value={album?.Description} />
+          <Input type="textarea" value={album?.description} />
         </Form.Field>
         <Button onClick={this.props.onAlbumSave}>Save</Button>
       </Form>
@@ -70,7 +70,7 @@ export default class CreateEditAlbum extends React.Component<CreateEditAlbumProp
   @autobind
   private handleSearch(event: any, { value }: SearchProps) {
     if (value !== undefined && value.length > 2) {
-      const filteredData = artistData.filter(x => x.Name.toLowerCase().includes(value.toLowerCase()));
+      const filteredData = artistData.filter(x => x.name.toLowerCase().includes(value.toLowerCase()));
       this.setState({
         artistSearchData: filteredData
       });
@@ -79,7 +79,7 @@ export default class CreateEditAlbum extends React.Component<CreateEditAlbumProp
 
   @autobind
   private handleArtistSelect(event: any, { result }: any) {
-    const selectedArtist = this.state.artistSearchData.find(x => x.Id === result.Id);
+    const selectedArtist = this.state.artistSearchData.find(x => x.id === result.Id);
     this.setState({  });
   }
 
@@ -95,7 +95,7 @@ export default class CreateEditAlbum extends React.Component<CreateEditAlbumProp
   private mapSearchDataToResult(searchData: Array<ArtistSearchData> | undefined) {
     if (searchData !== undefined) {
       const result: Array<any> = [];
-      searchData.forEach(x => result.push({ title: x.Name, image: x.PhotoUrl, id: x.Id }));
+      searchData.forEach(x => result.push({ title: x.name, image: x.photoUrl, id: x.id }));
 
       return result;
     }

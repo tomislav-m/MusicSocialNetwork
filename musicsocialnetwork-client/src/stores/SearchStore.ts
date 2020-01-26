@@ -2,7 +2,7 @@ import { ArtistSearchData } from '../models/Artist';
 import { observable, action } from 'mobx';
 import autobind from 'autobind-decorator';
 import { SearchProps } from 'semantic-ui-react';
-import { artistData } from '../data/SearchDataMock';
+import { searchArtist } from '../actions/Music/MusicActions';
 
 export default class SearchStore {
 
@@ -16,11 +16,12 @@ export default class SearchStore {
     if (value !== undefined && value.length > 2) {
       this.searchTerm = value;
       this.isSearchLoading = true;
-      const filteredData = artistData.filter(x => x.Name.toLowerCase().includes(value.toLowerCase()));
-      this.searchResult = filteredData;
-      setTimeout(() => {
-        this.isSearchLoading = false;
-      }, 500);
+
+      searchArtist(this.searchTerm)
+        .then((result: Array<any>) => {
+          this.searchResult = result;
+        })
+        .finally(() => this.isSearchLoading = false);
     }
   }
 }

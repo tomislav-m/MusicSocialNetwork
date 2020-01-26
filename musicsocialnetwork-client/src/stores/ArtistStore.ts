@@ -1,38 +1,47 @@
-import { ArtistData } from '../models/Artist';
+import { ArtistData, defaultArtistData } from '../models/Artist';
 import { artistData } from '../data/ArtistDataMock';
 import autobind from 'autobind-decorator';
 import { action, observable } from 'mobx';
-import { AlbumData } from '../models/Album';
+import { AlbumData, defaultAlbumData } from '../models/Album';
 import { albumData } from '../data/AlbumDataMock';
 import _ from 'lodash';
+import { getArtist, getAlbum } from '../actions/Music/MusicActions';
 
 export default class ArtistStore {
   artists: Array<ArtistData> = artistData;
-  @observable artist: ArtistData | undefined = undefined;
+  @observable artist: ArtistData = defaultArtistData;
 
   albumsAll: Array<AlbumData> = albumData;
-  @observable albums: Array<AlbumData> | undefined = albumData;
+  @observable albums: Array<AlbumData> = [];
 
-  @observable album: AlbumData | undefined = undefined;
+  @observable album: AlbumData = defaultAlbumData;
 
   @autobind
   @action
   setArtist(id: number) {
-    this.artist = undefined;
-    this.artist = this.artists.filter(x => x.Id === id)[0];
+    getArtist(id)
+      .then((result: ArtistData) => {
+        this.artist = result;
+      });
   }
 
   @autobind
   @action
   setAlbums(artistId: number) {
-    this.albums = undefined;
-    this.albums = _.sortBy(this.albumsAll.filter(x => x.ArtistId === artistId), x => x.YearReleased);
+    this.albums = [];
+    this.albums = _.sortBy(this.albumsAll.filter(x => x.artistId === artistId), x => x.yearReleased);
   }
 
   @autobind
   @action
   setAlbum(id: number) {
-    this.album = undefined;
-    this.album = this.albums?.filter(x => x.Id === id)[0];
+    getAlbum(id)
+      .then((result: AlbumData) => {
+        this.album = result;
+
+        if (this.artist.id !== result.artistId) {
+          this.setArtist(result.artistId);
+        }
+      });
   }
 }

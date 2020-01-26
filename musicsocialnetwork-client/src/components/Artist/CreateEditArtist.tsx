@@ -32,35 +32,35 @@ export default class CreateEditArtist extends React.Component<CreateEditArtistPr
       <Form>
         <Form.Field>
           <label>Name</label>
-          <Input name="Name" type="date" value={artist?.Name} onChange={this.handleChange} />
+          <Input name="Name" type="date" value={artist?.name} onChange={this.handleChange} />
         </Form.Field>
         <Form.Field>
           <label>Photo URL</label>
-          <Input name="PhotoUrl" type="text" value={artist?.PhotoUrl} onChange={this.handleChange} />
+          <Input name="PhotoUrl" type="text" value={artist?.photoUrl} onChange={this.handleChange} />
         </Form.Field>
         <Form.Field>
           <label>Website URL</label>
-          <Input name="WebsiteUrl" type="text" value={artist?.WebsiteUrl} onChange={this.handleChange} />
+          <Input name="WebsiteUrl" type="text" value={artist?.websiteUrl} onChange={this.handleChange} />
         </Form.Field>
         <Form.Field>
           <label>Facebook URL</label>
-          <Input name="FacebookUrl" type="text" value={artist?.FacebookUrl} onChange={this.handleChange} />
+          <Input name="FacebookUrl" type="text" value={artist?.facebookUrl} onChange={this.handleChange} />
         </Form.Field>
         <Form.Field>
           <label>Country</label>
-          <Input name="Country" type="text" value={artist?.Country} onChange={this.handleChange} />
+          <Input name="Country" type="text" value={artist?.country} onChange={this.handleChange} />
         </Form.Field>
         <Form.Field>
           <label>Year Formed</label>
-          <Input name="YearFormed" type="number" value={artist?.YearFormed} onChange={this.handleChange} />
+          <Input name="YearFormed" type="number" value={artist?.yearFormed} onChange={this.handleChange} />
         </Form.Field>
         <Form.Field>
           <label>Year Born</label>
-          <Input name="YearBorn" type="number" value={artist?.YearBorn} onChange={this.handleChange} />
+          <Input name="YearBorn" type="number" value={artist?.yearBorn} onChange={this.handleChange} />
         </Form.Field>
         <Form.Field>
           <label>Biography</label>
-          <TextArea name="Bio" value={artist?.Bio} onChange={this.handleChange} />
+          <TextArea name="Bio" value={artist?.bio} onChange={this.handleChange} />
         </Form.Field>
         <Button onClick={this.props.onArtistSave}>Save</Button>
       </Form>

@@ -1,24 +1,26 @@
 import { EventData } from './Event';
+import { AlbumData } from './Album';
 
 export interface ArtistSearchData {
-  Id: number;
-  Name: string;
-  PhotoUrl: string;
+  id: number;
+  name: string;
+  photoUrl: string;
 }
 
 export interface ArtistData {
-  Id: number;
-  Name: string;
-  PhotoUrl: string;
-  WebsiteUrl: string;
-  FacebookUrl: string;
-  Bio: string;
-  YearFormed: number;
-  YearBorn: number;
-  Country: string;
-  Genres: Array<string> | undefined;
-  Styles: Array<string> | undefined;
-  Events: Array<EventData>;
+  id: number;
+  name: string;
+  photoUrl: string;
+  websiteUrl: string;
+  facebookUrl: string;
+  bio: string;
+  yearFormed: number;
+  yearBorn: number;
+  country: string;
+  genres: Array<string> | undefined;
+  styles: Array<string> | undefined;
+  events: Array<EventData>;
+  albums: Array<AlbumData>;
 }
 
 export interface ArtistDataSimple {
@@ -27,18 +29,19 @@ export interface ArtistDataSimple {
 }
 
 export let defaultArtistData: ArtistData = {
-  Id: 0,
-  Name: '',
-  PhotoUrl: '',
-  WebsiteUrl: '',
-  FacebookUrl: '',
-  Bio: '',
-  YearFormed: 0,
-  YearBorn: 0,
-  Country: '',
-  Genres: [],
-  Styles: [],
-  Events: []
+  id: 0,
+  name: '',
+  photoUrl: '',
+  websiteUrl: '',
+  facebookUrl: '',
+  bio: '',
+  yearFormed: 0,
+  yearBorn: 0,
+  country: '',
+  genres: [],
+  styles: [],
+  events: [],
+  albums: []
 };
 
 export let defaultArtistDataSimple: ArtistDataSimple = {

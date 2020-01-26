@@ -30,7 +30,7 @@ export default class Album extends React.Component<AlbumProps> {
     const store = this.props.artistStore;
     const userStore = this.props.userStore;
     const album = store?.album;
-    const artist = store?.artists.find(x => x.Id === album?.ArtistId);
+    const artist = store?.artist;
 
     return (
       <div>
@@ -39,39 +39,39 @@ export default class Album extends React.Component<AlbumProps> {
           <Grid relaxed>
             <Grid.Row divided>
               <Grid.Column width="5">
-                <img src={album?.CoverArtUrl} alt="cover" width={320} />
-                <Tracks tracks={album.Tracks} />
+                <img src={album?.coverArtUrl} alt="cover" width={320} />
+                <Tracks tracks={album.tracks} />
               </Grid.Column>
               <Grid.Column width="11">
                 <Grid divided>
                   <Grid.Row>
                     <Grid.Column width="9">
-                      <h2>{album.Name}</h2>
+                      <h2>{album.name}</h2>
                       <div className="info-row">
                         <Label className="info-label">Artist</Label>
-                        <Link to={`/Artist/${artist?.Id}`} className="link-artist">
-                          <span className="info">{artist?.Name}</span>
+                        <Link to={`/Artist/${artist?.id}`} className="link-artist">
+                          <span className="info">{artist?.name}</span>
                         </Link>
                       </div>
                       <div className="info-row">
-                        <Label className="info-label">Year</Label><span className="info">{album?.YearReleased}</span>
+                        <Label className="info-label">Year</Label><span className="info">{album?.yearReleased}</span>
                       </div>
                       <div className="info-row">
-                        <Label className="info-label">Style</Label><span className="info">{album?.Style}</span>
+                        <Label className="info-label">Style</Label><span className="info">{album?.style}</span>
                       </div>
                       <div className="info-row">
-                        <Label className="info-label">Genre</Label><span className="info">{album?.Genre}</span>
+                        <Label className="info-label">Genre</Label><span className="info">{album?.genre}</span>
                       </div>
                       <div className="info-row">
-                        <Label className="info-label">Format</Label><span className="info">{album?.Format}</span>
+                        <Label className="info-label">Format</Label><span className="info">{album?.format}</span>
                       </div>
                       <div className="info-row">
                         <Label className="info-label">Rating</Label>
-                        <span className="info">{album?.RatingData.AverageRating} / 10</span>
+                        <span className="info">{album.ratingData?.AverageRating || 0} / 10</span>
                       </div>
                       <div className="info-row">
                         <Label className="info-label">Ratings</Label>
-                        <span className="info">{album?.RatingData.RatingCount}</span>
+                        <span className="info">{album.ratingData?.RatingCount || 0}</span>
                       </div>
                       <Divider horizontal />
                       <div className="info-row">
@@ -92,7 +92,7 @@ export default class Album extends React.Component<AlbumProps> {
                       </div>
                     </Grid.Column>
                     <Grid.Column width="7">
-                      <Segment piled>{album?.Description}</Segment>
+                      <Segment piled>{album?.description}</Segment>
                     </Grid.Column>
                   </Grid.Row>
                   <Divider horizontal>Comments</Divider>
@@ -115,7 +115,7 @@ export default class Album extends React.Component<AlbumProps> {
 
   @autobind
   private handleRateAlbum(event: any, data: RatingProps) {
-    const albumId = this.props.artistStore?.album?.Id;
+    const albumId = this.props.artistStore?.album?.id;
     if (albumId) {
       this.props.userStore?.rateAlbum(albumId, data.rating as number);
     }

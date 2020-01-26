@@ -1,17 +1,17 @@
 import { Track } from './Track';
 
 export interface AlbumData {
-  Id: number;
-  Name: string;
-  CoverArtUrl: string;
-  Description: string;
-  ArtistId: number;
-  Style: string;
-  Genre: string;
-  Format: string;
-  YearReleased: number;
-  RatingData: AlbumRatingData;
-  Tracks: Array<Track>;
+  id: number;
+  name: string;
+  coverArtUrl: string;
+  description: string;
+  artistId: number;
+  style: string;
+  genre: string;
+  format: string;
+  yearReleased: number;
+  ratingData: AlbumRatingData;
+  tracks: Array<Track>;
 }
 
 export interface AlbumRatingData {
@@ -25,15 +25,15 @@ export let defaultAlbumRatingData: AlbumRatingData = {
 };
 
 export let defaultAlbumData: AlbumData = {
-  Id: 0,
-  Name: '',
-  CoverArtUrl: '',
-  Description: '',
-  ArtistId: 0,
-  Style: '',
-  Genre: '',
-  Format: '',
-  YearReleased: 0,
-  RatingData: defaultAlbumRatingData,
-  Tracks: []
+  id: 0,
+  name: '',
+  coverArtUrl: '',
+  description: '',
+  artistId: 0,
+  style: '',
+  genre: '',
+  format: '',
+  yearReleased: 0,
+  ratingData: defaultAlbumRatingData,
+  tracks: []
 };

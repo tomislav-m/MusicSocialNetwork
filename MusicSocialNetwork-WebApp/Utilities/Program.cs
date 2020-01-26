@@ -13,7 +13,7 @@ namespace Utilities
     {
         static readonly string apiKey = "819f524777ce392140458d440e48ebbc";
         static readonly string url = @"http://ws.audioscrobbler.com/2.0/?method=";
-        static readonly string username = "twosuitsluke83";
+        static readonly string username = "";
         static readonly HttpClient client = new HttpClient();
 
         static async Task Main(string[] args)

@@ -32,7 +32,7 @@ export default class UserStore {
     this.isLoading = true;
     authenticateAsync(this.loginData)
       .then(data => {
-        this.userData = { ...data.value };
+        this.userData = data;
         this.isLoading = false;
       })
       .catch(err => console.log(err));
