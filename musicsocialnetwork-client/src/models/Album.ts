@@ -15,13 +15,13 @@ export interface AlbumData {
 }
 
 export interface AlbumRatingData {
-  AverageRating: number;
-  RatingCount: number;
+  averageRating: number;
+  ratingCount: number;
 }
 
 export let defaultAlbumRatingData: AlbumRatingData = {
-  AverageRating: 0,
-  RatingCount: 0
+  averageRating: 0,
+  ratingCount: 0
 };
 
 export let defaultAlbumData: AlbumData = {

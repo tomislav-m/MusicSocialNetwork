@@ -5,6 +5,7 @@ using Common.MessageContracts.Catalog.Events;
 using Common.Services;
 using Newtonsoft.Json;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CatalogService.Services
 {
@@ -22,10 +23,10 @@ namespace CatalogService.Services
             _ratingService = ratingService;
             _collectionService = collectionService;
             _mapper = mapper;
-            Init();
+            Init().Wait();
         }
 
-        public override async void RecreateDbAsync()
+        public override async Task RecreateDbAsync()
         {
             var events = await ReadFromStream("catalog-stream");
             foreach (var @event in events)

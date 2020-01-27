@@ -20,8 +20,8 @@ export let userData: Array<UserData> = [
     username: 'User',
     role: 'administrator',
     ratings: [
-      { AlbumId: 2, Rating: 9, RatedAt: new Date('2020-01-01') },
-      { AlbumId: 1, Rating: 10, RatedAt: new Date() }
+      { albumId: 2, rating: 9, createdAt: new Date('2020-01-01') },
+      { albumId: 1, rating: 10, createdAt: new Date() }
     ],
     events: eventData
   },

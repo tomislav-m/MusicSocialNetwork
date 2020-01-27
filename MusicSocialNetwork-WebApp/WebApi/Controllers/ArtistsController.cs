@@ -2,9 +2,7 @@
 using Common.MessageContracts.Music.Events;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using ArtistEvent = Common.MessageContracts.Music.Events.Artist;

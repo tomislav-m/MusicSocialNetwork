@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Common.MessageContracts.Catalog.Events
+﻿namespace Common.MessageContracts.Catalog.Events
 {
     public class AlbumAverageRating
     {
         public float AverageRating { get; set; }
+        public int RatingCount { get; set; }
     }
 }

@@ -18,7 +18,9 @@ export default class Artist extends React.Component<ArtistProps> {
     super(props);
 
     const id = parseInt(props.match.params.id);
-    this.updateArtist(props.artistStore, id);
+    if (id !== props.artistStore?.artist.id) {
+      this.updateArtist(props.artistStore, id);
+    }
   }
 
   componentDidUpdate(prevProps: ArtistProps) {
@@ -32,7 +34,6 @@ export default class Artist extends React.Component<ArtistProps> {
 
   private updateArtist(store: ArtistStore | undefined, id: number) {
     store?.setArtist(id);
-    store?.setAlbums(id);
 
     if (store && store.artist && store.albums) {
       store.artist.genres = Array.from(new Set(store.albums.map(x => x.genre)));
@@ -40,19 +41,21 @@ export default class Artist extends React.Component<ArtistProps> {
     }
   }
 
-   private panes: any = [
+  private panes: any = [
     { menuItem: 'Albums', render: () => <Tab.Pane>{this.renderAlbums()}</Tab.Pane> },
     { menuItem: 'Events', render: () => <Tab.Pane><EventList events={this.props.artistStore?.artist?.events} /></Tab.Pane> }
   ];
 
   public render() {
     const artist = this.props.artistStore?.artist;
+    const genres = this.props.artistStore?.genres;
+    const styles = this.props.artistStore?.styles;
 
     const year = artist?.yearFormed !== 0 ? artist?.yearFormed : artist.yearBorn;
 
     return (
       <div>
-        {artist === undefined ?
+        {artist === undefined || this.props.artistStore?.isLoading ?
           <Loader active /> :
           <Grid>
             <Grid.Row divided>
@@ -75,13 +78,13 @@ export default class Artist extends React.Component<ArtistProps> {
                 <div className="info-row">
                   <Label className="info-label">Styles</Label>
                   <span className="info">
-                    {artist.styles?.map(x => <Label key={x} tag color="red" size="tiny">{x}</Label>)}
+                    {styles}
                   </span>
                 </div>
                 <div className="info-row">
                   <Label className="info-label">Genres</Label>
                   <span className="info">
-                    {artist.genres?.map(x => <Label key={x} tag color="blue" size="tiny">{x}</Label>)}
+                    {genres}
                   </span>
                 </div>
                 <Tab panes={this.panes} />
@@ -94,7 +97,7 @@ export default class Artist extends React.Component<ArtistProps> {
   }
 
   private renderAlbums() {
-    const albums = this.props.artistStore?.artist?.albums;
+    const albums = this.props.artistStore?.albums;
 
     return (
       <Table striped compact>
@@ -119,8 +122,8 @@ export default class Artist extends React.Component<ArtistProps> {
                   {<strong>{album.name}</strong>} {`(${album.yearReleased})`}
                 </Link>
               </Table.Cell>
-              <Table.Cell width={3}>{album.ratingData?.RatingCount || 0}</Table.Cell>
-              <Table.Cell width={3}>{album.ratingData?.AverageRating || 0} / 10</Table.Cell>
+              <Table.Cell width={3}>{album.ratingData?.ratingCount || 0}</Table.Cell>
+              <Table.Cell width={3}>{album.ratingData?.averageRating || 0} / 10</Table.Cell>
             </Table.Row>
           )
           }

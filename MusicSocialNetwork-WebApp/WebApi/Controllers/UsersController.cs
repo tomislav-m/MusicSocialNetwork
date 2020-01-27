@@ -1,4 +1,6 @@
-﻿using Common.MessageContracts.User.Commands;
+﻿using Common.MessageContracts.Catalog.Commands;
+using Common.MessageContracts.Catalog.Events;
+using Common.MessageContracts.User.Commands;
 using Common.MessageContracts.User.Events;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +18,8 @@ namespace WebApi.Controllers
 
         public UsersController(
             IRequestClient<SignInUser, UserSignedIn> requestClient,
-            IRequestClient<CreateUser, UserCreated> registerRequestClient
+            IRequestClient<CreateUser, UserCreated> registerRequestClient,
+            IRequestClient<GetRatedAlbums, AlbumRated[]> catalogRequestClient
             )
         {
             _requestClient = requestClient;

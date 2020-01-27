@@ -16,7 +16,7 @@ namespace Common.MessageContracts.Music.Events
         public string Country { get; set; }
         public string MbId { get; set; }
 
-        public ICollection<AlbumFound> Albums { get; set; }
+        public ICollection<Album> Albums { get; set; }
 
         public string Type => nameof(Artist);
         public DateTime CreatedAt { get; set; }

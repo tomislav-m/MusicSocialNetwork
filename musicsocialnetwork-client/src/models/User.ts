@@ -25,3 +25,11 @@ export interface RegisterData {
 export interface ILoginState {
   data: LoginData;
 }
+
+export let defaultUserData: UserData = {
+  id: 0,
+  username: '',
+  role: '',
+  events: [],
+  ratings: []
+};

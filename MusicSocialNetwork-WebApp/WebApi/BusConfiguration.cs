@@ -56,6 +56,10 @@ namespace WebApi
                 new MessageRequestClient<AddToCollection, AlbumAddedToCollection>(x.GetRequiredService<IBus>(), catalogServiceAddress, timeout, timeout));
             services.AddScoped<IRequestClient<RateAlbum, AlbumRated>>(x =>
                 new MessageRequestClient<RateAlbum, AlbumRated>(x.GetRequiredService<IBus>(), catalogServiceAddress, timeout, timeout));
+            services.AddScoped<IRequestClient<GetRatedAlbums, AlbumRated[]>>(x =>
+                new MessageRequestClient<GetRatedAlbums, AlbumRated[]>(x.GetRequiredService<IBus>(), catalogServiceAddress, timeout, timeout));
+            services.AddScoped<IRequestClient<GetAverageRating, AlbumAverageRating>>(x =>
+                new MessageRequestClient<GetAverageRating, AlbumAverageRating>(x.GetRequiredService<IBus>(), catalogServiceAddress, timeout, timeout));
 
 
             var eventServiceAddress = new Uri("rabbitmq://localhost/event-service");

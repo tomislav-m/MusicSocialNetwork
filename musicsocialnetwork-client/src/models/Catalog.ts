@@ -1,5 +1,5 @@
 export interface RatingData {
-  AlbumId: number;
-  Rating: number;
-  RatedAt: Date;
+  albumId: number;
+  rating: number;
+  createdAt: Date;
 }

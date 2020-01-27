@@ -1,7 +1,8 @@
 import { observable, action, computed } from 'mobx';
-import { LoginData, UserData } from '../models/User';
+import { LoginData, UserData, defaultUserData } from '../models/User';
 import autobind from 'autobind-decorator';
 import { authenticateAsync } from '../actions/User/UserActions';
+import { rateAlbum, getRatedAlbums } from '../actions/Music/MusicActions';
 
 export default class UserStore {
   @observable loginData: LoginData = {
@@ -32,8 +33,18 @@ export default class UserStore {
     this.isLoading = true;
     authenticateAsync(this.loginData)
       .then(data => {
-        this.userData = data;
+        this.userData = { ...defaultUserData, ...data };
         this.isLoading = false;
+
+        if (this.userData) {
+          getRatedAlbums(this.userData.id)
+            .then(albums => {
+              if (this.userData) {
+                this.userData.ratings = albums;
+              }
+            })
+            .catch(err => console.log(err));
+        }
       })
       .catch(err => console.log(err));
   }
@@ -48,11 +59,17 @@ export default class UserStore {
   @autobind
   @action
   rateAlbum(albumId: number, rating: number) {
-    const prevRating = this.userData?.ratings.find(x => x.AlbumId === albumId);
-    if (prevRating) {
-      prevRating.Rating = rating;
-    } else {
-      this.userData?.ratings.push({ AlbumId: albumId, Rating: rating, RatedAt: new Date() });
+    const prevRating = this.userData?.ratings.find(x => x.albumId === albumId);
+    if (this.userData && (prevRating && prevRating?.rating !== rating || !prevRating)) {
+      rateAlbum(albumId, rating, this.userData.id)
+        .then(data => {
+          if (data.exception) {
+            console.log(data.exception);
+          } else {
+            this.userData?.ratings.push({ albumId, rating, createdAt: new Date() });
+          }
+        })
+        .catch(err => console.log(err));
     }
   }
 

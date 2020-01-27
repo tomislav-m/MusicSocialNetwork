@@ -22,7 +22,9 @@ export default class Album extends React.Component<AlbumProps> {
     super(props);
 
     const id = parseInt(props.match.params.id);
-    props.artistStore?.setAlbum(id);
+    if (props.artistStore?.album.id !== id) {
+      props.artistStore?.setAlbum(id);
+    }
   }
 
   public render() {
@@ -34,7 +36,7 @@ export default class Album extends React.Component<AlbumProps> {
 
     return (
       <div>
-        {album === undefined ?
+        {album === undefined || this.props.artistStore?.isLoading ?
           <Loader active /> :
           <Grid relaxed>
             <Grid.Row divided>
@@ -67,11 +69,11 @@ export default class Album extends React.Component<AlbumProps> {
                       </div>
                       <div className="info-row">
                         <Label className="info-label">Rating</Label>
-                        <span className="info">{album.ratingData?.AverageRating || 0} / 10</span>
+                        <span className="info">{album.ratingData?.averageRating || 0} / 10</span>
                       </div>
                       <div className="info-row">
                         <Label className="info-label">Ratings</Label>
-                        <span className="info">{album.ratingData?.RatingCount || 0}</span>
+                        <span className="info">{album.ratingData?.ratingCount || 0}</span>
                       </div>
                       <Divider horizontal />
                       <div className="info-row">
@@ -108,9 +110,9 @@ export default class Album extends React.Component<AlbumProps> {
 
   private getAlbumRating(id: number) {
     const ratings = this.props.userStore?.userData?.ratings;
-    const rating = ratings?.find(x => x.AlbumId === id);
+    const rating = ratings?.find(x => x.albumId === id);
 
-    return rating ? rating.Rating : 0;
+    return rating ? rating.rating : 0;
   }
 
   @autobind

@@ -4,6 +4,7 @@ using Common.MessageContracts.User.Events;
 using Common.Services;
 using Newtonsoft.Json;
 using System.Text;
+using System.Threading.Tasks;
 using UserService.Models;
 
 namespace UserService.Services
@@ -20,7 +21,7 @@ namespace UserService.Services
             Init().Wait();
         }
 
-        public async override void RecreateDbAsync()
+        public async override Task RecreateDbAsync()
         {
             var events = await ReadFromStream("user-stream");
             foreach(var @event in events)

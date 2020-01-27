@@ -142,17 +142,17 @@ export default class UserProfile extends React.Component<UserProps, UserState> {
 
   private mapAlbumRatings() {
     return this.props.userStore?.userData?.ratings.map(rating => {
-      const album = albumData.find(x => x.id === rating.AlbumId);
+      const album = albumData.find(x => x.id === rating.albumId);
       const artist = artistData.find(x => x.id === album?.artistId);
       return {
         album: album?.name,
-        albumId: rating.AlbumId,
+        albumId: rating.albumId,
         artist: artist?.name,
         artistId: artist?.id,
-        rating: rating.Rating,
+        rating: rating.rating,
         yearReleased: album?.yearReleased,
         coverUrl: album?.coverArtUrl,
-        ratedAt: rating.RatedAt
+        createdAt: rating.createdAt
       };
     });
   }

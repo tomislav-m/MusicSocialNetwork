@@ -12,7 +12,7 @@ export let albumData: Array<AlbumData> = [
     format: 'Album',
     genre: 'Heavy Metal',
     style: 'Metal',
-    ratingData: { AverageRating: 7.94, RatingCount: 14103 },
+    ratingData: { averageRating: 7.94, ratingCount: 14103 },
     tracks: []
   },
   {
@@ -25,7 +25,7 @@ export let albumData: Array<AlbumData> = [
     format: 'Album',
     genre: 'Heavy Metal',
     style: 'Metal',
-    ratingData: { AverageRating: 7.88, RatingCount: 12647 },
+    ratingData: { averageRating: 7.88, ratingCount: 12647 },
     tracks: tracksData
   }
 ];

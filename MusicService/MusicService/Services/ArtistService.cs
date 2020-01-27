@@ -33,10 +33,13 @@ namespace MusicService.Service.Services
 
         public async Task<Artist> GetById(long id)
         {
-            var artist = await _context.Artists.Where(x => x.Id == id)
-                .Include(x => x.Albums)
-                .SingleOrDefaultAsync();
-            artist.Albums = artist.Albums.OrderBy(x => x.YearReleased).ToList();
+            var artist = await _context.Artists.SingleOrDefaultAsync(x => x.Id == id);
+            var albums = await _context.Albums.Where(x => x.ArtistId == id)
+                .Include(x => x.Genre)
+                .Include(x => x.Style)
+                .OrderBy(x => x.YearReleased)
+                .ToListAsync();
+            artist.Albums = albums;
 
             return artist; 
         }

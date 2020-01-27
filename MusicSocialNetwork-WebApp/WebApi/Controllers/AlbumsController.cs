@@ -18,15 +18,21 @@ namespace WebApi.Controllers
         private readonly IRequestClient<SearchAlbum, AlbumFound[]> _requestClient;
         private readonly IRequestClient<GetAlbum, AlbumEvent> _getRequestClient;
         private readonly IRequestClient<RateAlbum, AlbumRated> _rateRequestClient;
+        private readonly IRequestClient<GetRatedAlbums, AlbumRated[]> _catalogRequestClient;
+        private readonly IRequestClient<GetAverageRating, AlbumAverageRating> _catalogRatingRequestClient;
 
         public AlbumsController(
             IRequestClient<SearchAlbum, AlbumFound[]> requestClient,
             IRequestClient<GetAlbum, AlbumEvent> getRequestClient,
-            IRequestClient<RateAlbum, AlbumRated> rateRequestClient)
+            IRequestClient<RateAlbum, AlbumRated> rateRequestClient,
+            IRequestClient<GetRatedAlbums, AlbumRated[]> catalogRequestClient,
+            IRequestClient<GetAverageRating, AlbumAverageRating> catalogRatingRequestClient)
         {
             _requestClient = requestClient;
             _getRequestClient = getRequestClient;
             _rateRequestClient = rateRequestClient;
+            _catalogRequestClient = catalogRequestClient;
+            _catalogRatingRequestClient = catalogRatingRequestClient;
         }
 
         // GET: api/Albums
@@ -115,6 +121,41 @@ namespace WebApi.Controllers
                 }
 
                 return Ok(result);
+            }
+            catch (RequestTimeoutException)
+            {
+                return StatusCode((int)HttpStatusCode.RequestTimeout);
+            }
+        }
+
+        [HttpGet("rated/{userId}")]
+        public async Task<ActionResult<AlbumRated[]>> GetRatedAlbums(int userId)
+        {
+            try
+            {
+                var ratedAlbums = await _catalogRequestClient.Request(new GetRatedAlbums { Id = userId });
+
+                if (ratedAlbums == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(ratedAlbums);
+            }
+            catch (RequestTimeoutException)
+            {
+                return StatusCode((int)HttpStatusCode.RequestTimeout);
+            }
+        }
+
+        [HttpGet("average-rating/{albumId}")]
+        public async Task<ActionResult<AlbumAverageRating>> GetAverageRating(int albumId)
+        {
+            try
+            {
+                var averageRating = await _catalogRatingRequestClient.Request(new GetAverageRating { AlbumId = albumId });
+
+                return Ok(averageRating);
             }
             catch (RequestTimeoutException)
             {

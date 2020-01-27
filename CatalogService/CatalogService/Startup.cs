@@ -55,6 +55,7 @@ namespace CatalogService
                     e.Consumer<RateAlbumConsumer>(provider);
                     EndpointConvention.Map<RateAlbum>(e.InputAddress);
                     EndpointConvention.Map<GetAverageRating>(e.InputAddress);
+                    EndpointConvention.Map<GetRatedAlbums>(e.InputAddress);
 
                     e.Consumer<CollectionConsumer>(provider);
                     EndpointConvention.Map<AddToCollection>(e.InputAddress);

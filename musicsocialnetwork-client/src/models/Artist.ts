@@ -20,6 +20,10 @@ export interface ArtistData {
   genres: Array<string> | undefined;
   styles: Array<string> | undefined;
   events: Array<EventData>;
+  //albums: Array<AlbumData>;
+}
+
+export interface ExtendedArtistData extends ArtistData {
   albums: Array<AlbumData>;
 }
 
@@ -41,7 +45,7 @@ export let defaultArtistData: ArtistData = {
   genres: [],
   styles: [],
   events: [],
-  albums: []
+  //albums: []
 };
 
 export let defaultArtistDataSimple: ArtistDataSimple = {

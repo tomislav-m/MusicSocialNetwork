@@ -134,18 +134,5 @@ namespace UserService
                 endpoints.MapControllers();
             });
         }
-
-        void ConfigureMassTransit(IServiceCollectionConfigurator configurator)
-        {
-            configurator.AddConsumer<UserConsumer>();
-        }
-
-        IBusControl CreateBus()
-        {
-            return Bus.Factory.CreateUsingRabbitMq(cfg =>
-            {
-                cfg.Host("rabbitmq://localhost");
-            });
-        }
     }
 }

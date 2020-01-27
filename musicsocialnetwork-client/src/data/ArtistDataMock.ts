@@ -1,7 +1,7 @@
-import { ArtistData } from '../models/Artist';
+import { ExtendedArtistData } from '../models/Artist';
 import { eventData } from './EventDataMock';
 
-export let artistData: Array<ArtistData> = [
+export let artistData: Array<ExtendedArtistData> = [
   {
     id: 1,
     name: 'Iron Maiden',
