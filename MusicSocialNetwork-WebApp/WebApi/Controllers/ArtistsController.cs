@@ -3,6 +3,7 @@ using Common.MessageContracts.Music.Events;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using ArtistEvent = Common.MessageContracts.Music.Events.Artist;
@@ -15,13 +16,16 @@ namespace WebApi.Controllers
     {
         private readonly IRequestClient<SearchArtist, ArtistFound[]> _requestClient;
         private readonly IRequestClient<GetArtist, ArtistEvent> _getRequestClient;
+        private readonly IRequestClient<GetArtistNamesByIds, ArtistSimple[]> _getNamesRequestClient;
 
         public ArtistsController(
             IRequestClient<SearchArtist, ArtistFound[]> requestClient,
-            IRequestClient<GetArtist, ArtistEvent> getRequestClient)
+            IRequestClient<GetArtist, ArtistEvent> getRequestClient,
+            IRequestClient<GetArtistNamesByIds, ArtistSimple[]> getNamesRequestClient)
         {
             _requestClient = requestClient;
             _getRequestClient = getRequestClient;
+            _getNamesRequestClient = getNamesRequestClient;
         }
 
         // GET: api/Artists
@@ -90,6 +94,26 @@ namespace WebApi.Controllers
                 }
 
                 return Ok(result);
+            }
+            catch (RequestTimeoutException)
+            {
+                return StatusCode((int)HttpStatusCode.RequestTimeout);
+            }
+        }
+
+        [HttpPost("names")]
+        public async Task<ActionResult<ArtistSimple[]>> GetArtistNames(int[] artistIds)
+        {
+            try
+            {
+                var result = await _getNamesRequestClient.Request(new GetArtistNamesByIds { Ids = artistIds });
+
+                if (result == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(result.ToDictionary(x => x.Id, x => x.Name));
             }
             catch (RequestTimeoutException)
             {

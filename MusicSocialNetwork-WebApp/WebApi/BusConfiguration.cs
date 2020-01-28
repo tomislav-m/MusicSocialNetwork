@@ -48,6 +48,8 @@ namespace WebApi
                 new MessageRequestClient<GetAlbum, Album>(x.GetRequiredService<IBus>(), musicServiceAddress, timeout, timeout));
             services.AddScoped<IRequestClient<SearchAlbum, AlbumFound[]>>(x =>
                 new MessageRequestClient<SearchAlbum, AlbumFound[]>(x.GetRequiredService<IBus>(), musicServiceAddress, timeout, timeout));
+            services.AddScoped<IRequestClient<GetArtistNamesByIds, ArtistSimple[]>>(x =>
+                new MessageRequestClient<GetArtistNamesByIds, ArtistSimple[]>(x.GetRequiredService<IBus>(), musicServiceAddress, timeout, timeout));
 
 
             var catalogServiceAddress = new Uri("rabbitmq://localhost/catalog-service");

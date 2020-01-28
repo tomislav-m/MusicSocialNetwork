@@ -28,8 +28,8 @@ export interface ExtendedArtistData extends ArtistData {
 }
 
 export interface ArtistDataSimple {
-  Id: number;
-  Name: string;
+  id: number;
+  name: string;
 }
 
 export let defaultArtistData: ArtistData = {
@@ -44,11 +44,11 @@ export let defaultArtistData: ArtistData = {
   country: '',
   genres: [],
   styles: [],
-  events: [],
+  events: []
   //albums: []
 };
 
 export let defaultArtistDataSimple: ArtistDataSimple = {
-  Id: 0,
-  Name: ''
+  id: 0,
+  name: ''
 };

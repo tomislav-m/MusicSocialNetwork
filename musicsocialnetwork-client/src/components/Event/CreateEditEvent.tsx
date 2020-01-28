@@ -24,8 +24,8 @@ export default class CreateEditEvent extends React.Component<CreateEditEventProp
   constructor(props: CreateEditEventProps) {
     super(props);
 
-    const headliners = props.oldEvent?.Headliners.map(x => x.Id) || [];
-    const supporters = props.oldEvent?.Supporters.map(x => x.Id) || [];
+    const headliners = props.oldEvent?.headliners || [];
+    const supporters = props.oldEvent?.supporters || [];
     const event = props.oldEvent ? _.cloneDeep(props.oldEvent) : defaultEvent;
     this.state = {
       headliners,
@@ -41,11 +41,11 @@ export default class CreateEditEvent extends React.Component<CreateEditEventProp
       <Form>
         <Form.Field>
           <label>Date</label>
-          <Input name="Date" type="date" value={this.dateToString(event?.Date)} onChange={this.handleChange} />
+          <Input name="Date" type="date" value={this.dateToString(event?.date)} onChange={this.handleChange} />
         </Form.Field>
         <Form.Field>
           <label>Venue</label>
-          <Input name="VenueName" type="text" value={event?.VenueName} onChange={this.handleChange} />
+          <Input name="VenueName" type="text" value={event?.venueName} onChange={this.handleChange} />
         </Form.Field>
         <Form.Field>
           <label>Headliners</label>
@@ -120,7 +120,7 @@ export default class CreateEditEvent extends React.Component<CreateEditEventProp
   private artistsToDropdownValues(artists: Array<ArtistDataSimple> | undefined) {
     if (artists) {
       return artists.map(x => {
-        return x.Id;
+        return x.id;
       });
     }
   }
@@ -129,16 +129,16 @@ export default class CreateEditEvent extends React.Component<CreateEditEventProp
     if (artists) {
       return artists.map(x => {
         return {
-          key: x.Id,
-          value: x.Id,
-          text: x.Name
+          key: x.id,
+          value: x.id,
+          text: x.name
         };
       });
     }
   }
 
   private artists: Array<ArtistDataSimple> = [
-    { Id: 1, Name: 'Iron Maiden' },
-    { Id: 2, Name: 'Dream Theater' }
+    { id: 1, name: 'Iron Maiden' },
+    { id: 2, name: 'Dream Theater' }
   ];
 }

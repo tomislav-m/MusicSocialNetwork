@@ -11,7 +11,7 @@ namespace WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class UsersController : Controller
+    public class UsersController : ControllerBase
     {
         private readonly IRequestClient<SignInUser, UserSignedIn> _requestClient;
         private readonly IRequestClient<CreateUser, UserCreated> _registerRequestClient;

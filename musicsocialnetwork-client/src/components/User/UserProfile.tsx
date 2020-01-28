@@ -54,6 +54,7 @@ export default class UserProfile extends React.Component<UserProps, UserState> {
     const albumRatings = this.state.albumRatings || [];
     const events = this.state.events || [];
     const pageSize = this.state.pageSize;
+    const dict = this.props.artistStore?.simpleArtistsDict || {};
 
     return (
       <div>
@@ -102,10 +103,10 @@ export default class UserProfile extends React.Component<UserProps, UserState> {
                 <Table.Body>
                   {
                     events.map(event =>
-                      <Table.Row key={event.Id}>
-                        <Table.Cell>{event.Date.toLocaleDateString('hr-HR')}</Table.Cell>
-                        <Table.Cell>{event.VenueName}</Table.Cell>
-                        <Table.Cell><LinkList artists={[...event.Headliners, ...event.Supporters]} /></Table.Cell>
+                      <Table.Row key={event.id}>
+                        <Table.Cell>{event.date.toLocaleDateString('hr-HR')}</Table.Cell>
+                        <Table.Cell>{event.venueName}</Table.Cell>
+                        <Table.Cell><LinkList artists={event.headliners.concat(event.supporters).map(x => { return { id: event.id, name: dict[x] }; })} /></Table.Cell>
                         <Table.Cell><EventInfoModal event={event} /></Table.Cell>
                       </Table.Row>
                     )

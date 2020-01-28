@@ -5,6 +5,7 @@ using Common.Services;
 using EventService.Models;
 using Newtonsoft.Json;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace EventService.Services
 {
@@ -17,10 +18,10 @@ namespace EventService.Services
         {
             _mapper = mapper;
             _service = service;
-            Init();
+            Init().Wait();
         }
 
-        public async override void RecreateDb()
+        public async override Task RecreateDbAsync()
         {
             var events = await ReadFromStream("event-stream");
             foreach(var @event in events)

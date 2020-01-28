@@ -19,7 +19,7 @@ export default class LinkList extends React.Component<LinkListProps> {
                 index > 0 ? ', ' : ''
               }
               {
-                <Link to={`/Artist/${artist.Id}`}>{artist.Name}</Link>
+                <Link to={`/Artist/${artist.id}`}>{artist.name}</Link>
               }
             </span>
           )

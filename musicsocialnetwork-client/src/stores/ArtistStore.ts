@@ -4,7 +4,9 @@ import autobind from 'autobind-decorator';
 import { action, observable, computed } from 'mobx';
 import { AlbumData, defaultAlbumData, AlbumRatingData } from '../models/Album';
 import { albumData } from '../data/AlbumDataMock';
-import { getArtist, getAlbum, getAverageRating } from '../actions/Music/MusicActions';
+import { getArtist, getAlbum, getAverageRating, getArtistNames } from '../actions/Music/MusicActions';
+import { EventData } from '../models/Event';
+import { getEventsByArtist } from '../actions/Events/EventActions';
 
 export default class ArtistStore {
   artists: Array<ArtistData> = artistData;
@@ -14,6 +16,9 @@ export default class ArtistStore {
   @observable albums: Array<AlbumData> = [];
 
   @observable album: AlbumData = defaultAlbumData;
+
+  @observable events: Array<EventData> = [];
+  simpleArtistsDict: { [id: number]: string } = {};
 
   @observable isLoading: boolean = false;
 
@@ -53,9 +58,23 @@ export default class ArtistStore {
 
         if (this.artist.id !== result.artistId) {
           this.setArtist(result.artistId);
+          this.setEvents(result.artistId);
         }
       })
       .then(() => this.isLoading = false);
+  }
+
+  @autobind
+  @action
+  setEvents(artistId: number) {
+    this.events.length = 0;
+    getEventsByArtist(artistId)
+      .then(async (events: Array<EventData>) => {
+        const ids: Array<number> = [];
+        events.forEach(event => ids.push(...event.headliners.concat(event.supporters)));
+        const simpleArtists = await getArtistNames(Array.from(new Set(ids)));
+        this.simpleArtistsDict = simpleArtists;
+      });
   }
 
   @computed

@@ -85,3 +85,18 @@ export async function getAverageRating(albumId: number) {
     console.log(err);
   }
 }
+
+export async function getArtistNames(ids: Array<number>) {
+  try {
+    const response = await fetch(`${artistApiUrl}/name`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(ids)
+    });
+    return response.json();
+  } catch (err) {
+    console.log(err);
+  }
+}
