@@ -33,7 +33,7 @@ namespace EventService.Consumers
                 await context.RespondAsync(@event);
                 _eventStoreService.AddEventToStream(@event, "event-stream");
             }
-            catch
+            catch (Exception exc)
             {
                 await context.RespondAsync(null);
             }

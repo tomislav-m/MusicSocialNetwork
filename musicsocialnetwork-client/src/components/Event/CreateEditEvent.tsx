@@ -4,6 +4,7 @@ import { EventData, defaultEvent } from '../../models/Event';
 import { Form, Input, Dropdown, Button } from 'semantic-ui-react';
 import autobind from 'autobind-decorator';
 import _ from 'lodash';
+import { createEvent } from '../../actions/Events/EventActions';
 
 interface CreateEditEventProps {
   headliner?: ArtistDataSimple;
@@ -15,8 +16,10 @@ interface CreateEditEventProps {
 }
 
 interface CreateEditEventState {
-  headliners: Array<number>;
-  supporters: Array<number>;
+  headliners: Array<ArtistDataSimple>;
+  selectedHeadliners: Array<number>;
+  supporters: Array<ArtistDataSimple>;
+  selectedSupporters: Array<number>;
   event: EventData;
 }
 
@@ -24,81 +27,90 @@ export default class CreateEditEvent extends React.Component<CreateEditEventProp
   constructor(props: CreateEditEventProps) {
     super(props);
 
-    const headliners = props.oldEvent?.headliners || [];
-    const supporters = props.oldEvent?.supporters || [];
+    const headliners = [];
+    const selectedHeadliners = [];
     const event = props.oldEvent ? _.cloneDeep(props.oldEvent) : defaultEvent;
+    if (props.headliner) {
+      headliners.push(props.headliner);
+      selectedHeadliners.push(props.headliner.id);
+
+      event.headliners = selectedHeadliners;
+    }
+
     this.state = {
       headliners,
-      supporters,
-      event
+      supporters: [],
+      event,
+      selectedHeadliners,
+      selectedSupporters: []
     };
   }
 
   public render() {
     const event = this.state.event;
+    const headlinersOptions = this.artistsToOptions(this.state.headliners);
+    const supportersOptions = this.artistsToOptions(this.state.supporters);
 
     return (
       <Form>
         <Form.Field>
           <label>Date</label>
-          <Input name="Date" type="date" value={this.dateToString(event?.date)} onChange={this.handleChange} />
+          <Input name="date" type="date" value={this.dateToString(event?.date)} onChange={this.handleChange} />
         </Form.Field>
         <Form.Field>
           <label>Venue</label>
-          <Input name="VenueName" type="text" value={event?.venueName} onChange={this.handleChange} />
+          <Input name="venue" type="text" value={event?.venue} onChange={this.handleChange} />
         </Form.Field>
         <Form.Field>
           <label>Headliners</label>
           <Dropdown
-            name="Headliners"
+            name="headliners"
             search
             multiple
             selection
-            value={this.state.headliners}
-            options={this.artistsToOptions(this.artists)}
+            value={this.state.selectedHeadliners}
+            options={headlinersOptions}
             onChange={this.handleChangeHeadliners}
           />
         </Form.Field>
         <Form.Field>
           <label>Supporters</label>
           <Dropdown
-            name="Supporters"
+            name="supporters"
             search
             multiple
             selection
-            value={this.state.supporters}
-            options={this.artistsToOptions(this.artists)}
+            options={supportersOptions}
             onChange={this.handleChangeSupporters}
           />
         </Form.Field>
-        <Button onClick={this.props.onEventSave}>Save</Button>
+        <Button onClick={() => createEvent(this.state.event)}>Save</Button>
       </Form>
     );
   }
 
   @autobind
-  handleChange(event: any, {value}: any) {
+  handleChange(event: any, { value }: any) {
     const name = event.target.name;
-    const eventData = {...this.state.event, [name]: value};
+    const eventData = { ...this.state.event, [name]: value };
     this.setState({
       event: eventData
     });
   }
 
   @autobind
-  handleChangeHeadliners(event: any, {value}: any) {
-    const headliners = [...this.state.headliners];
-    headliners.push(value);
-    this.setState({ headliners: value });
+  handleChangeHeadliners(event: any, { value }: any) {
+    const eventData = { ...this.state.event, ['headliners']: value };
+    this.setState({ selectedHeadliners: value });
   }
 
   @autobind
-  handleChangeSupporters(event: any, {value}: any) {
+  handleChangeSupporters(event: any, { value }: any) {
     this.setState({ supporters: value });
   }
 
   private dateToString(date: Date | undefined) {
-    if (typeof(date) === 'string') {
+    if (typeof (date) === 'string') {
       return date;
     }
 
@@ -136,9 +148,4 @@ export default class CreateEditEvent extends React.Component<CreateEditEventProp
       });
     }
   }
-
-  private artists: Array<ArtistDataSimple> = [
-    { id: 1, name: 'Iron Maiden' },
-    { id: 2, name: 'Dream Theater' }
-  ];
 }

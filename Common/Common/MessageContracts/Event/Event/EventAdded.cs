@@ -7,7 +7,7 @@ namespace Common.MessageContracts.Event.Events
     {
         public int Id { get; set; }
         public string EventType { get; set; }
-        public string VenueName { get; set; }
+        public string Venue { get; set; }
         public DateTime Date { get; set; }
         public ICollection<int> Headliners { get; set; }
         public ICollection<int> Supporters { get; set; }

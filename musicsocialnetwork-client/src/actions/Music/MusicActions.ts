@@ -88,7 +88,7 @@ export async function getAverageRating(albumId: number) {
 
 export async function getArtistNames(ids: Array<number>) {
   try {
-    const response = await fetch(`${artistApiUrl}/name`, {
+    const response = await fetch(`${artistApiUrl}/names`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

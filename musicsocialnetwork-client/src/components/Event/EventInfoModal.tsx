@@ -28,7 +28,7 @@ export default class EventInfoModal extends React.Component<EventInfoProps> {
                   <Label>Date</Label><span className="info">{event.date.toLocaleDateString('hr-HR')}</span>
                 </div>
                 <div className="info-row">
-                  <Label>Venue</Label><span className="info">{event.venueName}</span>
+                  <Label>Venue</Label><span className="info">{event.venue}</span>
                 </div>
                 <div className="info-row">
                   <Label>Headliners</Label><span className="info"><LinkList artists={[]} /></span>

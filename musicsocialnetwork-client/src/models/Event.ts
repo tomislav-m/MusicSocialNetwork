@@ -1,7 +1,7 @@
 export interface EventData {
   id: number;
   date: Date;
-  venueName: string;
+  venue: string;
   headliners: Array<number>;
   supporters: Array<number>;
 }
@@ -9,7 +9,7 @@ export interface EventData {
 export const defaultEvent: EventData = {
   id: 0,
   date: new Date(),
-  venueName: '',
+  venue: '',
   headliners: [],
   supporters: []
 };

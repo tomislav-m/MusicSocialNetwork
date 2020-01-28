@@ -18,7 +18,7 @@ export default class ArtistStore {
   @observable album: AlbumData = defaultAlbumData;
 
   @observable events: Array<EventData> = [];
-  simpleArtistsDict: { [id: number]: string } = {};
+  @observable simpleArtistsDict: { [id: number]: string } = {};
 
   @observable isLoading: boolean = false;
 
@@ -32,6 +32,8 @@ export default class ArtistStore {
 
         this.setAlbums(result.albums)
           .then(() => this.isLoading = false);
+
+        this.setEvents(result.id);
       });
   }
 
@@ -58,7 +60,6 @@ export default class ArtistStore {
 
         if (this.artist.id !== result.artistId) {
           this.setArtist(result.artistId);
-          this.setEvents(result.artistId);
         }
       })
       .then(() => this.isLoading = false);
@@ -67,13 +68,14 @@ export default class ArtistStore {
   @autobind
   @action
   setEvents(artistId: number) {
+    const ids: Array<number> = [artistId];
     this.events.length = 0;
     getEventsByArtist(artistId)
-      .then(async (events: Array<EventData>) => {
-        const ids: Array<number> = [];
+      .then((events: Array<EventData>) => {
         events.forEach(event => ids.push(...event.headliners.concat(event.supporters)));
-        const simpleArtists = await getArtistNames(Array.from(new Set(ids)));
-        this.simpleArtistsDict = simpleArtists;
+      })
+      .finally(async () => {
+        this.simpleArtistsDict = {...await getArtistNames(Array.from(new Set(ids)))};
       });
   }
 

@@ -105,7 +105,7 @@ export default class UserProfile extends React.Component<UserProps, UserState> {
                     events.map(event =>
                       <Table.Row key={event.id}>
                         <Table.Cell>{event.date.toLocaleDateString('hr-HR')}</Table.Cell>
-                        <Table.Cell>{event.venueName}</Table.Cell>
+                        <Table.Cell>{event.venue}</Table.Cell>
                         <Table.Cell><LinkList artists={event.headliners.concat(event.supporters).map(x => { return { id: event.id, name: dict[x] }; })} /></Table.Cell>
                         <Table.Cell><EventInfoModal event={event} /></Table.Cell>
                       </Table.Row>

@@ -27,6 +27,11 @@ namespace EventService.Services
         {
             if ((await GetEvent(@event.Id)) == null)
             {
+                foreach(var headliner in @event.Headliners)
+                {
+                    await _context.Headliners.AddAsync(new Headliner { ArtistId = headliner, EventId = @event.Id });
+                }
+
                 await _context.AddAsync(@event);
                 await _context.SaveChangesAsync();
             }

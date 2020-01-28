@@ -6,6 +6,6 @@ export let eventData: Array<EventData> = [
     date: new Date(),
     headliners: [1],
     supporters: [2],
-    venueName: 'Arena Zagreb'
+    venue: 'Arena Zagreb'
   }
 ];

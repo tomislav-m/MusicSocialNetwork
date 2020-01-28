@@ -9,16 +9,23 @@ import LinkList from '../../common/LinkList';
 interface EventProps {
   events: Array<EventData> | undefined;
   simpleArtistsDict: { [id: number]: string } | undefined;
+  artistId: number;
 }
 
 export default class EventList extends React.Component<EventProps> {
   render() {
     const events = this.props.events;
     const dict = this.props.simpleArtistsDict || {};
+    const artistId = this.props.artistId;
 
     return (
       <div>
-        <Button icon="plus" size="mini" color="green" title="Add event" />
+        <Modal trigger={<Button icon="plus" size="mini" color="green" title="Add event" />}>
+          <Modal.Header>Edit event</Modal.Header>
+          <Modal.Content>
+            <CreateEditEvent isEdit={false} headliner={{id: artistId, name: dict[artistId]}} onEventSave={() => null} />
+          </Modal.Content>
+        </Modal>
         <Table striped compact>
           <Table.Header>
             <Table.Row>
@@ -35,7 +42,7 @@ export default class EventList extends React.Component<EventProps> {
               events?.map(event =>
                 <Table.Row key={event.id}>
                   <Table.Cell>{event.date.toLocaleString('hr-HR')}</Table.Cell>
-                  <Table.Cell>{event.venueName}</Table.Cell>
+                  <Table.Cell>{event.venue}</Table.Cell>
                   <Table.Cell><LinkList artists={event.headliners.map(x => { return { id: event.id, name: dict[x] }; })} /></Table.Cell>
                   <Table.Cell><LinkList artists={event.supporters.map(x => { return { id: event.id, name: dict[x] }; })} /></Table.Cell>
                   <Table.Cell>
