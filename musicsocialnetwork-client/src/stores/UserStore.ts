@@ -1,30 +1,32 @@
 import { observable, action, computed } from 'mobx';
 import { LoginData, UserData, defaultUserData } from '../models/User';
 import autobind from 'autobind-decorator';
-import { authenticateAsync } from '../actions/User/UserActions';
+import { authenticateAsync, registerAsync } from '../actions/User/UserActions';
 import { rateAlbum, getRatedAlbums } from '../actions/Music/MusicActions';
 
 export default class UserStore {
   @observable loginData: LoginData = {
-    Id: 0,
-    Username: '',
-    Password: ''
+    id: 0,
+    username: '',
+    password: ''
   };
 
   @observable isLoading: boolean = false;
 
   @observable userData: UserData | undefined = undefined;
 
+  @observable registerIsSuccess: boolean | undefined = undefined;
+
   @autobind
   @action
   handleUsernameChange(event: { target: HTMLInputElement }) {
-    this.loginData.Username = event.target.value;
+    this.loginData.username = event.target.value;
   }
 
   @autobind
   @action
   handlePasswordChange(event: { target: HTMLInputElement }) {
-    this.loginData.Password = event.target.value;
+    this.loginData.password = event.target.value;
   }
 
   @autobind
@@ -33,8 +35,11 @@ export default class UserStore {
     this.isLoading = true;
     authenticateAsync(this.loginData)
       .then(data => {
-        this.userData = { ...defaultUserData, ...data };
         this.isLoading = false;
+        if (!data.token) {
+          return;
+        }
+        this.userData = { ...defaultUserData, ...data };
 
         if (this.userData) {
           getRatedAlbums(this.userData.id)
@@ -47,6 +52,18 @@ export default class UserStore {
         }
       })
       .catch(err => console.log(err));
+  }
+
+  @autobind
+  @action
+  register(username: string, email: string, password: string) {
+    this.isLoading = true;
+    registerAsync({ username, email, password })
+      .then(() => {
+        this.registerIsSuccess = true;
+      })
+      .catch((err) => this.registerIsSuccess = false)
+      .finally(() => this.isLoading = false);
   }
 
   @autobind
@@ -75,7 +92,7 @@ export default class UserStore {
 
   @computed
   get isReadyToLogin(): boolean {
-    return this.loginData.Password.length > 0 && this.loginData.Username.length > 0;
+    return this.loginData.password.length > 0 && this.loginData.username.length > 0;
   }
 
   @computed

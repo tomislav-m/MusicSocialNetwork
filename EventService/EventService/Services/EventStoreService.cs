@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Common.MessageContracts.Event;
+using Common.MessageContracts.Event.Event;
 using Common.MessageContracts.Event.Events;
 using Common.Services;
 using EventService.Models;
@@ -34,6 +35,11 @@ namespace EventService.Services
                         var eventAdded = JsonConvert.DeserializeObject<EventAdded>(
                             Encoding.UTF8.GetString(@event.Event.Data));
                         await _service.AddEvent(_mapper.Map<EventAdded, Event>(eventAdded));
+                        break;
+                    case EventMessageContracts.EventEdited:
+                        var eventEdited = JsonConvert.DeserializeObject<EventEdited>(
+                            Encoding.UTF8.GetString(@event.Event.Data));
+                        await _service.AddEvent(_mapper.Map<EventEdited, Event>(eventEdited));
                         break;
                     default:
                         break;

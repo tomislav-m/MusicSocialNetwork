@@ -4,7 +4,6 @@ import { EventData, defaultEvent } from '../../models/Event';
 import { Form, Input, Dropdown, Button } from 'semantic-ui-react';
 import autobind from 'autobind-decorator';
 import _ from 'lodash';
-import { createEvent } from '../../actions/Events/EventActions';
 
 interface CreateEditEventProps {
   headliner?: ArtistDataSimple;
@@ -12,7 +11,7 @@ interface CreateEditEventProps {
   oldEvent?: EventData;
   isEdit: boolean;
 
-  onEventSave(): void;
+  onEventSave(event: EventData): void;
 }
 
 interface CreateEditEventState {
@@ -84,7 +83,7 @@ export default class CreateEditEvent extends React.Component<CreateEditEventProp
             onChange={this.handleChangeSupporters}
           />
         </Form.Field>
-        <Button onClick={() => createEvent(this.state.event)}>Save</Button>
+        <Button onClick={() => this.props.onEventSave(this.state.event)}>Save</Button>
       </Form>
     );
   }
@@ -100,8 +99,8 @@ export default class CreateEditEvent extends React.Component<CreateEditEventProp
 
   @autobind
   handleChangeHeadliners(event: any, { value }: any) {
-    const eventData = { ...this.state.event, ['headliners']: value };
-    this.setState({ selectedHeadliners: value });
+    const eventData = { ...this.state.event, headliners: value };
+    this.setState({ selectedHeadliners: value, event: eventData });
   }
 
   @autobind

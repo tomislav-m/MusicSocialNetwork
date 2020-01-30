@@ -53,7 +53,7 @@ namespace WebApi.Controllers
             {
                 UserCreated result = await _registerRequestClient.Request(credentials);
 
-                if (result.Exception != null)
+                if (result.Exception == null)
                 {
                     return CreatedAtRoute(nameof(Register), result);
                 }

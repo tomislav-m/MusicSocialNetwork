@@ -3,14 +3,14 @@ import { eventData } from './EventDataMock';
 
 export let loginData: Array<LoginData> = [
   {
-    Id: 1,
-    Username: 'User',
-    Password: 'admin'
+    id: 1,
+    username: 'User',
+    password: 'admin'
   },
   {
-    Id: 2,
-    Username: 'User',
-    Password: 'user'
+    id: 2,
+    username: 'User',
+    password: 'user'
   }
 ];
 

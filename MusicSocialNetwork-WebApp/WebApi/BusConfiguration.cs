@@ -1,6 +1,7 @@
 ﻿using Common.MessageContracts.Catalog.Commands;
 using Common.MessageContracts.Catalog.Events;
 using Common.MessageContracts.Event.Commands;
+using Common.MessageContracts.Event.Event;
 using Common.MessageContracts.Event.Events;
 using Common.MessageContracts.Music.Commands;
 using Common.MessageContracts.Music.Events;
@@ -27,7 +28,7 @@ namespace WebApi
             services.AddSingleton<ISendEndpointProvider>(bus);
             services.AddSingleton<IBus>(bus);
 
-            var timeout = TimeSpan.FromSeconds(120);
+            var timeout = TimeSpan.FromSeconds(60);
             var userServiceAddress = new Uri("rabbitmq://localhost/user-service");
 
             services.AddScoped<IRequestClient<SignInUser, UserSignedIn>>(x =>
@@ -68,6 +69,8 @@ namespace WebApi
 
             services.AddScoped<IRequestClient<AddEvent, EventAdded>>(x =>
                 new MessageRequestClient<AddEvent, EventAdded>(x.GetRequiredService<IBus>(), eventServiceAddress, timeout, timeout));
+            services.AddScoped<IRequestClient<EditEvent, EventEdited>>(x =>
+                new MessageRequestClient<EditEvent, EventEdited>(x.GetRequiredService<IBus>(), eventServiceAddress, timeout, timeout));
             services.AddScoped<IRequestClient<GetEvent, EventEvent>>(x =>
                 new MessageRequestClient<GetEvent, EventEvent>(x.GetRequiredService<IBus>(), eventServiceAddress, timeout, timeout));
             services.AddScoped<IRequestClient<GetEventsByArtist, EventEvent[]>>(x =>

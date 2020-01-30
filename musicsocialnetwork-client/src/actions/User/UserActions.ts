@@ -17,8 +17,8 @@ export async function authenticateAsync(loginData: LoginData) {
   }
 }
 
-export async function registerAsync(loginData: LoginData) {
-  const registerData: RegisterData = { ...loginData, Role: 'Administrator' };
+export async function registerAsync(data: RegisterData) {
+  const registerData: RegisterData = { ...data, role: 'User' };
   try {
     const response = await fetch(apiUrl + '/register', {
       method: 'POST',

@@ -5,11 +5,15 @@ import './EventList.css';
 import CreateEditEvent from './CreateEditEvent';
 import EventInfoModal from './EventInfoModal';
 import LinkList from '../../common/LinkList';
+import autobind from 'autobind-decorator';
+import { createEvent, editEvent } from '../../actions/Events/EventActions';
+import ArtistStore from '../../stores/ArtistStore';
 
 interface EventProps {
   events: Array<EventData> | undefined;
   simpleArtistsDict: { [id: number]: string } | undefined;
   artistId: number;
+  store: ArtistStore | undefined;
 }
 
 export default class EventList extends React.Component<EventProps> {
@@ -23,7 +27,7 @@ export default class EventList extends React.Component<EventProps> {
         <Modal trigger={<Button icon="plus" size="mini" color="green" title="Add event" />}>
           <Modal.Header>Edit event</Modal.Header>
           <Modal.Content>
-            <CreateEditEvent isEdit={false} headliner={{id: artistId, name: dict[artistId]}} onEventSave={() => null} />
+            <CreateEditEvent isEdit={false} headliner={{id: artistId, name: dict[artistId]}} onEventSave={this.handleCreateEvent} />
           </Modal.Content>
         </Modal>
         <Table striped compact>
@@ -49,7 +53,7 @@ export default class EventList extends React.Component<EventProps> {
                     <Modal trigger={<Button icon compact><Icon name="edit" /></Button>}>
                       <Modal.Header>Edit event</Modal.Header>
                       <Modal.Content>
-                        <CreateEditEvent oldEvent={event} isEdit={true} onEventSave={() => null} />
+                        <CreateEditEvent oldEvent={event} isEdit={true} onEventSave={this.handleEditEvent} />
                       </Modal.Content>
                     </Modal>
                   </Table.Cell>
@@ -63,5 +67,24 @@ export default class EventList extends React.Component<EventProps> {
         </Table>
       </div>
     );
+  }
+
+  @autobind
+  handleCreateEvent(event: EventData) {
+    createEvent(event)
+      .then((data: EventData) => {
+        this.props.store?.events.push(data);
+      });
+  }
+
+  @autobind
+  handleEditEvent(event: EventData) {
+    editEvent(event)
+      .then((data: EventData) => {
+        let eventData = this.props.events?.find(x => x.id === event.id);
+        if (eventData) {
+          eventData = { ...eventData };
+        }
+      });
   }
 }

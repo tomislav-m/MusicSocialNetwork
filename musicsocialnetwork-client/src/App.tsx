@@ -2,7 +2,7 @@ import React from 'react';
 import 'semantic-ui-css/semantic.min.css';
 import './App.css';
 import { Menu, Container } from 'semantic-ui-react';
-import Login from './components/Login/Login';
+import Login from './components/Membership/Login';
 import { Provider, observer } from 'mobx-react';
 import UserStore from './stores/UserStore';
 import SearchComponent from './components/Search/Search';
@@ -12,6 +12,7 @@ import Artist from './components/Artist/Artist';
 import ArtistStore from './stores/ArtistStore';
 import Album from './components/Album/Album';
 import UserProfile from './components/User/UserProfile';
+import { Registration } from './components/Membership/Registration';
 
 @observer
 class App extends React.Component {
@@ -32,6 +33,7 @@ class App extends React.Component {
             </Menu.Item>
             <Provider userStore={this.userStore}>
               <Login />
+              <Registration />
             </Provider>
             {
             this.userStore.isLoggedIn &&

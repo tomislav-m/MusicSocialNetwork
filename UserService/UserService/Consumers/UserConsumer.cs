@@ -52,7 +52,7 @@ namespace UserService.Consumers
         public async Task Consume(ConsumeContext<CreateUser> context)
         {
             var message = context.Message;
-            var user = _service.Create(new User { Username = message.Username, Role = message.Role }, message.Password);
+            var user = _service.Create(new User { Username = message.Username, Role = message.Role, Email = message.Email }, message.Password);
             var userCreated = _mapper.Map<User, UserCreated>(user);
 
             try

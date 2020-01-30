@@ -30,3 +30,18 @@ export async function createEvent(event: EventData) {
     console.log(err);
   }
 }
+
+export async function editEvent(event: EventData) {
+  try {
+    const response = await fetch(`${eventApiUrl}/${event.id}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(event)
+    });
+    return response.json();
+  } catch (err) {
+    console.log(err);
+  }
+}

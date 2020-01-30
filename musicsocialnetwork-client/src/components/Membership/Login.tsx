@@ -38,11 +38,11 @@ export default class Login extends React.Component<LoginProps> {
       <Form>
         <Form.Field>
           <label>Username</label>
-          <input type="text" value={userStore?.loginData.Username} onChange={userStore?.handleUsernameChange} disabled={userStore?.isLoading} />
+          <input type="text" value={userStore?.loginData.username} onChange={userStore?.handleUsernameChange} disabled={userStore?.isLoading} />
         </Form.Field>
         <Form.Field>
           <label>Password</label>
-          <input type="password" value={userStore?.loginData.Password} onChange={userStore?.handlePasswordChange} disabled={userStore?.isLoading} />
+          <input type="password" value={userStore?.loginData.password} onChange={userStore?.handlePasswordChange} disabled={userStore?.isLoading} />
         </Form.Field>
         <Button
           type="submit"

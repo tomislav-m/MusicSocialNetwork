@@ -1,4 +1,5 @@
 ﻿using Common.MessageContracts.Event.Commands;
+using Common.MessageContracts.Event.Event;
 using Common.MessageContracts.Event.Events;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
@@ -13,10 +14,16 @@ namespace WebApi.Controllers
     {
         private readonly IRequestClient<GetEventsByArtist, EventEvent[]> _requestClient;
         private readonly IRequestClient<AddEvent, EventAdded> _addEventRequestClient;
+        private readonly IRequestClient<EditEvent, EventEdited> _editEventRequestClient;
 
-        public EventsController(IRequestClient<AddEvent, EventAdded> addEventRequestClient)
+        public EventsController(
+            IRequestClient<GetEventsByArtist, EventEvent[]> requestClient,
+            IRequestClient<AddEvent, EventAdded> addEventRequestClient,
+            IRequestClient<EditEvent, EventEdited> editEventRequestClient)
         {
+            _requestClient = requestClient;
             _addEventRequestClient = addEventRequestClient;
+            _editEventRequestClient = editEventRequestClient;
         }
 
         [HttpGet("artist/{artistId}")]
@@ -43,6 +50,26 @@ namespace WebApi.Controllers
         public async Task<ActionResult<EventAdded>> CreateEvent(AddEvent @event)
         {
             var result = await _addEventRequestClient.Request(@event);
+
+            try
+            {
+                if (result == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(result);
+            }
+            catch (RequestTimeoutException)
+            {
+                return StatusCode((int)HttpStatusCode.RequestTimeout);
+            }
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<EventEdited>> EditEvent(EditEvent @event)
+        {
+            var result = await _editEventRequestClient.Request(@event);
 
             try
             {

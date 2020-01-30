@@ -2,9 +2,9 @@ import { RatingData } from './Catalog';
 import { EventData } from './Event';
 
 export interface LoginData {
-  Id: number;
-  Username: string;
-  Password: string;
+  id: number;
+  username: string;
+  password: string;
 }
 
 export interface UserData {
@@ -17,9 +17,10 @@ export interface UserData {
 }
 
 export interface RegisterData {
-  Username: string;
-  Password: string;
-  Role: string;
+  username: string;
+  email: string;
+  password: string;
+  role?: string;
 }
 
 export interface ILoginState {

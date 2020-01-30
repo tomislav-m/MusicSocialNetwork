@@ -43,7 +43,7 @@ export default class Artist extends React.Component<ArtistProps> {
 
   private panes: any = [
     { menuItem: 'Albums', render: () => <Tab.Pane>{this.renderAlbums()}</Tab.Pane> },
-    { menuItem: 'Events', render: () => <Tab.Pane><EventList artistId={this.props.artistStore?.artist.id || 0} events={this.props.artistStore?.artist?.events} simpleArtistsDict={this.props.artistStore?.simpleArtistsDict} /></Tab.Pane> }
+    { menuItem: 'Events', render: () => <Tab.Pane><EventList store={this.props.artistStore} artistId={this.props.artistStore?.artist.id || 0} events={this.props.artistStore?.artist?.events} simpleArtistsDict={this.props.artistStore?.simpleArtistsDict} /></Tab.Pane> }
   ];
 
   public render() {

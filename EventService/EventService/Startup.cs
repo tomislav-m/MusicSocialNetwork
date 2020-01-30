@@ -35,11 +35,13 @@ namespace EventService
             services.AddScoped<IEventService, Services.EventService>();
 
             services.AddScoped<AddEventConsumer>();
+            services.AddScoped<EditEventConsumer>();
             services.AddScoped<GetEventConsumer>();
 
             services.AddMassTransit(x =>
             {
                 x.AddConsumer<AddEventConsumer>();
+                services.AddScoped<EditEventConsumer>();
                 x.AddConsumer<GetEventConsumer>();
             });
 
@@ -52,11 +54,13 @@ namespace EventService
                     e.UseMessageRetry(x => x.Interval(2, 100));
 
                     e.Consumer<AddEventConsumer>(provider);
+                    e.Consumer<EditEventConsumer>(provider);
                     EndpointConvention.Map<AddEvent>(e.InputAddress);
 
                     e.Consumer<GetEventConsumer>(provider);
                     EndpointConvention.Map<GetEvent>(e.InputAddress);
                     EndpointConvention.Map<GetEventsByArtist>(e.InputAddress);
+                    EndpointConvention.Map<EditEvent>(e.InputAddress);
                 });
             }));
 
@@ -65,6 +69,7 @@ namespace EventService
             services.AddSingleton<IBus>(provider => provider.GetRequiredService<IBusControl>());
 
             services.AddScoped(provider => provider.GetRequiredService<IBus>().CreateRequestClient<AddEvent>());
+            services.AddScoped(provider => provider.GetRequiredService<IBus>().CreateRequestClient<EditEvent>());
             services.AddScoped(provider => provider.GetRequiredService<IBus>().CreateRequestClient<GetEvent>());
             services.AddScoped(provider => provider.GetRequiredService<IBus>().CreateRequestClient<GetEventsByArtist>());
             services.AddSingleton<IHostedService, BusService>();
