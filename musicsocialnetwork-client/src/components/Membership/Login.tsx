@@ -16,7 +16,7 @@ export default class Login extends React.Component<LoginProps> {
 
     return (
       <Menu.Item header>
-        {userStore?.userData ? <Link to={`/User/${userStore.userData.id}`}>{userStore.userData.username}</Link>
+        {userStore?.userData && userStore.isLoggedIn ? <Link to={`/User/${userStore.userData.id}`}>{userStore.userData.username}</Link>
           :
           <Popup
             position="bottom center"

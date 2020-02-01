@@ -25,7 +25,7 @@ export default class EventInfoModal extends React.Component<EventInfoProps> {
               </Grid.Column>
               <Grid.Column width="11">
                 <div className="info-row">
-                  <Label>Date</Label><span className="info">{event.date.toLocaleDateString('hr-HR')}</span>
+                  <Label>Date</Label><span className="info">{(new Date(event.date)).toLocaleDateString('hr-HR')}</span>
                 </div>
                 <div className="info-row">
                   <Label>Venue</Label><span className="info">{event.venue}</span>

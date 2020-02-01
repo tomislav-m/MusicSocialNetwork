@@ -73,6 +73,8 @@ export default class ArtistStore {
     getEventsByArtist(artistId)
       .then((events: Array<EventData>) => {
         events.forEach(event => ids.push(...event.headliners.concat(event.supporters)));
+        this.events.length = 0;
+        this.events.push(...events);
       })
       .finally(async () => {
         this.simpleArtistsDict = {...await getArtistNames(Array.from(new Set(ids)))};

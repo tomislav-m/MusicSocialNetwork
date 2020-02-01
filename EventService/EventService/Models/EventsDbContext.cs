@@ -8,12 +8,14 @@ namespace EventService.Models
             : base(options) { }
 
         public DbSet<Event> Events { get; set; }
-        public DbSet<EventBand> Headliners { get; set; }
-        public DbSet<EventBand> Supporters { get; set; }
+        public DbSet<EventBandHealiner> Headliners { get; set; }
+        public DbSet<EventBandSupporter> Supporters { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<EventBand>()
+            modelBuilder.Entity<EventBandHealiner>()
+                .HasKey(o => new { o.ArtistId, o.EventId });
+            modelBuilder.Entity<EventBandSupporter>()
                 .HasKey(o => new { o.ArtistId, o.EventId });
         }
     }

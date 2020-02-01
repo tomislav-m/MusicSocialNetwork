@@ -10,7 +10,6 @@ import { createEvent, editEvent } from '../../actions/Events/EventActions';
 import ArtistStore from '../../stores/ArtistStore';
 
 interface EventProps {
-  events: Array<EventData> | undefined;
   simpleArtistsDict: { [id: number]: string } | undefined;
   artistId: number;
   store: ArtistStore | undefined;
@@ -18,7 +17,7 @@ interface EventProps {
 
 export default class EventList extends React.Component<EventProps> {
   render() {
-    const events = this.props.events;
+    const events = this.props.store?.events;
     const dict = this.props.simpleArtistsDict || {};
     const artistId = this.props.artistId;
 
@@ -45,7 +44,7 @@ export default class EventList extends React.Component<EventProps> {
             {
               events?.map(event =>
                 <Table.Row key={event.id}>
-                  <Table.Cell>{event.date.toLocaleString('hr-HR')}</Table.Cell>
+                  <Table.Cell>{(new Date(event.date)).toLocaleDateString('hr-HR')}</Table.Cell>
                   <Table.Cell>{event.venue}</Table.Cell>
                   <Table.Cell><LinkList artists={event.headliners.map(x => { return { id: event.id, name: dict[x] }; })} /></Table.Cell>
                   <Table.Cell><LinkList artists={event.supporters.map(x => { return { id: event.id, name: dict[x] }; })} /></Table.Cell>
@@ -81,7 +80,7 @@ export default class EventList extends React.Component<EventProps> {
   handleEditEvent(event: EventData) {
     editEvent(event)
       .then((data: EventData) => {
-        let eventData = this.props.events?.find(x => x.id === event.id);
+        let eventData = this.props.store?.events?.find(x => x.id === event.id);
         if (eventData) {
           eventData = { ...eventData };
         }

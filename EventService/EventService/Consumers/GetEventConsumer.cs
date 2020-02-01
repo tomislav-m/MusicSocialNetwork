@@ -11,11 +11,13 @@ namespace EventService.Consumers
     public class GetEventConsumer : IConsumer<GetEvent>, IConsumer<GetEventsByArtist>
     {
         private readonly IEventService _service;
+        private readonly EventStoreService _eventStoreService;
         private readonly IMapper _mapper;
 
-        public GetEventConsumer(IEventService service, IMapper mapper)
+        public GetEventConsumer(IEventService service, IMapper mapper, EventStoreService eventStoreService)
         {
             _service = service;
+            _eventStoreService = eventStoreService;
             _mapper = mapper;
         }
 
@@ -34,7 +36,8 @@ namespace EventService.Consumers
 
             var @events = await _service.GetEventsByArtist(message.ArtistId);
 
-            await context.RespondAsync(_mapper.Map<IEnumerable<Models.Event>, IEnumerable<EventEvent>>(@events));
+            var array = _mapper.Map<IEnumerable<Models.Event>, EventEvent[]>(@events);
+            await context.RespondAsync(array);
         }
     }
 }

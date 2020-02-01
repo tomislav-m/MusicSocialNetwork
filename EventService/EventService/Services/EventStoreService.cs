@@ -39,7 +39,7 @@ namespace EventService.Services
                     case EventMessageContracts.EventEdited:
                         var eventEdited = JsonConvert.DeserializeObject<EventEdited>(
                             Encoding.UTF8.GetString(@event.Event.Data));
-                        await _service.AddEvent(_mapper.Map<EventEdited, Event>(eventEdited));
+                        await _service.EditEvent(_mapper.Map<EventEdited, Event>(eventEdited));
                         break;
                     default:
                         break;
