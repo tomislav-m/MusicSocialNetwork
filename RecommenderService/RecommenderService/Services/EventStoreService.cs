@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using RecommenderService.Models;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace RecommenderService.Services
 {
@@ -13,10 +14,10 @@ namespace RecommenderService.Services
         {
             _service = service;
 
-            Init();
+            Init().Wait();
         }
 
-        public override async void RecreateDbAsync()
+        public override async Task RecreateDbAsync()
         {
             var events = await ReadFromStream("catalog-stream");
 

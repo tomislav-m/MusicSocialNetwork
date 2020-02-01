@@ -35,7 +35,7 @@ namespace RecommenderService.Services
         public async Task<IEnumerable<int>> GetPopularAlbums(IEnumerable<int> userAlbumIds)
         {
             var dict = await _context.CatalogModels
-                .Where(x => !userAlbumIds.Contains(x.AlbumId))
+                .Where(x => userAlbumIds.Contains(x.AlbumId))
                 .GroupBy(x => x.AlbumId)
                 .ToDictionaryAsync(x => x.Key, x => x.Count());
             
