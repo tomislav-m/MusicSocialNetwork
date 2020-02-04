@@ -78,7 +78,7 @@ export default class UserProfile extends React.Component<UserProps, UserState> {
                     albumRatings.sort(this.sortRatings).slice((this.state.ratingsPage - 1) * pageSize, this.state.ratingsPage * pageSize).map(rating =>
                       <Table.Row key={rating.albumId}>
                         <Table.Cell><img width="50px" src={rating.coverUrl} alt="cover" /></Table.Cell>
-                        <Table.Cell>{(rating.ratedAt as Date).toLocaleDateString('hr-HR')}</Table.Cell>
+                        <Table.Cell>{new Date(rating.ratedAt).toLocaleDateString('hr-HR')}</Table.Cell>
                         <Table.Cell><Icon name="star" color="yellow" />x{rating.rating}</Table.Cell>
                         <Table.Cell>
                           <strong><Link to={`/Artist/${rating.artistId}`}>{rating.artist}</Link></strong> - <Link to={`/Album/${rating.albumId}`}>{rating.album}</Link> ({rating.yearReleased})

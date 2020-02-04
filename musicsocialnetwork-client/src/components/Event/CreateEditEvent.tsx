@@ -4,6 +4,7 @@ import { EventData, defaultEvent } from '../../models/Event';
 import { Form, Input, Dropdown, Button } from 'semantic-ui-react';
 import autobind from 'autobind-decorator';
 import _ from 'lodash';
+import { searchArtist } from '../../actions/Music/MusicActions';
 
 interface CreateEditEventProps {
   headliner?: ArtistDataSimple;
@@ -70,6 +71,7 @@ export default class CreateEditEvent extends React.Component<CreateEditEventProp
             value={this.state.selectedHeadliners}
             options={headlinersOptions}
             onChange={this.handleChangeHeadliners}
+            onSearchChange={_.debounce(this.searchArtists, 500)}
           />
         </Form.Field>
         <Form.Field>
@@ -81,6 +83,7 @@ export default class CreateEditEvent extends React.Component<CreateEditEventProp
             selection
             options={supportersOptions}
             onChange={this.handleChangeSupporters}
+            onSearchChange={_.debounce(this.searchArtists, 500)}
           />
         </Form.Field>
         <Button onClick={() => this.props.onEventSave(this.state.event)}>Save</Button>
@@ -105,7 +108,8 @@ export default class CreateEditEvent extends React.Component<CreateEditEventProp
 
   @autobind
   handleChangeSupporters(event: any, { value }: any) {
-    this.setState({ supporters: value });
+    const eventData = { ...this.state.event, supporters: value };
+    this.setState({ selectedSupporters: value, event: eventData });
   }
 
   private dateToString(date: Date | undefined) {
@@ -146,5 +150,31 @@ export default class CreateEditEvent extends React.Component<CreateEditEventProp
         };
       });
     }
+  }
+
+  @autobind
+  private searchArtists(event: any, data: any) {
+    if (data.searchQuery.length < 3) {
+      return;
+    }
+    searchArtist(data.searchQuery)
+      .then((result: Array<ArtistDataSimple>) => {
+        const artists = result;
+        this.state.selectedHeadliners.map(id => {
+          const headliner = this.state.headliners.find(x => x.id === id);
+          if (headliner) {
+            artists.push(headliner);
+          }
+        });
+        if (data.name === 'headliners') {
+          this.setState({
+            headliners: artists
+          });
+        } else {
+          this.setState({
+            supporters: artists
+          });
+        }
+      });
   }
 }

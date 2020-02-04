@@ -52,7 +52,7 @@ export default class EventList extends React.Component<EventProps> {
                     <Modal trigger={<Button icon compact><Icon name="edit" /></Button>}>
                       <Modal.Header>Edit event</Modal.Header>
                       <Modal.Content>
-                        <CreateEditEvent oldEvent={event} isEdit={true} onEventSave={this.handleEditEvent} />
+                        <CreateEditEvent headliner={{id: artistId, name: dict[artistId]}} oldEvent={event} isEdit={true} onEventSave={this.handleEditEvent} />
                       </Modal.Content>
                     </Modal>
                   </Table.Cell>
