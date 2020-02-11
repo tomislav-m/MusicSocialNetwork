@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import Tracks from './Tracks';
 import UserStore from '../../stores/UserStore';
 import autobind from 'autobind-decorator';
+import { addToCollection } from '../../actions/Music/MusicActions';
 
 interface AlbumProps {
   artistStore?: ArtistStore;
@@ -90,7 +91,15 @@ export default class Album extends React.Component<AlbumProps> {
                         </span>
                       </div>
                       <div className="info-row">
-                        <Button icon="plus" size="mini" color="green" title="Add to collection" />
+                        <Button
+                          icon="plus"
+                          size="mini"
+                          color="green"
+                          title="Add to collection"
+                          disabled={userStore?.isAddingToCollection}
+                          loading={userStore?.isAddingToCollection}
+                          onClick={() => userStore?.handleAddToCollection(album.id)}
+                        />
                       </div>
                     </Grid.Column>
                     <Grid.Column width="7">

@@ -100,3 +100,18 @@ export async function getArtistNames(ids: Array<number>) {
     console.log(err);
   }
 }
+
+export async function addToCollection(userId: number, albumId: number) {
+  try {
+    const response = await fetch(`${albumApiUrl}/add-to-collection`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ userId, albumId })
+    });
+    return response.json();
+  } catch (err) {
+    console.log(err);
+  }
+}

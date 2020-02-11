@@ -2,7 +2,7 @@ import { observable, action, computed } from 'mobx';
 import { LoginData, UserData, defaultUserData } from '../models/User';
 import autobind from 'autobind-decorator';
 import { authenticateAsync, registerAsync } from '../actions/User/UserActions';
-import { rateAlbum, getRatedAlbums } from '../actions/Music/MusicActions';
+import { rateAlbum, getRatedAlbums, addToCollection } from '../actions/Music/MusicActions';
 
 export default class UserStore {
   @observable loginData: LoginData = {
@@ -11,7 +11,10 @@ export default class UserStore {
     password: ''
   };
 
+  @observable albumRatings: Array<any> = [];
+
   @observable isLoading: boolean = false;
+  @observable isAddingToCollection: boolean = false;
 
   @observable userData: UserData | undefined = undefined;
 
@@ -83,11 +86,30 @@ export default class UserStore {
           if (data.exception) {
             console.log(data.exception);
           } else {
+            const index = this.userData?.ratings.findIndex(x => x.albumId === albumId);
+            if (index && index > -1 && this.userData?.ratings) {
+              this.userData.ratings.splice(index, 1);
+            }
             this.userData?.ratings.push({ albumId, rating, createdAt: new Date() });
           }
         })
         .catch(err => console.log(err));
     }
+  }
+
+  @action
+  @autobind
+  handleAddToCollection(albumId: number) {
+    if (this.userData?.id === undefined) {
+      return;
+    }
+    addToCollection(this.userData.id, albumId)
+      .then(data => {
+        if (data.exception) {
+          console.log(data.exception);
+        }
+        // add to store
+      });
   }
 
   @computed

@@ -55,8 +55,10 @@ export default class ArtistStore {
   setAlbum(id: number) {
     this.isLoading = true;
     getAlbum(id)
-      .then((result: AlbumData) => {
+      .then(async (result: AlbumData) => {
         this.album = result;
+        const avgRating = await getAverageRating(id);
+        this.album.ratingData = avgRating;
 
         if (this.artist.id !== result.artistId) {
           this.setArtist(result.artistId);

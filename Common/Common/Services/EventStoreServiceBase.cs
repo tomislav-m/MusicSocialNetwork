@@ -34,7 +34,7 @@ namespace Common.Services
 
         public async Task<ResolvedEvent[]> ReadFromStream(string stream, int maxCount = 4095)
         {
-            var eventsSlice = await connection.ReadStreamEventsBackwardAsync(stream, 0, maxCount, false);
+            var eventsSlice = await connection.ReadStreamEventsForwardAsync(stream, 0, maxCount, false);
             return eventsSlice.Events;
         }
 

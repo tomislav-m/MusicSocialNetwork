@@ -160,7 +160,7 @@ export default class CreateEditEvent extends React.Component<CreateEditEventProp
     searchArtist(data.searchQuery)
       .then((result: Array<ArtistDataSimple>) => {
         const artists = result;
-        this.state.selectedHeadliners.map(id => {
+        this.state.selectedHeadliners.forEach(id => {
           const headliner = this.state.headliners.find(x => x.id === id);
           if (headliner) {
             artists.push(headliner);

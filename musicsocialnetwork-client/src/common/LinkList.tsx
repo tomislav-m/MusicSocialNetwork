@@ -3,7 +3,7 @@ import { ArtistDataSimple } from '../models/Artist';
 import { Link } from 'react-router-dom';
 
 interface LinkListProps {
-  artists: Array<ArtistDataSimple>;
+  artists: Array<ArtistDataSimple> | undefined;
 }
 
 export default class LinkList extends React.Component<LinkListProps> {
@@ -13,7 +13,7 @@ export default class LinkList extends React.Component<LinkListProps> {
     return (
       <span>
         {
-          artists.map((artist, index) =>
+          artists && artists.map((artist, index) =>
             <span>
               {
                 index > 0 ? ', ' : ''

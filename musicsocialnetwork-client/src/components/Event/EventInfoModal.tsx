@@ -2,12 +2,32 @@ import React from 'react';
 import { Modal, Button, Icon, Grid, Label } from 'semantic-ui-react';
 import { EventData } from '../../models/Event';
 import LinkList from '../../common/LinkList';
+import { getArtist } from '../../actions/Music/MusicActions';
+import { eventData } from '../../data/EventDataMock';
+import { defaultArtistDataSimple } from '../../models/Artist';
 
 interface EventInfoProps {
   event: EventData;
 }
 
-export default class EventInfoModal extends React.Component<EventInfoProps> {
+interface EventInfoState {
+  artists: Array<any>;
+}
+
+export default class EventInfoModal extends React.Component<EventInfoProps, EventInfoState> {
+  constructor(props: EventInfoProps) {
+    super(props);
+
+    this.state = {
+      artists: []
+    };
+  }
+
+  componentDidMount() {
+    const event = this.props.event;
+    this.getArtists([...event.headliners, ...event.supporters]);
+  }
+
   public render() {
     const event = this.props.event;
 
@@ -20,8 +40,21 @@ export default class EventInfoModal extends React.Component<EventInfoProps> {
           <Grid>
             <Grid.Row divided>
               <Grid.Column width="5">
-                <img src="https://www.theaudiodb.com/images/media/artist/thumb/rtpxtt1385762058.jpg" alt="headliner" width="200" />
-                <img src="https://www.theaudiodb.com/images/media/artist/thumb/tqsvpt1363622181.jpg" alt="supporter" width="100" />
+                {
+                  event.headliners.map(artistId => {
+                    const artist = this.state.artists.find(x => x.id === artistId);
+                    if (artist) {
+                      return <img src={artist.photoUrl} alt="headliner" width="200" />;
+                    }
+                  })
+                }{
+                  event.supporters.map(artistId => {
+                    const artist = this.state.artists.find(x => x.id === artistId);
+                    if (artist) {
+                      return <img src={artist.photoUrl} alt="supporter" width="100" />;
+                    }
+                  })
+                }
               </Grid.Column>
               <Grid.Column width="11">
                 <div className="info-row">
@@ -31,10 +64,21 @@ export default class EventInfoModal extends React.Component<EventInfoProps> {
                   <Label>Venue</Label><span className="info">{event.venue}</span>
                 </div>
                 <div className="info-row">
-                  <Label>Headliners</Label><span className="info"><LinkList artists={[]} /></span>
+                  <Label>Headliners</Label>
+                  <span className="info">
+                    <LinkList artists={event.headliners.map(id => {
+                      const artist = this.state.artists.find(x => x.id === id) || defaultArtistDataSimple;
+                      return { id, name: artist.name };
+                    })} />
+                  </span>
                 </div>
                 <div className="info-row">
-                  <Label>Supporters</Label><span className="info"><LinkList artists={[]} /></span>
+                  <Label>Supporters</Label><span className="info">
+                    <LinkList artists={event.supporters.map(id => {
+                      const artist = this.state.artists.find(x => x.id === id) || defaultArtistDataSimple;
+                      return { id, name: artist.name };
+                    })} />
+                  </span>
                 </div>
               </Grid.Column>
             </Grid.Row>
@@ -50,5 +94,14 @@ export default class EventInfoModal extends React.Component<EventInfoProps> {
         </Modal.Actions>
       </Modal>
     );
+  }
+
+  private async getArtists(array: Array<number>) {
+    for (const id of array) {
+      const artist = await getArtist(id);
+      this.setState({
+        artists: [...this.state.artists, artist]
+      });
+    }
   }
 }

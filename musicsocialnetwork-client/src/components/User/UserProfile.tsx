@@ -3,13 +3,12 @@ import { inject, observer } from 'mobx-react';
 import UserStore from '../../stores/UserStore';
 import { Grid, Table, Icon, Pagination, Divider } from 'semantic-ui-react';
 import ArtistStore from '../../stores/ArtistStore';
-import { albumData } from '../../data/AlbumDataMock';
-import { artistData } from '../../data/ArtistDataMock';
 import { Link, Redirect } from 'react-router-dom';
 import autobind from 'autobind-decorator';
 import { EventData } from '../../models/Event';
 import EventInfoModal from '../Event/EventInfoModal';
 import LinkList from '../../common/LinkList';
+import { getAlbum, getArtist } from '../../actions/Music/MusicActions';
 
 interface UserProps {
   userStore?: UserStore;
@@ -33,7 +32,7 @@ export default class UserProfile extends React.Component<UserProps, UserState> {
     super(props);
 
     this.state = {
-      albumRatings: this.mapAlbumRatings(),
+      albumRatings: [],
       ratingsPage: 1,
       eventsPage: 1,
       pageSize: props.pageSize || 5,
@@ -41,17 +40,12 @@ export default class UserProfile extends React.Component<UserProps, UserState> {
     };
   }
 
-  componentDidUpdate(prevProps: UserProps) {
-    if (this.props.userStore?.userData?.ratings !== prevProps.userStore?.userData?.ratings
-      || this.state.albumRatings === undefined) {
-      this.setState({
-        albumRatings: this.mapAlbumRatings()
-      });
-    }
+  componentDidMount() {
+    this.getAlbumsByRating();
   }
 
   public render() {
-    const albumRatings = this.state.albumRatings || [];
+    const albumRatings = this.props.userStore?.albumRatings || [];
     const events = this.state.events || [];
     const pageSize = this.state.pageSize;
     const dict = this.props.artistStore?.simpleArtistsDict || {};
@@ -67,7 +61,7 @@ export default class UserProfile extends React.Component<UserProps, UserState> {
           </Grid.Row>
           <Grid.Row divided>
             <Grid.Column width="9">
-              <Table striped singleLine>
+              <Table striped>
                 <Table.Header>
                   <Table.Row>
                     <Table.HeaderCell colSpan="4">Album ratings</Table.HeaderCell>
@@ -75,10 +69,10 @@ export default class UserProfile extends React.Component<UserProps, UserState> {
                 </Table.Header>
                 <Table.Body>
                   {
-                    albumRatings.sort(this.sortRatings).slice((this.state.ratingsPage - 1) * pageSize, this.state.ratingsPage * pageSize).map(rating =>
+                    albumRatings.slice((this.state.ratingsPage - 1) * pageSize, this.state.ratingsPage * pageSize).map(rating =>
                       <Table.Row key={rating.albumId}>
                         <Table.Cell><img width="50px" src={rating.coverUrl} alt="cover" /></Table.Cell>
-                        <Table.Cell>{new Date(rating.ratedAt).toLocaleDateString('hr-HR')}</Table.Cell>
+                        <Table.Cell>{new Date(rating.createdAt).toLocaleDateString('hr-HR')}</Table.Cell>
                         <Table.Cell><Icon name="star" color="yellow" />x{rating.rating}</Table.Cell>
                         <Table.Cell>
                           <strong><Link to={`/Artist/${rating.artistId}`}>{rating.artist}</Link></strong> - <Link to={`/Album/${rating.albumId}`}>{rating.album}</Link> ({rating.yearReleased})
@@ -141,29 +135,37 @@ export default class UserProfile extends React.Component<UserProps, UserState> {
     });
   }
 
-  private mapAlbumRatings() {
-    return this.props.userStore?.userData?.ratings.map(rating => {
-      const album = albumData.find(x => x.id === rating.albumId);
-      const artist = artistData.find(x => x.id === album?.artistId);
-      return {
-        album: album?.name,
-        albumId: rating.albumId,
-        artist: artist?.name,
-        artistId: artist?.id,
-        rating: rating.rating,
-        yearReleased: album?.yearReleased,
-        coverUrl: album?.coverArtUrl,
-        createdAt: rating.createdAt
-      };
+  private getAlbumsByRating() {
+    const ratings = this.props.userStore?.albumRatings || [];
+    ratings.length = 0;
+
+    this.props.userStore?.userData?.ratings.map(async rating => {
+      await getAlbum(rating.albumId).then(album => {
+        return {
+          album: album?.name,
+          albumId: rating.albumId,
+          artistId: album.artistId,
+          artist: '',
+          rating: rating.rating,
+          yearReleased: album?.yearReleased,
+          coverUrl: album?.coverArtUrl,
+          createdAt: rating.createdAt
+        };
+      })
+        .then(async data => {
+          const artist = await getArtist(data.artistId);
+          data.artist = artist.name;
+          this.props.userStore?.albumRatings.push(data);
+        });
     });
   }
 
   private sortRatings = (a: any, b: any): number => {
-    if (a.ratedAt < b.ratedAt) {
+    if (a.createdAt < b.createdAt) {
       return 1;
     }
 
-    if (a.ratedAt > b.ratedAt) {
+    if (a.createdAt > b.createdAt) {
       return -1;
     }
 

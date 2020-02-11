@@ -20,19 +20,22 @@ namespace WebApi.Controllers
         private readonly IRequestClient<RateAlbum, AlbumRated> _rateRequestClient;
         private readonly IRequestClient<GetRatedAlbums, AlbumRated[]> _catalogRequestClient;
         private readonly IRequestClient<GetAverageRating, AlbumAverageRating> _catalogRatingRequestClient;
+        private readonly IRequestClient<AddToCollection, AlbumAddedToCollection> _collectionRequestClient;
 
         public AlbumsController(
             IRequestClient<SearchAlbum, AlbumFound[]> requestClient,
             IRequestClient<GetAlbum, AlbumEvent> getRequestClient,
             IRequestClient<RateAlbum, AlbumRated> rateRequestClient,
             IRequestClient<GetRatedAlbums, AlbumRated[]> catalogRequestClient,
-            IRequestClient<GetAverageRating, AlbumAverageRating> catalogRatingRequestClient)
+            IRequestClient<GetAverageRating, AlbumAverageRating> catalogRatingRequestClient,
+            IRequestClient<AddToCollection, AlbumAddedToCollection> collectionRequestClient)
         {
             _requestClient = requestClient;
             _getRequestClient = getRequestClient;
             _rateRequestClient = rateRequestClient;
             _catalogRequestClient = catalogRequestClient;
             _catalogRatingRequestClient = catalogRatingRequestClient;
+            _collectionRequestClient = collectionRequestClient;
         }
 
         // GET: api/Albums
@@ -114,6 +117,26 @@ namespace WebApi.Controllers
             try
             {
                 var result = await _rateRequestClient.Request(new RateAlbum { UserId = rateAlbum.UserId, AlbumId = rateAlbum.AlbumId, Rating = rateAlbum.Rating });
+
+                if (result == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(result);
+            }
+            catch (RequestTimeoutException)
+            {
+                return StatusCode((int)HttpStatusCode.RequestTimeout);
+            }
+        }
+
+        [HttpPost("add-to-collection")]
+        public async Task<ActionResult<AlbumAddedToCollection>> AddToCollection([FromBody]AddToCollection body)
+        {
+            try
+            {
+                var result = await _rateRequestClient.Request(new AddToCollection { UserId = body.UserId, AlbumId = body.AlbumId });
 
                 if (result == null)
                 {
