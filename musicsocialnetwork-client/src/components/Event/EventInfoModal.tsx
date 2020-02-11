@@ -3,7 +3,6 @@ import { Modal, Button, Icon, Grid, Label } from 'semantic-ui-react';
 import { EventData } from '../../models/Event';
 import LinkList from '../../common/LinkList';
 import { getArtist } from '../../actions/Music/MusicActions';
-import { eventData } from '../../data/EventDataMock';
 import { defaultArtistDataSimple } from '../../models/Artist';
 
 interface EventInfoProps {

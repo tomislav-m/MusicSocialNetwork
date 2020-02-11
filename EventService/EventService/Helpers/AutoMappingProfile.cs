@@ -21,6 +21,10 @@ namespace EventService.Helpers
             CreateMap<Event, EventEdited>();
 
             CreateMap<Event, EventEvent>();
+
+            CreateMap<UserEvent, EventMarked>();
+            CreateMap<UserEvent, MarkedEvent>()
+                .ForMember(x => (int)x.MarkEventType, o => o.MapFrom(d => d.MarkType));
         }
     }
 }

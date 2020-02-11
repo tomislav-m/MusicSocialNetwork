@@ -12,6 +12,7 @@ export default class UserStore {
   };
 
   @observable albumRatings: Array<any> = [];
+  @observable collection: Array<any> = [];
 
   @observable isLoading: boolean = false;
   @observable isAddingToCollection: boolean = false;
@@ -97,8 +98,8 @@ export default class UserStore {
     }
   }
 
-  @action
   @autobind
+  @action
   handleAddToCollection(albumId: number) {
     if (this.userData?.id === undefined) {
       return;
@@ -107,8 +108,9 @@ export default class UserStore {
       .then(data => {
         if (data.exception) {
           console.log(data.exception);
+        } else {
+          this.collection.push(data);
         }
-        // add to store
       });
   }
 

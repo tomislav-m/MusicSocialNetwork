@@ -37,12 +37,14 @@ namespace EventService
             services.AddScoped<AddEventConsumer>();
             services.AddScoped<EditEventConsumer>();
             services.AddScoped<GetEventConsumer>();
+            services.AddScoped<MarkEventConsumer>();
 
             services.AddMassTransit(x =>
             {
                 x.AddConsumer<AddEventConsumer>();
-                services.AddScoped<EditEventConsumer>();
+                x.AddConsumer<EditEventConsumer>();
                 x.AddConsumer<GetEventConsumer>();
+                x.AddConsumer<MarkEventConsumer>();
             });
 
             services.AddSingleton(provider => Bus.Factory.CreateUsingRabbitMq(cfg =>
@@ -61,6 +63,10 @@ namespace EventService
                     EndpointConvention.Map<GetEvent>(e.InputAddress);
                     EndpointConvention.Map<GetEventsByArtist>(e.InputAddress);
                     EndpointConvention.Map<EditEvent>(e.InputAddress);
+
+                    e.Consumer<MarkEventConsumer>(provider);
+                    EndpointConvention.Map<MarkEvent>(e.InputAddress);
+                    EndpointConvention.Map<GetMarkedEvents>(e.InputAddress);
                 });
             }));
 
@@ -72,6 +78,8 @@ namespace EventService
             services.AddScoped(provider => provider.GetRequiredService<IBus>().CreateRequestClient<EditEvent>());
             services.AddScoped(provider => provider.GetRequiredService<IBus>().CreateRequestClient<GetEvent>());
             services.AddScoped(provider => provider.GetRequiredService<IBus>().CreateRequestClient<GetEventsByArtist>());
+            services.AddScoped(provider => provider.GetRequiredService<IBus>().CreateRequestClient<MarkEvent>());
+            services.AddScoped(provider => provider.GetRequiredService<IBus>().CreateRequestClient<GetMarkedEvents>());
             services.AddSingleton<IHostedService, BusService>();
 
             services.AddScoped<EventStoreService>();

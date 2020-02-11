@@ -1,4 +1,5 @@
-﻿using EventService.Models;
+﻿using Common.MessageContracts.Event.Commands;
+using EventService.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,8 @@ namespace EventService.Services
         Task<Event> EditEvent(Event @event);
         Task<Event> GetEvent(int id);
         Task<IEnumerable<Event>> GetEventsByArtist(int artistId);
+        Task<UserEvent> MarkUserEvent(UserEvent userEvent);
+        Task<UserEvent[]> GetMarkedEvents(int userId);
     }
 
     public class EventService : IEventService
@@ -115,6 +118,38 @@ namespace EventService.Services
             {
                 _context.Supporters.AddAsync(new EventBandSupporter { ArtistId = supporter, EventId = newEvent.Id });
             }
+        }
+
+        public async Task<UserEvent> MarkUserEvent(UserEvent userEvent)
+        {
+            var dbModel = await _context.UserEvents.SingleOrDefaultAsync(x => x.EventId == userEvent.EventId && x.UserId == userEvent.UserId);
+            if (dbModel != null)
+            {
+                if (userEvent.MarkType == dbModel.MarkType)
+                {
+                    _context.UserEvents.Remove(dbModel);
+                }
+                else
+                {
+                    dbModel.MarkType = userEvent.MarkType;
+                    _context.UserEvents.Update(dbModel);
+                }
+            }
+            else
+            {
+                await _context.UserEvents.AddAsync(userEvent);
+            }
+
+            await _context.SaveChangesAsync();
+
+            return userEvent;
+        }
+
+        public async Task<UserEvent[]> GetMarkedEvents(int userId)
+        {
+            var events = await _context.UserEvents.Where(x => x.UserId == userId).ToArrayAsync();
+
+            return events;
         }
     }
 }

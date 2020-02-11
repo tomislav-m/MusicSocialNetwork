@@ -7,7 +7,6 @@ import { Link } from 'react-router-dom';
 import Tracks from './Tracks';
 import UserStore from '../../stores/UserStore';
 import autobind from 'autobind-decorator';
-import { addToCollection } from '../../actions/Music/MusicActions';
 
 interface AlbumProps {
   artistStore?: ArtistStore;
@@ -125,7 +124,7 @@ export default class Album extends React.Component<AlbumProps> {
   }
 
   @autobind
-  private handleRateAlbum(event: any, data: RatingProps) {
+  private handleRateAlbum(data: RatingProps) {
     const albumId = this.props.artistStore?.album?.id;
     if (albumId) {
       this.props.userStore?.rateAlbum(albumId, data.rating as number);
