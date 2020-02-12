@@ -22,9 +22,9 @@ namespace EventService.Helpers
 
             CreateMap<Event, EventEvent>();
 
+            CreateMap<EventMarked, UserEvent>();
             CreateMap<UserEvent, EventMarked>();
-            CreateMap<UserEvent, MarkedEvent>()
-                .ForMember(x => (int)x.MarkEventType, o => o.MapFrom(d => d.MarkType));
+            CreateMap<UserEvent, MarkedEvent>();
         }
     }
 }

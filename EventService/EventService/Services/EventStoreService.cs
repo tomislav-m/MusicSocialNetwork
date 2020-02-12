@@ -41,6 +41,11 @@ namespace EventService.Services
                             Encoding.UTF8.GetString(@event.Event.Data));
                         await _service.EditEvent(_mapper.Map<EventEdited, Event>(eventEdited));
                         break;
+                    case EventMessageContracts.EventMarked:
+                        var eventMarked = JsonConvert.DeserializeObject<EventMarked>(
+                            Encoding.UTF8.GetString(@event.Event.Data));
+                        await _service.MarkUserEvent(_mapper.Map<EventMarked, UserEvent>(eventMarked));
+                        break;
                     default:
                         break;
                 }

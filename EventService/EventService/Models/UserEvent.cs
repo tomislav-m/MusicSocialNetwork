@@ -1,9 +1,11 @@
-﻿namespace EventService.Models
+﻿using Common.MessageContracts.Event.Commands;
+
+namespace EventService.Models
 {
     public class UserEvent
     {
         public int EventId { get; set; }
         public int UserId { get; set; }
-        public int MarkType { get; set; }
+        public MarkEventType MarkEventType { get; set; }
     }
 }

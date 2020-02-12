@@ -28,7 +28,7 @@ namespace EventService.Consumers
 
             try
             {
-                var eventModel = await _service.MarkUserEvent(new UserEvent { EventId = message.EventId, UserId = message.UserId, MarkType = (int)message.MarkEventType });
+                var eventModel = await _service.MarkUserEvent(new UserEvent { EventId = message.EventId, UserId = message.UserId, MarkEventType = message.MarkEventType });
                 var @event = _mapper.Map<UserEvent, EventMarked>(eventModel);
                 await context.RespondAsync(@event);
                 _eventStoreService.AddEventToStream(@event, "event-stream");

@@ -125,13 +125,13 @@ namespace EventService.Services
             var dbModel = await _context.UserEvents.SingleOrDefaultAsync(x => x.EventId == userEvent.EventId && x.UserId == userEvent.UserId);
             if (dbModel != null)
             {
-                if (userEvent.MarkType == dbModel.MarkType)
+                if (userEvent.MarkEventType == dbModel.MarkEventType)
                 {
                     _context.UserEvents.Remove(dbModel);
                 }
                 else
                 {
-                    dbModel.MarkType = userEvent.MarkType;
+                    dbModel.MarkEventType = userEvent.MarkEventType;
                     _context.UserEvents.Update(dbModel);
                 }
             }
