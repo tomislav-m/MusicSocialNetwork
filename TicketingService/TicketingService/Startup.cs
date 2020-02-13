@@ -36,11 +36,13 @@ namespace TicketingService
 
             services.AddScoped<BuyTicketsConsumer>();
             services.AddScoped<GetEventTicketsConsumer>();
+            services.AddScoped<CreateEventTicketsConsumer>();
 
             services.AddMassTransit(x =>
             {
                 x.AddConsumer<BuyTicketsConsumer>();
                 x.AddConsumer<GetEventTicketsConsumer>();
+                x.AddConsumer<CreateEventTicketsConsumer>();
             });
 
             services.AddSingleton(provider => Bus.Factory.CreateUsingRabbitMq(cfg =>
@@ -56,6 +58,9 @@ namespace TicketingService
 
                     e.Consumer<GetEventTicketsConsumer>(provider);
                     EndpointConvention.Map<GetEventTickets>(e.InputAddress);
+
+                    e.Consumer<CreateEventTicketsConsumer>(provider);
+                    EndpointConvention.Map<AddEditEventTickets>(e.InputAddress);
                 });
             }));
 
@@ -65,6 +70,7 @@ namespace TicketingService
 
             services.AddScoped(provider => provider.GetRequiredService<IBus>().CreateRequestClient<BuyTickets>());
             services.AddScoped(provider => provider.GetRequiredService<IBus>().CreateRequestClient<GetEventTickets>());
+            services.AddScoped(provider => provider.GetRequiredService<IBus>().CreateRequestClient<AddEditEventTickets>());
 
             services.AddSingleton<IHostedService, BusService>();
 

@@ -11,6 +11,7 @@ namespace TicketingService.Services
         Task<Ticket> BuyTicket(Ticket ticket);
         Task<Ticket> BuyTicket(int userId, int eventId, DateTime dateTimeBought, int count = 1);
         Task<EventTicketsInfo> GetEventTicketsInfo(int eventId);
+        Task<EventTicketsInfo> CreateEventTickets(EventTicketsInfo info);
     }
 
     public class TicketsService : ITicketsService
@@ -46,6 +47,14 @@ namespace TicketingService.Services
         public async Task<EventTicketsInfo> GetEventTicketsInfo(int eventId)
         {
             var info = await _context.TicketsInfo.SingleOrDefaultAsync(x => x.EventId == eventId);
+
+            return info;
+        }
+
+        public async Task<EventTicketsInfo> CreateEventTickets(EventTicketsInfo info)
+        {
+            await _context.AddAsync(info);
+            await _context.SaveChangesAsync();
 
             return info;
         }

@@ -12,6 +12,7 @@ namespace TicketingService.Helpers
             CreateMap<TicketBought, Ticket>()
                 .ForMember(d => d.DateTimeBought, o => o.MapFrom(s => s.CreatedAt));
             CreateMap<EventTicketsInfo, EventTickets>();
+            CreateMap<EventTicketsInfo, EventTicketAdded>();
         }
     }
 }

@@ -87,6 +87,8 @@ namespace WebApi
                 new MessageRequestClient<BuyTickets, TicketBought>(x.GetRequiredService<IBus>(), ticketingServiceAddress, timeout, timeout));
             services.AddScoped<IRequestClient<GetEventTickets, EventTickets>>(x =>
                 new MessageRequestClient<GetEventTickets, EventTickets>(x.GetRequiredService<IBus>(), ticketingServiceAddress, timeout, timeout));
+            services.AddScoped<IRequestClient<AddEditEventTickets, EventTicketAdded>>(x =>
+                new MessageRequestClient<AddEditEventTickets, EventTicketAdded>(x.GetRequiredService<IBus>(), ticketingServiceAddress, timeout, timeout));
 
             bus.Start();
         }

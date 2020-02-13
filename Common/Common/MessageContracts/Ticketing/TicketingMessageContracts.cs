@@ -4,5 +4,6 @@
     {
         public const string EventTickets = "EventTickets";
         public const string TicketBought = "TicketBought";
+        public const string TicketAdded = "EventTicketAdded";
     }
 }
