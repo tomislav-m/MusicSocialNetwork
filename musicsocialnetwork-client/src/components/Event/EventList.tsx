@@ -1,5 +1,5 @@
 import React from 'react';
-import { EventData } from '../../models/Event';
+import { EventData, UserEvent } from '../../models/Event';
 import { Table, Modal, Button, Icon } from 'semantic-ui-react';
 import './EventList.css';
 import CreateEditEvent from './CreateEditEvent';
@@ -13,6 +13,8 @@ interface EventProps {
   simpleArtistsDict: { [id: number]: string } | undefined;
   artistId: number;
   store: ArtistStore | undefined;
+  userId: number | undefined;
+  userEvents: Array<UserEvent>;
 }
 
 export default class EventList extends React.Component<EventProps> {
@@ -57,7 +59,7 @@ export default class EventList extends React.Component<EventProps> {
                     </Modal>
                   </Table.Cell>
                   <Table.Cell>
-                    <EventInfoModal event={event} />
+                    <EventInfoModal event={event} userId={this.props.userId} userEvent={this.props.userEvents.filter(x => x.eventId === event.id)[0]} />
                   </Table.Cell>
                 </Table.Row>
               )

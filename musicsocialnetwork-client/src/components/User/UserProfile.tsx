@@ -5,7 +5,7 @@ import { Grid, Table, Icon, Pagination, Divider } from 'semantic-ui-react';
 import ArtistStore from '../../stores/ArtistStore';
 import { Link, Redirect } from 'react-router-dom';
 import autobind from 'autobind-decorator';
-import { EventData } from '../../models/Event';
+import { EventData, UserEvent } from '../../models/Event';
 import EventInfoModal from '../Event/EventInfoModal';
 import LinkList from '../../common/LinkList';
 import { getAlbum, getArtist } from '../../actions/Music/MusicActions';
@@ -22,6 +22,7 @@ interface UserState {
   ratingsPage: number;
   eventsPage: number;
   pageSize: number;
+  userEvents: Array<UserEvent>;
 }
 
 @inject('userStore')
@@ -31,12 +32,15 @@ export default class UserProfile extends React.Component<UserProps, UserState> {
   constructor(props: UserProps) {
     super(props);
 
+    const events = props.userStore?.userData?.events;
+
     this.state = {
       albumRatings: [],
       ratingsPage: 1,
       eventsPage: 1,
       pageSize: props.pageSize || 5,
-      events: this.props.userStore?.userData?.events
+      events,
+      userEvents: props.userStore?.userEvents || []
     };
   }
 
@@ -45,6 +49,7 @@ export default class UserProfile extends React.Component<UserProps, UserState> {
   }
 
   public render() {
+    const userStore = this.props.userStore;
     const albumRatings = this.props.userStore?.albumRatings || [];
     const events = this.state.events || [];
     const pageSize = this.state.pageSize;
@@ -101,7 +106,7 @@ export default class UserProfile extends React.Component<UserProps, UserState> {
                         <Table.Cell>{event.date.toLocaleDateString('hr-HR')}</Table.Cell>
                         <Table.Cell>{event.venue}</Table.Cell>
                         <Table.Cell><LinkList artists={event.headliners.concat(event.supporters).map(x => { return { id: event.id, name: dict[x] }; })} /></Table.Cell>
-                        <Table.Cell><EventInfoModal event={event} /></Table.Cell>
+                        <Table.Cell><EventInfoModal event={event} userId={userStore?.userData?.id} userEvent={this.state.userEvents.filter(x => x.eventId === event.id)[0]} /></Table.Cell>
                       </Table.Row>
                     )
                   }

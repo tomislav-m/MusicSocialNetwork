@@ -128,21 +128,29 @@ namespace EventService.Services
                 if (userEvent.MarkEventType == dbModel.MarkEventType)
                 {
                     _context.UserEvents.Remove(dbModel);
+
+                    await _context.SaveChangesAsync();
+
+                    return null;
                 }
                 else
                 {
                     dbModel.MarkEventType = userEvent.MarkEventType;
                     _context.UserEvents.Update(dbModel);
+
+                    await _context.SaveChangesAsync();
+
+                    return dbModel;
                 }
             }
             else
             {
                 await _context.UserEvents.AddAsync(userEvent);
+
+                await _context.SaveChangesAsync();
+
+                return userEvent;
             }
-
-            await _context.SaveChangesAsync();
-
-            return userEvent;
         }
 
         public async Task<UserEvent[]> GetMarkedEvents(int userId)

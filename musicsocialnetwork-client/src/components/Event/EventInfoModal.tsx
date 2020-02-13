@@ -1,16 +1,23 @@
 import React from 'react';
 import { Modal, Button, Icon, Grid, Label } from 'semantic-ui-react';
-import { EventData } from '../../models/Event';
+import { EventData, UserEvent } from '../../models/Event';
 import LinkList from '../../common/LinkList';
 import { getArtist } from '../../actions/Music/MusicActions';
 import { defaultArtistDataSimple } from '../../models/Artist';
+import { markEvent } from '../../actions/Events/EventActions';
+import autobind from 'autobind-decorator';
 
 interface EventInfoProps {
   event: EventData;
+  userId: number | undefined;
+  userEvent: UserEvent;
 }
 
 interface EventInfoState {
   artists: Array<any>;
+  isGoingLoading: boolean;
+  isInterestedLoading: boolean;
+  userEvent: UserEvent;
 }
 
 export default class EventInfoModal extends React.Component<EventInfoProps, EventInfoState> {
@@ -18,7 +25,10 @@ export default class EventInfoModal extends React.Component<EventInfoProps, Even
     super(props);
 
     this.state = {
-      artists: []
+      artists: [],
+      isGoingLoading: false,
+      isInterestedLoading: false,
+      userEvent: props.userEvent
     };
   }
 
@@ -28,7 +38,8 @@ export default class EventInfoModal extends React.Component<EventInfoProps, Even
   }
 
   public render() {
-    const event = this.props.event;
+    const { event } = this.props;
+    const { userEvent } = this.state;
 
     return (
       <Modal trigger={
@@ -84,12 +95,20 @@ export default class EventInfoModal extends React.Component<EventInfoProps, Even
           </Grid>
         </Modal.Content>
         <Modal.Actions>
-          <Button color="green">
+          <Button
+            color={(userEvent && userEvent.markEventType === 0) ? 'green' : 'grey'}
+            disabled={this.state.isGoingLoading}
+            loading={this.state.isGoingLoading}
+            onClick={() => this.handleMarkEvent(0)}>
             <Icon name="check circle" /> Going!
-                      </Button>
-          <Button color="orange">
+          </Button>
+          <Button
+            color={(userEvent && userEvent.markEventType === 1) ? 'orange' : 'grey'}
+            disabled={this.state.isInterestedLoading}
+            loading={this.state.isInterestedLoading}
+            onClick={() => this.handleMarkEvent(1)}>
             <Icon name="question circle" /> Interested...
-                      </Button>
+          </Button>
         </Modal.Actions>
       </Modal>
     );
@@ -100,6 +119,35 @@ export default class EventInfoModal extends React.Component<EventInfoProps, Even
       const artist = await getArtist(id);
       this.setState({
         artists: [...this.state.artists, artist]
+      });
+    }
+  }
+
+  @autobind
+  private handleMarkEvent(markEventType: number) {
+    const { userId, event } = this.props;
+    if (userId) {
+      this.setLoading(markEventType);
+      markEvent(userId, event.id, markEventType)
+        .then(result => {
+          if (!result.exception) {
+            this.setState({
+              userEvent: result
+            });
+          }
+          this.setLoading(markEventType);
+        });
+    }
+  }
+
+  private setLoading(markEventType: number) {
+    if (markEventType === 0) {
+      this.setState({
+        isGoingLoading: !this.state.isGoingLoading
+      });
+    } else {
+      this.setState({
+        isInterestedLoading: !this.state.isInterestedLoading
       });
     }
   }

@@ -45,3 +45,32 @@ export async function editEvent(event: EventData) {
     console.log(err);
   }
 }
+
+export async function markEvent(userId: number, eventId: number, markEventType: number) {
+  try {
+    const response = await fetch(`${eventApiUrl}/mark`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ userId, eventId, markEventType })
+    });
+    return response.json();
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export async function getMarkedEvents(userId: number) {
+  try {
+    const response = await fetch(`${eventApiUrl}/marked-events/${userId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    return response.json();
+  } catch (err) {
+    console.log(err);
+  }
+}

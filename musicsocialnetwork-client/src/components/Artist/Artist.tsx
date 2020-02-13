@@ -5,13 +5,16 @@ import { Loader, Grid, Label, Icon, Segment, Table, Tab } from 'semantic-ui-reac
 import './Artist.css';
 import { Link } from 'react-router-dom';
 import EventList from '../Event/EventList';
+import UserStore from '../../stores/UserStore';
 
 interface ArtistProps {
   artistStore?: ArtistStore;
+  userStore?: UserStore;
   match: any;
 }
 
 @inject('artistStore')
+@inject('userStore')
 @observer
 export default class Artist extends React.Component<ArtistProps> {
   constructor(props: ArtistProps) {
@@ -43,7 +46,7 @@ export default class Artist extends React.Component<ArtistProps> {
 
   private panes: any = [
     { menuItem: 'Albums', render: () => <Tab.Pane>{this.renderAlbums()}</Tab.Pane> },
-    { menuItem: 'Events', render: () => <Tab.Pane><EventList store={this.props.artistStore} artistId={this.props.artistStore?.artist.id || 0} simpleArtistsDict={this.props.artistStore?.simpleArtistsDict} /></Tab.Pane> }
+    { menuItem: 'Events', render: () => <Tab.Pane><EventList store={this.props.artistStore} artistId={this.props.artistStore?.artist.id || 0} simpleArtistsDict={this.props.artistStore?.simpleArtistsDict} userId={this.props.userStore?.userData?.id} userEvents= {this.props.userStore?.userEvents || []} /></Tab.Pane> }
   ];
 
   public render() {

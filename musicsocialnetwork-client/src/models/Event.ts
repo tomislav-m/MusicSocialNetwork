@@ -13,3 +13,8 @@ export const defaultEvent: EventData = {
   headliners: [],
   supporters: []
 };
+
+export interface UserEvent {
+  eventId: number;
+  markEventType: number;
+}
