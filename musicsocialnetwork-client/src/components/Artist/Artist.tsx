@@ -6,6 +6,7 @@ import './Artist.css';
 import { Link } from 'react-router-dom';
 import EventList from '../Event/EventList';
 import UserStore from '../../stores/UserStore';
+import { arrayToList } from '../../common/helpers';
 
 interface ArtistProps {
   artistStore?: ArtistStore;
@@ -81,13 +82,13 @@ export default class Artist extends React.Component<ArtistProps> {
                 <div className="info-row">
                   <Label className="info-label">Styles</Label>
                   <span className="info">
-                    {styles}
+                    {arrayToList(styles || [])}
                   </span>
                 </div>
                 <div className="info-row">
                   <Label className="info-label">Genres</Label>
                   <span className="info">
-                    {genres}
+                    {arrayToList(genres || [])}
                   </span>
                 </div>
                 <Tab panes={this.panes} />

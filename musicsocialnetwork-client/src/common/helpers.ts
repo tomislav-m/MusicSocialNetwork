@@ -1,8 +1,8 @@
 import { ArtistDataSimple } from '../models/Artist';
 
-export const arrayToList = (array: Array<ArtistDataSimple>): string => {
+export const arrayToList = (array: Array<any>): string => {
   let list = '';
-  array.map(x => x.name).forEach((x, index) => {
+  array.forEach((x, index) => {
     if (index > 0) {
       list += ', ';
     }

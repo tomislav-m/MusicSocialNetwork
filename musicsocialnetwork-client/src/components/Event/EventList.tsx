@@ -25,12 +25,15 @@ export default class EventList extends React.Component<EventProps> {
 
     return (
       <div>
-        <Modal trigger={<Button icon="plus" size="mini" color="green" title="Add event" />}>
-          <Modal.Header>Edit event</Modal.Header>
-          <Modal.Content>
-            <CreateEditEvent isEdit={false} headliner={{id: artistId, name: dict[artistId]}} onEventSave={this.handleCreateEvent} />
-          </Modal.Content>
-        </Modal>
+        {
+          this.props.userId &&
+          <Modal trigger={<Button icon="plus" size="mini" color="green" title="Add event" />}>
+            <Modal.Header>Edit event</Modal.Header>
+            <Modal.Content>
+              <CreateEditEvent isEdit={false} headliner={{ id: artistId, name: dict[artistId] }} onEventSave={this.handleCreateEvent} />
+            </Modal.Content>
+          </Modal>
+        }
         <Table striped compact>
           <Table.Header>
             <Table.Row>
@@ -54,7 +57,7 @@ export default class EventList extends React.Component<EventProps> {
                     <Modal trigger={<Button icon compact><Icon name="edit" /></Button>}>
                       <Modal.Header>Edit event</Modal.Header>
                       <Modal.Content>
-                        <CreateEditEvent headliner={{id: artistId, name: dict[artistId]}} oldEvent={event} isEdit={true} onEventSave={this.handleEditEvent} />
+                        <CreateEditEvent headliner={{ id: artistId, name: dict[artistId] }} oldEvent={event} isEdit={true} onEventSave={this.handleEditEvent} />
                       </Modal.Content>
                     </Modal>
                   </Table.Cell>
