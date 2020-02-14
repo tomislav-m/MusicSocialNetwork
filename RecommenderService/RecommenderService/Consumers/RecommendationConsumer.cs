@@ -10,10 +10,12 @@ namespace RecommenderService.Consumers
     public class RecommendationConsumer : IConsumer<GetRecommendations>
     {
         private readonly IRecommendationService _service;
+        private readonly EventStoreService _eventStoreService;
 
-        public RecommendationConsumer(IRecommendationService service)
+        public RecommendationConsumer(IRecommendationService service, EventStoreService eventStoreService)
         {
             _service = service;
+            _eventStoreService = eventStoreService;
         }
 
         public async Task Consume(ConsumeContext<GetRecommendations> context)

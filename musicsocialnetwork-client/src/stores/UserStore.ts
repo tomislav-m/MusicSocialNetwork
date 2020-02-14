@@ -3,7 +3,7 @@ import { LoginData, UserData, defaultUserData } from '../models/User';
 import autobind from 'autobind-decorator';
 import { authenticateAsync, registerAsync } from '../actions/User/UserActions';
 import { rateAlbum, getRatedAlbums, addToCollection } from '../actions/Music/MusicActions';
-import { UserEvent } from '../models/Event';
+import { UserEvent, EventData } from '../models/Event';
 import { getMarkedEvents } from '../actions/Events/EventActions';
 
 export default class UserStore {
@@ -58,7 +58,7 @@ export default class UserStore {
             .catch(err => console.log(err));
           getMarkedEvents(this.userData.id)
             .then(events => {
-              if (!data.exception) {
+              if (!events.exception) {
                 this.userEvents = events;
               }
             });

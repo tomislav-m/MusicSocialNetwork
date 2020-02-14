@@ -1,4 +1,5 @@
 import { Track } from './Track';
+import { ArtistDataSimple } from './Artist';
 
 export interface AlbumData {
   id: number;
@@ -12,6 +13,14 @@ export interface AlbumData {
   yearReleased: number;
   ratingData: AlbumRatingData;
   tracks: Array<Track>;
+}
+
+export interface AlbumDataSimple {
+  id: number;
+  name: string;
+  coverArtUrl: string;
+  artist: ArtistDataSimple;
+  rating: number;
 }
 
 export interface AlbumRatingData {

@@ -9,6 +9,7 @@ import { EventData, UserEvent } from '../../models/Event';
 import EventInfoModal from '../Event/EventInfoModal';
 import LinkList from '../../common/LinkList';
 import { getAlbum, getArtist } from '../../actions/Music/MusicActions';
+import Recommendations from './Recommendations';
 
 interface UserProps {
   userStore?: UserStore;
@@ -18,11 +19,9 @@ interface UserProps {
 
 interface UserState {
   albumRatings?: Array<any>;
-  events?: Array<EventData>;
   ratingsPage: number;
   eventsPage: number;
   pageSize: number;
-  userEvents: Array<UserEvent>;
 }
 
 @inject('userStore')
@@ -32,15 +31,11 @@ export default class UserProfile extends React.Component<UserProps, UserState> {
   constructor(props: UserProps) {
     super(props);
 
-    const events = props.userStore?.userData?.events;
-
     this.state = {
       albumRatings: [],
       ratingsPage: 1,
       eventsPage: 1,
-      pageSize: props.pageSize || 5,
-      events,
-      userEvents: props.userStore?.userEvents || []
+      pageSize: props.pageSize || 5
     };
   }
 
@@ -50,8 +45,8 @@ export default class UserProfile extends React.Component<UserProps, UserState> {
 
   public render() {
     const userStore = this.props.userStore;
+    const userEvents = userStore?.userEvents || [];
     const albumRatings = this.props.userStore?.albumRatings || [];
-    const events = this.state.events || [];
     const pageSize = this.state.pageSize;
     const dict = this.props.artistStore?.simpleArtistsDict || {};
 
@@ -101,21 +96,25 @@ export default class UserProfile extends React.Component<UserProps, UserState> {
                 </Table.Header>
                 <Table.Body>
                   {
-                    events.map(event =>
-                      <Table.Row key={event.id}>
-                        <Table.Cell>{event.date.toLocaleDateString('hr-HR')}</Table.Cell>
+                    userEvents.map(event =>
+                      <Table.Row key={event.eventId}>
+                        {/* <Table.Cell>{event.date.toLocaleDateString('hr-HR')}</Table.Cell> */}
+                        <Table.Cell>{event.date}</Table.Cell>
                         <Table.Cell>{event.venue}</Table.Cell>
-                        <Table.Cell><LinkList artists={event.headliners.concat(event.supporters).map(x => { return { id: event.id, name: dict[x] }; })} /></Table.Cell>
-                        <Table.Cell><EventInfoModal event={event} userId={userStore?.userData?.id} userEvent={this.state.userEvents.filter(x => x.eventId === event.id)[0]} /></Table.Cell>
                       </Table.Row>
                     )
                   }
                 </Table.Body>
               </Table>
               {
-                events.length > pageSize &&
-                <Pagination activePage={this.state.eventsPage} totalPages={events.length / pageSize} onPageChange={this.handleEventsPageChange} />
+                userEvents.length > pageSize &&
+                <Pagination activePage={this.state.eventsPage} totalPages={userEvents.length / pageSize} onPageChange={this.handleEventsPageChange} />
               }
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row>
+            <Grid.Column width={10}>
+              <Recommendations userid={userStore?.userData?.id || 0} />
             </Grid.Column>
           </Grid.Row>
           <Divider horizontal>Comments</Divider>

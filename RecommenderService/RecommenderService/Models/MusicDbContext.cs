@@ -7,6 +7,11 @@ namespace RecommenderService.Models
         public MusicDbContext(DbContextOptions<MusicDbContext> options)
             : base(options) { }
 
-        public DbSet<Album> Albums;
+        public DbSet<Album> Albums { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Album>().ToTable("Album");
+        }
     }
 }

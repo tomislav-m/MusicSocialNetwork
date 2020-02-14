@@ -66,6 +66,32 @@ namespace WebApi.Controllers
             }
         }
 
+        [HttpPost("simple")]
+        public async Task<ActionResult<AlbumSimple>> GetSimpleAlbums(int[] ids)
+        {
+            try
+            {
+                var albums = new List<AlbumSimple>();
+
+                foreach (var id in ids)
+                {
+                    var result = await _getRequestClient.Request(new GetAlbum { Id = id });
+                    albums.Add(new AlbumSimple {
+                        Id = id,
+                        Name = result.Name,
+                        CoverArtUrl = result.CoverArtUrl,
+                        Artist = new ArtistSimple { Id = result.ArtistId }
+                    });
+                }
+
+                return Ok(albums);
+            }
+            catch (RequestTimeoutException)
+            {
+                return StatusCode((int)HttpStatusCode.RequestTimeout);
+            }
+        }
+
         // PUT: api/Albums/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.

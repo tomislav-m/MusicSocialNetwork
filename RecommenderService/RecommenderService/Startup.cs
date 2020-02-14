@@ -32,7 +32,10 @@ namespace RecommenderService
 
             services.AddControllers();
 
-            services.AddScoped<RecommendationService>();
+            services.AddScoped<IRecommendationService, RecommendationService>();
+
+            services.AddScoped<RecommendationConsumer>();
+
             services.AddMassTransit(x => x.AddConsumer<RecommendationConsumer>());
 
             services.AddSingleton(provider => Bus.Factory.CreateUsingRabbitMq(cfg =>

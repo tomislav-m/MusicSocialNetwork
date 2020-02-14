@@ -17,4 +17,6 @@ export const defaultEvent: EventData = {
 export interface UserEvent {
   eventId: number;
   markEventType: number;
+  venue: string;
+  date: Date;
 }

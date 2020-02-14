@@ -5,6 +5,8 @@ using Common.MessageContracts.Event.Event;
 using Common.MessageContracts.Event.Events;
 using Common.MessageContracts.Music.Commands;
 using Common.MessageContracts.Music.Events;
+using Common.MessageContracts.Recommender.Commands;
+using Common.MessageContracts.Recommender.Events;
 using Common.MessageContracts.Ticketing.Commands;
 using Common.MessageContracts.Ticketing.Events;
 using Common.MessageContracts.User.Commands;
@@ -89,6 +91,10 @@ namespace WebApi
                 new MessageRequestClient<GetEventTickets, EventTickets>(x.GetRequiredService<IBus>(), ticketingServiceAddress, timeout, timeout));
             services.AddScoped<IRequestClient<AddEditEventTickets, EventTicketAdded>>(x =>
                 new MessageRequestClient<AddEditEventTickets, EventTicketAdded>(x.GetRequiredService<IBus>(), ticketingServiceAddress, timeout, timeout));
+
+            var recommenderServiceAddress = new Uri("rabbitmq://localhost/recommender-service");
+            services.AddScoped<IRequestClient<GetRecommendations, Recommendations>>(x =>
+                new MessageRequestClient<GetRecommendations, Recommendations>(x.GetRequiredService<IBus>(), recommenderServiceAddress, timeout, timeout));
 
             bus.Start();
         }
