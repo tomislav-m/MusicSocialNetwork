@@ -30,7 +30,7 @@ export default class Recommendations extends React.Component<RecommendationProps
   componentDidMount() {
     getRecommendations(this.props.userid)
       .then((recommendation) => {
-        if (recommendation.exception) {
+        if (!recommendation || recommendation.exception) {
           return;
         }
         getSimpleAlbums(recommendation.albumIds)

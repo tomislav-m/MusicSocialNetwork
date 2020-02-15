@@ -4,7 +4,7 @@ import autobind from 'autobind-decorator';
 import { authenticateAsync, registerAsync } from '../actions/User/UserActions';
 import { rateAlbum, getRatedAlbums, addToCollection } from '../actions/Music/MusicActions';
 import { UserEvent, EventData } from '../models/Event';
-import { getMarkedEvents } from '../actions/Events/EventActions';
+import { getMarkedEvents, getEvents } from '../actions/Events/EventActions';
 
 export default class UserStore {
   @observable loginData: LoginData = {
@@ -16,6 +16,7 @@ export default class UserStore {
   @observable albumRatings: Array<any> = [];
   @observable collection: Array<any> = [];
   @observable userEvents: Array<UserEvent> = [];
+  @observable events: Array<EventData> = [];
 
   @observable isLoading: boolean = false;
   @observable isAddingToCollection: boolean = false;
@@ -57,9 +58,13 @@ export default class UserStore {
             })
             .catch(err => console.log(err));
           getMarkedEvents(this.userData.id)
-            .then(events => {
-              if (!events.exception) {
-                this.userEvents = events;
+            .then((userEvents: Array<UserEvent>) => {
+              if (userEvents) {
+                this.userEvents = userEvents;
+                getEvents(userEvents.map(x => x.eventId))
+                  .then((events: Array<EventData>) => {
+                    this.events = events;
+                  });
               }
             });
         }

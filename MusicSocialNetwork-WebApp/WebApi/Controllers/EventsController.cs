@@ -5,6 +5,7 @@ using Common.MessageContracts.Ticketing.Commands;
 using Common.MessageContracts.Ticketing.Events;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -15,6 +16,7 @@ namespace WebApi.Controllers
     public class EventsController : ControllerBase
     {
         private readonly IRequestClient<GetEventsByArtist, EventEvent[]> _requestClient;
+        private readonly IRequestClient<GetEvent, EventEvent> _eventRequestClient;
         private readonly IRequestClient<AddEvent, EventAdded> _addEventRequestClient;
         private readonly IRequestClient<EditEvent, EventEdited> _editEventRequestClient;
         private readonly IRequestClient<GetMarkedEvents, MarkedEvent[]> _getMarkedEventsRequestClient;
@@ -25,6 +27,7 @@ namespace WebApi.Controllers
 
         public EventsController(
             IRequestClient<GetEventsByArtist, EventEvent[]> requestClient,
+            IRequestClient<GetEvent, EventEvent> eventRequestClient,
             IRequestClient<AddEvent, EventAdded> addEventRequestClient,
             IRequestClient<EditEvent, EventEdited> editEventRequestClient,
             IRequestClient<GetMarkedEvents, MarkedEvent[]> getMarkedEventsRequestClient,
@@ -34,6 +37,7 @@ namespace WebApi.Controllers
             IRequestClient<AddEditEventTickets, EventTicketAdded> addTicketsRequestClient)
         {
             _requestClient = requestClient;
+            _eventRequestClient = eventRequestClient;
             _addEventRequestClient = addEventRequestClient;
             _editEventRequestClient = editEventRequestClient;
             _getMarkedEventsRequestClient = getMarkedEventsRequestClient;
@@ -196,6 +200,26 @@ namespace WebApi.Controllers
                 }
 
                 return Ok(result);
+            }
+            catch (RequestTimeoutException)
+            {
+                return StatusCode((int)HttpStatusCode.RequestTimeout);
+            }
+        }
+
+        [HttpPost("more")]
+        public async Task<ActionResult> GetEvents(int[] ids)
+        {
+            try
+            {
+                var events = new List<EventEvent>();
+
+                foreach (var id in ids)
+                {
+                    var @event = await _eventRequestClient.Request(new GetEvent { Id = id });
+                }
+
+                return Ok(events);
             }
             catch (RequestTimeoutException)
             {

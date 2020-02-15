@@ -67,10 +67,16 @@ namespace RecommenderService.Services
 
             foreach(var id in userAlbumIds)
             {
-                var album = await _musicContext.Albums.FindAsync(id);
-                genreIds.Add(album.GenreId);
-                styleIds.Add(album.StyleId);
-                artistIds.Add(album.ArtistId);
+                try
+                {
+                    var album = await _musicContext.Albums.FindAsync(id);
+                    genreIds.Add(album.GenreId);
+                    styleIds.Add(album.StyleId);
+                    artistIds.Add(album.ArtistId);
+                } catch
+                {
+                    continue;
+                }
             }
 
             return _musicContext.Albums

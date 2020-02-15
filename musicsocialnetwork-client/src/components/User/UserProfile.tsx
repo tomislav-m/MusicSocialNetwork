@@ -45,7 +45,7 @@ export default class UserProfile extends React.Component<UserProps, UserState> {
 
   public render() {
     const userStore = this.props.userStore;
-    const userEvents = userStore?.userEvents || [];
+    const events = userStore?.events || [];
     const albumRatings = this.props.userStore?.albumRatings || [];
     const pageSize = this.state.pageSize;
     const dict = this.props.artistStore?.simpleArtistsDict || {};
@@ -96,9 +96,9 @@ export default class UserProfile extends React.Component<UserProps, UserState> {
                 </Table.Header>
                 <Table.Body>
                   {
-                    userEvents.map(event =>
-                      <Table.Row key={event.eventId}>
-                        {/* <Table.Cell>{event.date.toLocaleDateString('hr-HR')}</Table.Cell> */}
+                    events.map(event =>
+                      <Table.Row key={event.id}>
+                        <Table.Cell>{event.date.toLocaleDateString('hr-HR')}</Table.Cell>
                         <Table.Cell>{event.date}</Table.Cell>
                         <Table.Cell>{event.venue}</Table.Cell>
                       </Table.Row>
@@ -107,8 +107,8 @@ export default class UserProfile extends React.Component<UserProps, UserState> {
                 </Table.Body>
               </Table>
               {
-                userEvents.length > pageSize &&
-                <Pagination activePage={this.state.eventsPage} totalPages={userEvents.length / pageSize} onPageChange={this.handleEventsPageChange} />
+                events.length > pageSize &&
+                <Pagination activePage={this.state.eventsPage} totalPages={events.length / pageSize} onPageChange={this.handleEventsPageChange} />
               }
             </Grid.Column>
           </Grid.Row>

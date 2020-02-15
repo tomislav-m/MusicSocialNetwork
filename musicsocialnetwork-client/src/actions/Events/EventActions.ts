@@ -17,6 +17,21 @@ export async function getEventsByArtist(artistId: number) {
   }
 }
 
+export async function getEvents(eventIds: Array<number>) {
+  try {
+    const response = await fetch(`${eventApiUrl}/more`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(eventIds)
+    });
+    return response.json();
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 export async function createEvent(event: EventData) {
   try {
     const response = await fetch(`${eventApiUrl}`, {

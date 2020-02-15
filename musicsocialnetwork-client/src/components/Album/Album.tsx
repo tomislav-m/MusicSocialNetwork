@@ -124,7 +124,7 @@ export default class Album extends React.Component<AlbumProps> {
   }
 
   @autobind
-  private handleRateAlbum(data: RatingProps) {
+  private handleRateAlbum(event: any, data: RatingProps) {
     const albumId = this.props.artistStore?.album?.id;
     if (albumId) {
       this.props.userStore?.rateAlbum(albumId, data.rating as number);
