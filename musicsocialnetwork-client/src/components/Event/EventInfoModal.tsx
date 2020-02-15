@@ -53,16 +53,12 @@ export default class EventInfoModal extends React.Component<EventInfoProps, Even
                 {
                   event.headliners.map(artistId => {
                     const artist = this.state.artists.find(x => x.id === artistId);
-                    if (artist) {
-                      return <img src={artist.photoUrl} alt="headliner" width="200" />;
-                    }
+                    return artist ? <img src={artist.photoUrl} alt="headliner" width="200" /> : <span></span>;
                   })
                 }{
                   event.supporters.map(artistId => {
                     const artist = this.state.artists.find(x => x.id === artistId);
-                    if (artist) {
-                      return <img src={artist.photoUrl} alt="supporter" width="100" />;
-                    }
+                    return artist ? <img src={artist.photoUrl} alt="supporter" width="100" /> : <span></span>
                   })
                 }
               </Grid.Column>

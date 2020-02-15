@@ -49,7 +49,7 @@ namespace RecommenderService.Services
             var albumIds = dict.OrderByDescending(x => x.Value)
                 .Select(x => x.Key)
                 .ToList();
-            albumIds.AddRange(uaList.Where(x => !albumIds.Contains(x)).OrderBy(a => Guid.NewGuid()).Take(100));
+            albumIds.AddRange(uaList.Where(x => !albumIds.Contains(x)).OrderBy(a => Guid.NewGuid()).Take(2000));
 
             return albumIds;
         }
@@ -80,7 +80,7 @@ namespace RecommenderService.Services
             }
 
             return _musicContext.Albums
-                .Where(x => !userAlbumIds.Contains(x.Id) && genreIds.Contains(x.GenreId) && styleIds.Contains(x.StyleId) && !artistIds.Contains(x.ArtistId))
+                .Where(x => !userAlbumIds.Contains(x.Id) || genreIds.Contains(x.GenreId) && styleIds.Contains(x.StyleId) && !artistIds.Contains(x.ArtistId))
                 .Select(x => x.Id);
         }
     }

@@ -22,9 +22,7 @@ export default class Artist extends React.Component<ArtistProps> {
     super(props);
 
     const id = parseInt(props.match.params.id);
-    if (id !== props.artistStore?.artist.id) {
-      this.updateArtist(props.artistStore, id);
-    }
+    this.updateArtist(props.artistStore, id);
   }
 
   componentDidUpdate(prevProps: ArtistProps) {

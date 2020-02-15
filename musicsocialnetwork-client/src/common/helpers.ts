@@ -1,4 +1,3 @@
-import { ArtistDataSimple } from '../models/Artist';
 
 export const arrayToList = (array: Array<any>): string => {
   let list = '';

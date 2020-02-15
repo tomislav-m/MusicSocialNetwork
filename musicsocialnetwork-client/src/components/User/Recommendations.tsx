@@ -1,9 +1,9 @@
 import React from 'react';
 import { Tab, Table, Loader } from 'semantic-ui-react';
-import { AlbumData, AlbumDataSimple } from '../../models/Album';
+import { AlbumDataSimple } from '../../models/Album';
 import { ArtistDataSimple } from '../../models/Artist';
 import { Link } from 'react-router-dom';
-import { getRecommendations, getAlbum, getSimpleAlbums, getArtistNames } from '../../actions/Music/MusicActions';
+import { getRecommendations, getSimpleAlbums, getArtistNames } from '../../actions/Music/MusicActions';
 import autobind from 'autobind-decorator';
 
 interface RecommendationProps {

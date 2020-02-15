@@ -5,9 +5,6 @@ import { Grid, Table, Icon, Pagination, Divider } from 'semantic-ui-react';
 import ArtistStore from '../../stores/ArtistStore';
 import { Link, Redirect } from 'react-router-dom';
 import autobind from 'autobind-decorator';
-import { EventData, UserEvent } from '../../models/Event';
-import EventInfoModal from '../Event/EventInfoModal';
-import LinkList from '../../common/LinkList';
 import { getAlbum, getArtist } from '../../actions/Music/MusicActions';
 import Recommendations from './Recommendations';
 
@@ -48,7 +45,6 @@ export default class UserProfile extends React.Component<UserProps, UserState> {
     const events = userStore?.events || [];
     const albumRatings = this.props.userStore?.albumRatings || [];
     const pageSize = this.state.pageSize;
-    const dict = this.props.artistStore?.simpleArtistsDict || {};
 
     return (
       <div>
@@ -143,8 +139,8 @@ export default class UserProfile extends React.Component<UserProps, UserState> {
     const ratings = this.props.userStore?.albumRatings || [];
     ratings.length = 0;
 
-    this.props.userStore?.userData?.ratings.map(async rating => {
-      await getAlbum(rating.albumId).then(album => {
+    this.props.userStore?.userData?.ratings.forEach(async rating => {
+      getAlbum(rating.albumId).then(album => {
         return {
           album: album?.name,
           albumId: rating.albumId,
@@ -164,15 +160,4 @@ export default class UserProfile extends React.Component<UserProps, UserState> {
     });
   }
 
-  private sortRatings = (a: any, b: any): number => {
-    if (a.createdAt < b.createdAt) {
-      return 1;
-    }
-
-    if (a.createdAt > b.createdAt) {
-      return -1;
-    }
-
-    return a.album > b.album ? 1 : -1;
-  }
 }
