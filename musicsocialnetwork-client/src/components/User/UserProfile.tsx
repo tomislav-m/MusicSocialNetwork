@@ -94,8 +94,7 @@ export default class UserProfile extends React.Component<UserProps, UserState> {
                   {
                     events.map(event =>
                       <Table.Row key={event.id}>
-                        <Table.Cell>{event.date.toLocaleDateString('hr-HR')}</Table.Cell>
-                        <Table.Cell>{event.date}</Table.Cell>
+                        <Table.Cell>{(new Date(event.date)).toLocaleDateString('hr-HR')}</Table.Cell>
                         <Table.Cell>{event.venue}</Table.Cell>
                       </Table.Row>
                     )

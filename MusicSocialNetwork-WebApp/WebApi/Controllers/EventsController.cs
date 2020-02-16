@@ -217,6 +217,7 @@ namespace WebApi.Controllers
                 foreach (var id in ids)
                 {
                     var @event = await _eventRequestClient.Request(new GetEvent { Id = id });
+                    events.Add(@event);
                 }
 
                 return Ok(events);

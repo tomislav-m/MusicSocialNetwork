@@ -26,7 +26,7 @@ namespace RecommenderService.Consumers
             {
                 var userAlbumIds = _service.GetUserAlbumIds(userId);
                 userAlbumIds = await _service.FilterAlbumsByStylesAndGenres(userAlbumIds);
-                userAlbumIds = await _service.GetPopularAlbums(userAlbumIds);
+                //userAlbumIds = await _service.GetPopularAlbums(userAlbumIds);
 
                 await context.RespondAsync(new Recommendations { AlbumIds = userAlbumIds });
             }

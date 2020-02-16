@@ -61,27 +61,60 @@ namespace RecommenderService.Services
 
         public async Task<IEnumerable<int>> FilterAlbumsByStylesAndGenres(IEnumerable<int> userAlbumIds)
         {
-            var genreIds = new HashSet<int>();
-            var styleIds = new HashSet<int>();
+            var genreIds = new Dictionary<int, int>();
+            var styleIds = new Dictionary<int, int>();
             var artistIds = new HashSet<int>();
 
-            foreach(var id in userAlbumIds)
+            foreach (var id in userAlbumIds)
             {
                 try
                 {
                     var album = await _musicContext.Albums.FindAsync(id);
-                    genreIds.Add(album.GenreId);
-                    styleIds.Add(album.StyleId);
+
+                    if (genreIds.ContainsKey(album.GenreId))
+                    {
+                        genreIds[album.GenreId] = genreIds[album.GenreId] + 1;
+                    } else
+                    {
+                        genreIds.Add(album.GenreId, 1);
+                    }
+
+                    if (styleIds.ContainsKey(album.StyleId))
+                    {
+                        styleIds[album.StyleId] = styleIds[album.StyleId] + 1;
+                    }
+                    else
+                    {
+                        styleIds.Add(album.StyleId, 1);
+                    }
                     artistIds.Add(album.ArtistId);
                 } catch
                 {
                     continue;
                 }
             }
+            genreIds.Remove(122);
+            styleIds.Remove(120);
 
-            return _musicContext.Albums
-                .Where(x => !userAlbumIds.Contains(x.Id) || genreIds.Contains(x.GenreId) && styleIds.Contains(x.StyleId) && !artistIds.Contains(x.ArtistId))
-                .Select(x => x.Id);
+            var genres = genreIds.ToList();
+            genres.Sort((x, y) => y.Value.CompareTo(x.Value));
+            var styles = styleIds.ToList();
+            styles.Sort((x, y) => y.Value.CompareTo(x.Value));
+
+            var albums = new List<int>();
+
+            foreach (var genre in genres)
+            {
+                albums.AddRange(
+                    _musicContext.Albums.Where(x => x.GenreId == genre.Key && !userAlbumIds.Contains(x.Id) && !artistIds.Contains(x.ArtistId))
+                    .Select(x => x.Id));
+            }
+
+            return albums.Take(1000).OrderBy(a => Guid.NewGuid());
+
+            //return _musicContext.Albums
+            //    .Where(x => !userAlbumIds.Contains(x.Id) && genreIds.Contains(x.GenreId) && styleIds.Contains(x.StyleId) && !artistIds.Contains(x.ArtistId))
+            //    .Select(x => x.Id);
         }
     }
 }
