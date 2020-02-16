@@ -6,6 +6,8 @@ import { getArtist } from '../../actions/Music/MusicActions';
 import { defaultArtistDataSimple } from '../../models/Artist';
 import { markEvent, buyTickets } from '../../actions/Events/EventActions';
 import autobind from 'autobind-decorator';
+import Comments from '../Comments/Comments';
+import './EventInfoModal.css';
 
 interface EventInfoProps {
   event: EventData;
@@ -51,22 +53,22 @@ export default class EventInfoModal extends React.Component<EventInfoProps, Even
       } closeIcon>
         <Modal.Header>Event</Modal.Header>
         <Modal.Content>
-          <Grid>
+          <Grid className="modal-grid">
             <Grid.Row divided>
-              <Grid.Column width="5">
+              <Grid.Column width="5" className="event-images">
                 {
                   event.headliners.map(artistId => {
                     const artist = this.state.artists.find(x => x.id === artistId);
-                    return artist ? <img src={artist.photoUrl} alt="headliner" width="200" /> : <span></span>;
+                    return artist ? <img key={artistId} src={artist.photoUrl} alt="headliner" width="200" /> : <span key={artistId}></span>;
                   })
                 }{
                   event.supporters.map(artistId => {
                     const artist = this.state.artists.find(x => x.id === artistId);
-                    return artist ? <img src={artist.photoUrl} alt="supporter" width="100" /> : <span></span>;
+                    return artist ? <img key={artistId} src={artist.photoUrl} alt="supporter" width="100" /> : <span key={artistId}></span>;
                   })
                 }
               </Grid.Column>
-              <Grid.Column width="11">
+              <Grid.Column width="11" className="event-details">
                 <div className="info-row">
                   <Label>Date</Label><span className="info">{(new Date(event.date)).toLocaleDateString('hr-HR')}</span>
                 </div>
@@ -90,6 +92,7 @@ export default class EventInfoModal extends React.Component<EventInfoProps, Even
                     })} />
                   </span>
                 </div>
+                <Comments />
               </Grid.Column>
             </Grid.Row>
           </Grid>
@@ -99,8 +102,7 @@ export default class EventInfoModal extends React.Component<EventInfoProps, Even
             floated="left"
             onClick={this.handleBuyTickets}
             loading={isBuyingTicket}
-          > Buy tickets
-          </Button>
+          > Buy tickets</Button>
           <Input
             className="tickets-input"
             type="number"

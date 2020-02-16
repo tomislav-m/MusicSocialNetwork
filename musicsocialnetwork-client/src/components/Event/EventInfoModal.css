@@ -1,0 +1,13 @@
+.modal-grid {
+  max-height: 600px;
+}
+
+.event-details {
+  max-height: 400px;
+  overflow-y: scroll;
+}
+
+.event-images {
+  max-height: 400px;
+  overflow: hidden;
+}

@@ -14,7 +14,7 @@ export default class LinkList extends React.Component<LinkListProps> {
       <span>
         {
           artists && artists.map((artist, index) =>
-            <span>
+            <span key={index}>
               {
                 index > 0 ? ', ' : ''
               }

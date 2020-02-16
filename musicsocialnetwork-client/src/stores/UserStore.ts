@@ -27,6 +27,8 @@ export default class UserStore {
 
   @observable simpleArtistsDict: { [id: number]: string } = {};
 
+  @observable comments: Array<any> = [];
+
   @autobind
   @action
   handleUsernameChange(event: { target: HTMLInputElement }) {
