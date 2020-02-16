@@ -5,3 +5,8 @@
 .info-row {
   margin-bottom: 10px;;
 }
+
+.tickets-input {
+  float: left;
+  width: 60px;
+}

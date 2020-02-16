@@ -83,7 +83,17 @@ namespace EventService.Services
 
         public async Task<Event> GetEvent(int id)
         {
-            return await _context.Events.FindAsync(id);
+            var @event = await _context.Events.FindAsync(id);
+            if (@event != null)
+            {
+
+                var headlinerEventBand = _context.Headliners.Where(x => x.EventId == id).Select(x => x.ArtistId);
+                var supporterEventBand = _context.Supporters.Where(x => x.EventId == id).Select(x => x.ArtistId);
+                @event.Headliners = await headlinerEventBand.ToListAsync();
+                @event.Supporters = await supporterEventBand.ToListAsync();
+            }
+
+            return @event;
         }
 
         public async Task<Event> EditEvent(Event @event)

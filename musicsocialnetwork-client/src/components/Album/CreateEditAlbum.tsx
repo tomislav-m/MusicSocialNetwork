@@ -37,7 +37,7 @@ export default class CreateEditAlbum extends React.Component<CreateEditAlbumProp
       <Form>
         <Form.Field>
           <label>Name</label>
-          <Input type="date" value={album?.name} />
+          <Input type="text" value={album?.name} />
         </Form.Field>
         <Form.Field>
           <label>Artist</label>
@@ -48,7 +48,6 @@ export default class CreateEditAlbum extends React.Component<CreateEditAlbumProp
             results={this.mapSearchDataToResult(this.state.artistSearchData)}
             minCharacters={3}
           />
-          <Input type="number" />
         </Form.Field>
         <Form.Field>
           <label>Photo URL</label>

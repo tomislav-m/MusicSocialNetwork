@@ -2,7 +2,7 @@ import { observable, action, computed } from 'mobx';
 import { LoginData, UserData, defaultUserData } from '../models/User';
 import autobind from 'autobind-decorator';
 import { authenticateAsync, registerAsync } from '../actions/User/UserActions';
-import { rateAlbum, getRatedAlbums, addToCollection } from '../actions/Music/MusicActions';
+import { rateAlbum, getRatedAlbums, addToCollection, getArtistNames } from '../actions/Music/MusicActions';
 import { UserEvent, EventData } from '../models/Event';
 import { getMarkedEvents, getEvents } from '../actions/Events/EventActions';
 
@@ -24,6 +24,8 @@ export default class UserStore {
   @observable userData: UserData | undefined = undefined;
 
   @observable registerIsSuccess: boolean | undefined = undefined;
+
+  @observable simpleArtistsDict: { [id: number]: string } = {};
 
   @autobind
   @action
@@ -62,8 +64,10 @@ export default class UserStore {
               if (userEvents) {
                 this.userEvents = userEvents;
                 getEvents(userEvents.map(x => x.eventId))
-                  .then((events: Array<EventData>) => {
+                  .then(async(events: Array<EventData>) => {
                     this.events = events;
+                    const ids = events.map(x => [...x.headliners, ...x.supporters]).reduce((a, b) => a.concat(b), []);
+                    this.simpleArtistsDict = { ...await getArtistNames(Array.from(new Set(ids))) };
                   });
               }
             });
@@ -95,7 +99,7 @@ export default class UserStore {
   @action
   rateAlbum(albumId: number, rating: number) {
     const prevRating = this.userData?.ratings.find(x => x.albumId === albumId);
-    if (this.userData && (prevRating && prevRating?.rating !== rating || !prevRating)) {
+    if (this.userData && ((prevRating && prevRating?.rating !== rating) || !prevRating)) {
       rateAlbum(albumId, rating, this.userData.id)
         .then(data => {
           if (data.exception) {

@@ -1,10 +1,10 @@
 import React from 'react';
-import { Modal, Button, Icon, Grid, Label } from 'semantic-ui-react';
+import { Modal, Button, Icon, Grid, Label, Input } from 'semantic-ui-react';
 import { EventData, UserEvent } from '../../models/Event';
 import LinkList from '../../common/LinkList';
 import { getArtist } from '../../actions/Music/MusicActions';
 import { defaultArtistDataSimple } from '../../models/Artist';
-import { markEvent } from '../../actions/Events/EventActions';
+import { markEvent, buyTickets } from '../../actions/Events/EventActions';
 import autobind from 'autobind-decorator';
 
 interface EventInfoProps {
@@ -17,7 +17,9 @@ interface EventInfoState {
   artists: Array<any>;
   isGoingLoading: boolean;
   isInterestedLoading: boolean;
+  isBuyingTicket: boolean;
   userEvent: UserEvent;
+  ticketsCount: number;
 }
 
 export default class EventInfoModal extends React.Component<EventInfoProps, EventInfoState> {
@@ -28,7 +30,9 @@ export default class EventInfoModal extends React.Component<EventInfoProps, Even
       artists: [],
       isGoingLoading: false,
       isInterestedLoading: false,
-      userEvent: props.userEvent
+      userEvent: props.userEvent,
+      isBuyingTicket: false,
+      ticketsCount: 1
     };
   }
 
@@ -39,7 +43,7 @@ export default class EventInfoModal extends React.Component<EventInfoProps, Even
 
   public render() {
     const { event } = this.props;
-    const { userEvent } = this.state;
+    const { userEvent, isBuyingTicket } = this.state;
 
     return (
       <Modal trigger={
@@ -58,7 +62,7 @@ export default class EventInfoModal extends React.Component<EventInfoProps, Even
                 }{
                   event.supporters.map(artistId => {
                     const artist = this.state.artists.find(x => x.id === artistId);
-                    return artist ? <img src={artist.photoUrl} alt="supporter" width="100" /> : <span></span>
+                    return artist ? <img src={artist.photoUrl} alt="supporter" width="100" /> : <span></span>;
                   })
                 }
               </Grid.Column>
@@ -92,6 +96,18 @@ export default class EventInfoModal extends React.Component<EventInfoProps, Even
         </Modal.Content>
         <Modal.Actions>
           <Button
+            floated="left"
+            onClick={this.handleBuyTickets}
+            loading={isBuyingTicket}
+          > Buy tickets
+          </Button>
+          <Input
+            className="tickets-input"
+            type="number"
+            onChange={this.handleTicketsValueChange}
+            value={this.state.ticketsCount}
+          />
+          <Button
             color={(userEvent && userEvent.markEventType === 0) ? 'green' : 'grey'}
             disabled={this.state.isGoingLoading}
             loading={this.state.isGoingLoading}
@@ -120,6 +136,13 @@ export default class EventInfoModal extends React.Component<EventInfoProps, Even
   }
 
   @autobind
+  private handleTicketsValueChange(event: any, { value }: any) {
+    this.setState({
+      ticketsCount: value
+    });
+  }
+
+  @autobind
   private handleMarkEvent(markEventType: number) {
     const { userId, event } = this.props;
     if (userId) {
@@ -145,6 +168,15 @@ export default class EventInfoModal extends React.Component<EventInfoProps, Even
       this.setState({
         isInterestedLoading: !this.state.isInterestedLoading
       });
+    }
+  }
+
+  private handleBuyTickets() {
+    const { userId, event } = this.props;
+    const { ticketsCount } = this.state;
+
+    if (userId && ticketsCount > 0) {
+      buyTickets(userId, event.id, ticketsCount);
     }
   }
 }

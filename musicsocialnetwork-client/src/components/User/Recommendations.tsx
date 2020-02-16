@@ -77,38 +77,40 @@ export default class Recommendations extends React.Component<RecommendationProps
     const { albums } = this.state;
 
     return (
-      <Table striped>
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell></Table.HeaderCell>
-            <Table.HeaderCell>Artist</Table.HeaderCell>
-            <Table.HeaderCell>Album</Table.HeaderCell>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          {
-            albums && albums.slice(0, 10).map(album =>
-              <Table.Row key={album.id}>
-                <Table.Cell width={2}>
-                  <Link to={`/Album/${album.id}`}>
-                    <img src={album.coverArtUrl} width={40} alt="Cover art" />
-                  </Link>
-                </Table.Cell>
-                <Table.Cell width={7} verticalAlign="middle">
-                  <Link to={`/Artist/${album.artist.id}`}>
-                    {<strong>{album.artist.name}</strong>}
-                  </Link>
-                </Table.Cell>
-                <Table.Cell width={7} verticalAlign="middle">
-                  <Link to={`/Album/${album.id}`}>
-                    {<strong>{album.name}</strong>}
-                  </Link>
-                </Table.Cell>
-              </Table.Row>
-            )
-          }
-        </Table.Body>
-      </Table>
+      <Tab.Pane>
+        <Table striped>
+          <Table.Header>
+            <Table.Row>
+              <Table.HeaderCell></Table.HeaderCell>
+              <Table.HeaderCell>Artist</Table.HeaderCell>
+              <Table.HeaderCell>Album</Table.HeaderCell>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
+            {
+              albums && albums.slice(0, 10).map(album =>
+                <Table.Row key={album.id}>
+                  <Table.Cell width={2}>
+                    <Link to={`/Album/${album.id}`}>
+                      <img src={album.coverArtUrl} width={40} alt="Cover art" />
+                    </Link>
+                  </Table.Cell>
+                  <Table.Cell width={7} verticalAlign="middle">
+                    <Link to={`/Artist/${album.artist.id}`}>
+                      {<strong>{album.artist.name}</strong>}
+                    </Link>
+                  </Table.Cell>
+                  <Table.Cell width={7} verticalAlign="middle">
+                    <Link to={`/Album/${album.id}`}>
+                      {<strong>{album.name}</strong>}
+                    </Link>
+                  </Table.Cell>
+                </Table.Row>
+              )
+            }
+          </Table.Body>
+        </Table>
+      </Tab.Pane>
     );
   }
 

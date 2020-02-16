@@ -110,7 +110,7 @@ namespace RecommenderService.Services
                     .Select(x => x.Id));
             }
 
-            return albums.Take(1000).OrderBy(a => Guid.NewGuid());
+            return albums.Take(100).OrderBy(a => Guid.NewGuid());
 
             //return _musicContext.Albums
             //    .Where(x => !userAlbumIds.Contains(x.Id) && genreIds.Contains(x.GenreId) && styleIds.Contains(x.StyleId) && !artistIds.Contains(x.ArtistId))

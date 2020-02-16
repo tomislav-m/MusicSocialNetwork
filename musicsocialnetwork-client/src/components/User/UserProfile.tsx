@@ -1,12 +1,15 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import UserStore from '../../stores/UserStore';
-import { Grid, Table, Icon, Pagination, Divider } from 'semantic-ui-react';
+import { Grid, Table, Icon, Pagination, Divider, Button, Modal } from 'semantic-ui-react';
 import ArtistStore from '../../stores/ArtistStore';
 import { Link, Redirect } from 'react-router-dom';
 import autobind from 'autobind-decorator';
 import { getAlbum, getArtist } from '../../actions/Music/MusicActions';
 import Recommendations from './Recommendations';
+import LinkList from '../../common/LinkList';
+import CreateEditArtist from '../Artist/CreateEditArtist';
+import CreateEditAlbum from '../Album/CreateEditAlbum';
 
 interface UserProps {
   userStore?: UserStore;
@@ -45,6 +48,7 @@ export default class UserProfile extends React.Component<UserProps, UserState> {
     const events = userStore?.events || [];
     const albumRatings = this.props.userStore?.albumRatings || [];
     const pageSize = this.state.pageSize;
+    const dict = this.props.userStore?.simpleArtistsDict || {};
 
     return (
       <div>
@@ -54,6 +58,10 @@ export default class UserProfile extends React.Component<UserProps, UserState> {
         <Grid>
           <Grid.Row>
             <h2>{this.props.userStore?.userData?.username}</h2>
+          </Grid.Row>
+          <Grid.Row>
+            {this.renderCreateArtistModal()}
+            {this.renderCreateAlbumModal()}
           </Grid.Row>
           <Grid.Row divided>
             <Grid.Column width="9">
@@ -95,6 +103,7 @@ export default class UserProfile extends React.Component<UserProps, UserState> {
                     events.map(event =>
                       <Table.Row key={event.id}>
                         <Table.Cell>{(new Date(event.date)).toLocaleDateString('hr-HR')}</Table.Cell>
+                        <Table.Cell>{<LinkList artists={event.headliners.map(x => { return { id: x, name: dict[x] }; })} />}</Table.Cell>
                         <Table.Cell>{event.venue}</Table.Cell>
                       </Table.Row>
                     )
@@ -132,6 +141,32 @@ export default class UserProfile extends React.Component<UserProps, UserState> {
     this.setState({
       eventsPage: activePage
     });
+  }
+
+  @autobind
+  private renderCreateArtistModal() {
+    return (
+      <Modal trigger={
+        <Button size="small" icon>New artist</Button>
+      }>
+        <Modal.Content>
+          <CreateEditArtist isEdit={false} onArtistSave={() => null} />
+        </Modal.Content>
+      </Modal>
+    );
+  }
+
+  @autobind
+  private renderCreateAlbumModal() {
+    return (
+      <Modal trigger={
+        <Button size="small" icon>New album</Button>
+      }>
+        <Modal.Content>
+          <CreateEditAlbum isEdit={false} onAlbumSave={() => null} />
+        </Modal.Content>
+      </Modal>
+    );
   }
 
   private getAlbumsByRating() {
