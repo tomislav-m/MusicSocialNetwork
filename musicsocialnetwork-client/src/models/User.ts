@@ -34,3 +34,12 @@ export let defaultUserData: UserData = {
   events: [],
   ratings: []
 };
+
+export interface Comment {
+  id: number;
+  author: string;
+  date: Date;
+  text: string;
+  pageType: string;
+  parentId: number;
+}

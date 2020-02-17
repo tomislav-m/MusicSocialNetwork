@@ -1,4 +1,4 @@
-import { LoginData, RegisterData } from '../../models/User';
+import { LoginData, RegisterData, Comment } from '../../models/User';
 
 const apiUrl: string = 'http://localhost:57415/api/Users';
 
@@ -26,6 +26,35 @@ export async function registerAsync(data: RegisterData) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(registerData)
+    });
+    return response.json();
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export async function addComment(comment: Comment) {
+  try {
+    const response = await fetch(apiUrl + '/comment', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(comment)
+    });
+    return response.json();
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export async function getComments(type: string, parentId: number) {
+  try {
+    const response = await fetch(apiUrl + '/comments?type=' + type + '&parentId=' + parentId, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
     });
     return response.json();
   } catch (err) {

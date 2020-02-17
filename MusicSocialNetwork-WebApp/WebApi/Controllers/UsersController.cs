@@ -15,15 +15,20 @@ namespace WebApi.Controllers
     {
         private readonly IRequestClient<SignInUser, UserSignedIn> _requestClient;
         private readonly IRequestClient<CreateUser, UserCreated> _registerRequestClient;
+        private readonly IRequestClient<AddComment, CommentEvent> _addCommentRequestClient;
+        private readonly IRequestClient<GetComments, CommentEvent[]> _getCommentRequestClient;
 
         public UsersController(
             IRequestClient<SignInUser, UserSignedIn> requestClient,
             IRequestClient<CreateUser, UserCreated> registerRequestClient,
-            IRequestClient<GetRatedAlbums, AlbumRated[]> catalogRequestClient
+            IRequestClient<AddComment, CommentEvent> addCommentRequestClient,
+            IRequestClient<GetComments, CommentEvent[]> getCommentRequestClient
             )
         {
             _requestClient = requestClient;
             _registerRequestClient = registerRequestClient;
+            _addCommentRequestClient = addCommentRequestClient;
+            _getCommentRequestClient = getCommentRequestClient;
         }
 
         [HttpPost("authenticate")]
@@ -51,7 +56,7 @@ namespace WebApi.Controllers
         {
             try
             {
-                UserCreated result = await _registerRequestClient.Request(credentials);
+                var result = await _registerRequestClient.Request(credentials);
 
                 if (result.Exception == null)
                 {
@@ -61,6 +66,42 @@ namespace WebApi.Controllers
                 {
                     throw result.Exception;
                 }
+            }
+            catch (RequestTimeoutException)
+            {
+                return StatusCode((int)HttpStatusCode.RequestTimeout);
+            }
+        }
+
+        [HttpPost("comment")]
+        public async Task<IActionResult> AddComment(AddComment comment)
+        {
+            try
+            {
+                var result = await _addCommentRequestClient.Request(comment);
+
+                if (result.Exception == null)
+                {
+                    return Created(nameof(AddComment), result);
+                }
+                else
+                {
+                    throw result.Exception;
+                }
+            }
+            catch (RequestTimeoutException)
+            {
+                return StatusCode((int)HttpStatusCode.RequestTimeout);
+            }
+        }
+
+        [HttpGet("comments")]
+        public async Task<ActionResult<CommentEvent[]>> GetComments(string type, int parentId)
+        {
+            try
+            {
+                var result = await _getCommentRequestClient.Request(new GetComments { PageType = type, ParentId = parentId });
+                return result;
             }
             catch (RequestTimeoutException)
             {

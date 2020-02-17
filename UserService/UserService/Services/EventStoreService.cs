@@ -35,6 +35,11 @@ namespace UserService.Services
                             Encoding.UTF8.GetString(@event.Event.Data));
                         _service.Create(_mapper.Map<UserCreated, User>(userCreated));
                         break;
+                    case UserMessageContracts.CommentEvent:
+                        var commentAdded = JsonConvert.DeserializeObject<CommentEvent>(
+                            Encoding.UTF8.GetString(@event.Event.Data));
+                        await _service.AddComment(_mapper.Map<CommentEvent, Comment>(commentAdded));
+                        break;
                     default:
                         break;
                 }

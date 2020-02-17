@@ -16,6 +16,8 @@ namespace UserService.Services
         User Create(User user, string password = null);
         void Update(User user, string password = null);
         void Delete(int id);
+        Task<Comment> AddComment(Comment comment);
+        IEnumerable<Comment> GetComments(string type, int parentId);
     }
 
     public class UserService : IUserService
@@ -152,6 +154,19 @@ namespace UserService.Services
             }
 
             return true;
+        }
+
+        public async Task<Comment> AddComment(Comment comment)
+        {
+            await _context.Comments.AddAsync(comment);
+            await _context.SaveChangesAsync();
+
+            return comment;
+        }
+
+        public IEnumerable<Comment> GetComments(string type, int parentId)
+        {
+            return _context.Comments.Where(x => x.PageType == type && x.ParentId == parentId);
         }
     }
 }

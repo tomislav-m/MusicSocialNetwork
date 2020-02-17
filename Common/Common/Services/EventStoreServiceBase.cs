@@ -24,7 +24,7 @@ namespace Common.Services
                         await RecreateDbAsync();
                         break;
                     }
-                    catch (Exception exc)
+                    catch
                     {
                         connection.Close();
                     }

@@ -1,5 +1,5 @@
 import { observable, action, computed } from 'mobx';
-import { LoginData, UserData, defaultUserData } from '../models/User';
+import { LoginData, UserData, defaultUserData, Comment } from '../models/User';
 import autobind from 'autobind-decorator';
 import { authenticateAsync, registerAsync } from '../actions/User/UserActions';
 import { rateAlbum, getRatedAlbums, addToCollection, getArtistNames } from '../actions/Music/MusicActions';
@@ -27,7 +27,7 @@ export default class UserStore {
 
   @observable simpleArtistsDict: { [id: number]: string } = {};
 
-  @observable comments: Array<any> = [];
+  @observable comments: Array<Comment> = [];
 
   @autobind
   @action

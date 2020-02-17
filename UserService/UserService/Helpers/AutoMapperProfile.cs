@@ -14,6 +14,8 @@ namespace UserService.Helpers
             CreateMap<AuthenticateModel, User>();
             CreateMap<User, UserCreated>();
             CreateMap<UserCreated, User>();
+
+            CreateMap<Comment, CommentEvent>();
         }
     }
 }
