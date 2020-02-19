@@ -37,7 +37,7 @@ export let defaultUserData: UserData = {
 
 export interface Comment {
   id: number;
-  author: string;
+  author: number;
   date: Date;
   text: string;
   pageType: string;

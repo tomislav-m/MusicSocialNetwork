@@ -64,7 +64,7 @@ export default class ArtistStore {
           this.setArtist(result.artistId);
         }
       })
-      .then(() => this.isLoading = false);
+      .finally(() => this.isLoading = false);
   }
 
   @autobind

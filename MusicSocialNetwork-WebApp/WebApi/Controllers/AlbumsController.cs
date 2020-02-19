@@ -4,6 +4,7 @@ using Common.MessageContracts.Music.Commands;
 using Common.MessageContracts.Music.Events;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
@@ -63,6 +64,10 @@ namespace WebApi.Controllers
             catch (RequestTimeoutException)
             {
                 return StatusCode((int)HttpStatusCode.RequestTimeout);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Unexpected error");
             }
         }
 

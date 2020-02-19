@@ -1,8 +1,9 @@
 import React from 'react';
-import { Form, Button, Popup, Menu } from 'semantic-ui-react';
+import { Form, Button, Popup, Menu, Input, Icon } from 'semantic-ui-react';
 import { inject, observer } from 'mobx-react';
 import UserStore from '../../stores/UserStore';
 import { Link } from 'react-router-dom';
+import './Login.css';
 
 interface LoginProps {
   userStore?: UserStore;
@@ -33,23 +34,29 @@ export default class Login extends React.Component<LoginProps> {
 
   private loginForm = (): JSX.Element => {
     const userStore = this.props.userStore;
+    const loginError = userStore?.loginError;
 
     return (
       <Form>
         <Form.Field>
           <label>Username</label>
-          <input type="text" value={userStore?.loginData.username} onChange={userStore?.handleUsernameChange} disabled={userStore?.isLoading} />
+          <Input type="text" value={userStore?.loginData.username} onChange={userStore?.handleUsernameChange} disabled={userStore?.isLoading} error={loginError === true} />
         </Form.Field>
         <Form.Field>
           <label>Password</label>
-          <input type="password" value={userStore?.loginData.password} onChange={userStore?.handlePasswordChange} disabled={userStore?.isLoading} />
+          <Input type="password" value={userStore?.loginData.password} onChange={userStore?.handlePasswordChange} disabled={userStore?.isLoading} error={loginError === true} />
         </Form.Field>
         <Button
           type="submit"
           disabled={!userStore?.isReadyToLogin}
           loading={userStore?.isLoading}
-          onClick={userStore?.handleLogin}>Log in
+          onClick={userStore?.handleLogin}
+          negative={loginError === true}>Log in
         </Button>
+        {
+          loginError === true &&
+          <div className="login-error"><Icon name="warning sign" />Wrong username or password!</div>
+        }
       </Form>
     );
   }

@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import Tracks from './Tracks';
 import UserStore from '../../stores/UserStore';
 import autobind from 'autobind-decorator';
+import Comments from '../Comments/Comments';
 
 interface AlbumProps {
   artistStore?: ArtistStore;
@@ -76,37 +77,46 @@ export default class Album extends React.Component<AlbumProps> {
                         <span className="info">{album.ratingData?.ratingCount || 0}</span>
                       </div>
                       <Divider horizontal />
-                      <div className="info-row">
-                        <Label className="info-label">Your rating</Label>
-                        <span className="info">
-                          <Rating
-                            icon="star"
-                            maxRating={10}
-                            rating={rating}
-                            size="small"
-                            clearable
-                            disabled={!userStore?.isLoggedIn}
-                            onRate={this.handleRateAlbum} />
-                        </span>
-                      </div>
-                      <div className="info-row">
-                        <Button
-                          icon="plus"
-                          size="mini"
-                          color="green"
-                          title="Add to collection"
-                          disabled={userStore?.isAddingToCollection}
-                          loading={userStore?.isAddingToCollection}
-                          onClick={() => userStore?.handleAddToCollection(album.id)}
-                        />
-                      </div>
+                      {
+                        userStore?.userData?.id &&
+                        <div>
+                          <div className="info-row">
+                            <Label className="info-label">Your rating</Label>
+                            <span className="info">
+                              <Rating
+                                icon="star"
+                                maxRating={10}
+                                rating={rating}
+                                size="small"
+                                clearable
+                                disabled={!userStore?.isLoggedIn}
+                                onRate={this.handleRateAlbum} />
+                            </span>
+                          </div>
+                          <div className="info-row">
+                            <Button
+                              icon="plus"
+                              size="mini"
+                              color="green"
+                              title="Add to collection"
+                              disabled={userStore?.isAddingToCollection}
+                              loading={userStore?.isAddingToCollection}
+                              onClick={() => userStore?.handleAddToCollection(album.id)}
+                            />
+                          </div>
+                        </div>
+                      }
                     </Grid.Column>
                     <Grid.Column width="7">
                       <Segment piled>{album?.description}</Segment>
                     </Grid.Column>
                   </Grid.Row>
                   <Divider horizontal>Comments</Divider>
-                  <Grid.Row></Grid.Row>
+                  <Grid.Row>
+                    <Grid.Column width="16">
+                      <Comments pageType="album" parentId={album.id} />
+                    </Grid.Column>
+                  </Grid.Row>
                 </Grid>
               </Grid.Column>
             </Grid.Row>

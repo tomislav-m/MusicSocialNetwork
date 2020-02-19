@@ -24,6 +24,7 @@ export default class UserStore {
   @observable userData: UserData | undefined = undefined;
 
   @observable registerIsSuccess: boolean | undefined = undefined;
+  @observable loginError: boolean | undefined = undefined;
 
   @observable simpleArtistsDict: { [id: number]: string } = {};
 
@@ -33,12 +34,14 @@ export default class UserStore {
   @action
   handleUsernameChange(event: { target: HTMLInputElement }) {
     this.loginData.username = event.target.value;
+    this.loginError = false;
   }
 
   @autobind
   @action
   handlePasswordChange(event: { target: HTMLInputElement }) {
     this.loginData.password = event.target.value;
+    this.loginError = false;
   }
 
   @autobind
@@ -49,8 +52,10 @@ export default class UserStore {
       .then(data => {
         this.isLoading = false;
         if (!data.token) {
+          this.loginError = true;
           return;
         }
+        this.loginError = false;
         this.userData = { ...defaultUserData, ...data };
 
         if (this.userData) {

@@ -92,7 +92,7 @@ export default class EventInfoModal extends React.Component<EventInfoProps, Even
                     })} />
                   </span>
                 </div>
-                <Comments />
+                <Comments pageType="events" parentId={event.id} />
               </Grid.Column>
             </Grid.Row>
           </Grid>

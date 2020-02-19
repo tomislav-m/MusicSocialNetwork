@@ -37,6 +37,10 @@ namespace WebApi
                 new MessageRequestClient<SignInUser, UserSignedIn>(x.GetRequiredService<IBus>(), userServiceAddress, timeout, timeout));
             services.AddScoped<IRequestClient<CreateUser, UserCreated>>(x =>
                 new MessageRequestClient<CreateUser, UserCreated>(x.GetRequiredService<IBus>(), userServiceAddress, timeout, timeout));
+            services.AddScoped<IRequestClient<AddComment, CommentEvent>>(x =>
+                new MessageRequestClient<AddComment, CommentEvent>(x.GetRequiredService<IBus>(), userServiceAddress, timeout, timeout));
+            services.AddScoped<IRequestClient<GetComments, CommentEvent[]>>(x =>
+                new MessageRequestClient<GetComments, CommentEvent[]>(x.GetRequiredService<IBus>(), userServiceAddress, timeout, timeout));
 
 
             var musicServiceAddress = new Uri("rabbitmq://localhost/music-service");

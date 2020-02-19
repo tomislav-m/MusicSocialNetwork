@@ -81,6 +81,7 @@ namespace UserService
             services.AddMassTransit(x =>
             {
                 x.AddConsumer<UserConsumer>();
+                x.AddConsumer<CommentsConsumer>();
             });
 
             services.AddSingleton(provider => Bus.Factory.CreateUsingRabbitMq(cfg =>
@@ -94,6 +95,10 @@ namespace UserService
                     e.Consumer<UserConsumer>(provider);
                     EndpointConvention.Map<SignInUser>(e.InputAddress);
                     EndpointConvention.Map<CreateUser>(e.InputAddress);
+
+                    e.Consumer<CommentsConsumer>(provider);
+                    EndpointConvention.Map<AddComment>(e.InputAddress);
+                    EndpointConvention.Map<GetComments>(e.InputAddress);
                 });
             }));
 
@@ -103,6 +108,8 @@ namespace UserService
 
             services.AddScoped(provider => provider.GetRequiredService<IBus>().CreateRequestClient<SignInUser>());
             services.AddScoped(provider => provider.GetRequiredService<IBus>().CreateRequestClient<CreateUser>());
+            services.AddScoped(provider => provider.GetRequiredService<IBus>().CreateRequestClient<AddComment>());
+            services.AddScoped(provider => provider.GetRequiredService<IBus>().CreateRequestClient<GetComments>());
             services.AddSingleton<IHostedService, BusService>();
 
             services.AddScoped<EventStoreService>();
