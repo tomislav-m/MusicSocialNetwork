@@ -30,6 +30,9 @@ export default class UserStore {
 
   @observable comments: Array<Comment> = [];
 
+  @observable rateError: boolean = false;
+  @observable collectionError: boolean = false;
+
   @autobind
   @action
   handleUsernameChange(event: { target: HTMLInputElement }) {
@@ -71,7 +74,7 @@ export default class UserStore {
               if (userEvents) {
                 this.userEvents = userEvents;
                 getEvents(userEvents.map(x => x.eventId))
-                  .then(async(events: Array<EventData>) => {
+                  .then(async (events: Array<EventData>) => {
                     this.events = events;
                     const ids = events.map(x => [...x.headliners, ...x.supporters]).reduce((a, b) => a.concat(b), []);
                     this.simpleArtistsDict = { ...await getArtistNames(Array.from(new Set(ids))) };
@@ -88,8 +91,12 @@ export default class UserStore {
   register(username: string, email: string, password: string) {
     this.isLoading = true;
     registerAsync({ username, email, password })
-      .then(() => {
-        this.registerIsSuccess = true;
+      .then((result) => {
+        if (result.exception) {
+          this.registerIsSuccess = false;
+        } else {
+          this.registerIsSuccess = true;
+        }
       })
       .catch((err) => this.registerIsSuccess = false)
       .finally(() => this.isLoading = false);
@@ -110,6 +117,7 @@ export default class UserStore {
       rateAlbum(albumId, rating, this.userData.id)
         .then(data => {
           if (data.exception) {
+            this.rateError = true;
             console.log(data.exception);
           } else {
             const index = this.userData?.ratings.findIndex(x => x.albumId === albumId);
@@ -117,9 +125,13 @@ export default class UserStore {
               this.userData.ratings.splice(index, 1);
             }
             this.userData?.ratings.push({ albumId, rating, createdAt: new Date() });
+            this.rateError = false;
           }
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+          this.rateError = true;
+          console.log(err);
+        });
     }
   }
 
@@ -133,9 +145,14 @@ export default class UserStore {
       .then(data => {
         if (data.exception) {
           console.log(data.exception);
+          this.collectionError = true;
         } else {
           this.collection.push(data);
+          this.collectionError = false;
         }
+      })
+      .catch(() => {
+        this.collectionError = false;
       });
   }
 

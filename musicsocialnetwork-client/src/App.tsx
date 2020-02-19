@@ -13,6 +13,7 @@ import ArtistStore from './stores/ArtistStore';
 import Album from './components/Album/Album';
 import UserProfile from './components/User/UserProfile';
 import { Registration } from './components/Membership/Registration';
+import Notification from './common/Notification';
 
 @observer
 class App extends React.Component {
@@ -36,7 +37,7 @@ class App extends React.Component {
               <Registration />
             </Provider>
             {
-            this.userStore.isLoggedIn &&
+              this.userStore.isLoggedIn &&
               <Menu.Item header onClick={this.userStore.handleLogout}>Logout</Menu.Item>
             }
           </Container>
@@ -50,6 +51,8 @@ class App extends React.Component {
             <Route path="/Artist/:id" component={Artist} />
             <Route path="/Album/:id" component={Album} />
             <Route path="/User/:id" component={UserProfile} />
+
+            <Notification title="Registration" text="Registration successful!" positive={true} dimmed={true} active={this.userStore.registerIsSuccess === true} />
           </Provider>
         </Container>
       </Router>

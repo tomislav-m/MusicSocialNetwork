@@ -6,6 +6,7 @@ import './Comments.css';
 import autobind from 'autobind-decorator';
 import { addComment, getComments } from '../../actions/User/UserActions';
 import { Comment as CommentModel } from '../../models/User';
+import Notification from '../../common/Notification';
 
 interface ICommentsProps {
   userStore?: UserStore;
@@ -17,6 +18,8 @@ interface ICommentState {
   text: string;
   isReplying: boolean;
   comments: Array<CommentModel>;
+  isError: boolean;
+  isSuccess: boolean;
 }
 
 @inject('userStore')
@@ -28,7 +31,9 @@ export default class Comments extends React.Component<ICommentsProps, ICommentSt
     this.state = {
       text: '',
       isReplying: false,
-      comments: []
+      comments: [],
+      isError: false,
+      isSuccess: false
     };
   }
 
@@ -37,7 +42,7 @@ export default class Comments extends React.Component<ICommentsProps, ICommentSt
   }
 
   render() {
-    const { isReplying, comments } = this.state;
+    const { isReplying, comments, isError, isSuccess } = this.state;
     const userData = this.props.userStore?.userData;
 
     return (
@@ -53,15 +58,26 @@ export default class Comments extends React.Component<ICommentsProps, ICommentSt
             </Comment>
           )
         }
-        <Form reply>
-          {
-            userData?.id &&
-            <div>
-              <Form.TextArea width="14" rows={5} onInput={this.handleCommentInput} disabled={isReplying} />
-              <Button content="Add reply" labelPosition="left" icon="edit" onClick={this.handleAddComment} disabled={isReplying} loading={isReplying} />
-            </div>
-          }
-        </Form>
+        {
+          userData?.id &&
+          <Form reply>
+            <Form.TextArea width="14" rows={5} onInput={this.handleCommentInput} disabled={isReplying} />
+            <Button content="Add reply" labelPosition="left" icon="edit" onClick={this.handleAddComment} disabled={isReplying} loading={isReplying} />
+
+            <Notification
+              active={isError}
+              dimmed={false}
+              negative={true}
+              title="Comment"
+              text="Error!" />
+            <Notification
+              active={isSuccess}
+              dimmed={false}
+              positive={true}
+              title="Comment"
+              text="Commend added!" />
+          </Form>
+        }
       </Comment.Group>
     );
   }
@@ -95,9 +111,22 @@ export default class Comments extends React.Component<ICommentsProps, ICommentSt
         if (!result.exception) {
           this.props.userStore?.comments.push(result);
           this.setState({
-            text: ''
+            text: '',
+            isError: false,
+            isSuccess: true
+          });
+        } else {
+          this.setState({
+            isError: true,
+            isSuccess: false
           });
         }
+      })
+      .catch(() => {
+        this.setState({
+          isError: true,
+          isSuccess: false
+        });
       })
       .finally(() =>
         this.setState({

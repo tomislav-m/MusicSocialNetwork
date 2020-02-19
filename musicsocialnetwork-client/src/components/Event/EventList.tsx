@@ -8,6 +8,7 @@ import LinkList from '../../common/LinkList';
 import autobind from 'autobind-decorator';
 import { createEvent, editEvent } from '../../actions/Events/EventActions';
 import ArtistStore from '../../stores/ArtistStore';
+import Notification from '../../common/Notification';
 
 interface EventProps {
   simpleArtistsDict: { [id: number]: string } | undefined;
@@ -17,22 +18,52 @@ interface EventProps {
   userEvents: Array<UserEvent>;
 }
 
-export default class EventList extends React.Component<EventProps> {
+interface EventState {
+  createError: boolean | undefined;
+  editError: boolean | undefined;
+}
+
+export default class EventList extends React.Component<EventProps, EventState> {
+  constructor(props: EventProps) {
+    super(props);
+    this.state = {
+      createError: undefined,
+      editError: undefined
+    };
+  }
+
   render() {
     const events = this.props.store?.events;
     const dict = this.props.simpleArtistsDict || {};
     const artistId = this.props.artistId;
+    const { createError, editError } = this.state;
 
     return (
       <div>
         {
           this.props.userId &&
-          <Modal trigger={<Button icon="plus" size="mini" color="green" title="Add event" />}>
-            <Modal.Header>Edit event</Modal.Header>
-            <Modal.Content>
-              <CreateEditEvent isEdit={false} headliner={{ id: artistId, name: dict[artistId] }} onEventSave={this.handleCreateEvent} />
-            </Modal.Content>
-          </Modal>
+          <div>
+            <Notification
+              active={createError === true || editError === true }
+              dimmed={false}
+              negative={true}
+              title={`${createError === true ? 'Add' : 'Edit'} event`}
+              text="Error!"
+            />
+            <Notification
+              active={createError === false || editError === false }
+              dimmed={false}
+              negative={false}
+              title={`${createError === false ? 'Add' : 'Edit'} event`}
+              text="Success!"
+            />
+            <Modal trigger={<Button icon="plus" size="mini" color="green" title="Add event" />}>
+              <Modal.Header>Edit event</Modal.Header>
+              <Modal.Content>
+                <CreateEditEvent isEdit={false} headliner={{ id: artistId, name: dict[artistId] }} onEventSave={this.handleCreateEvent} />
+              </Modal.Content>
+            </Modal>
+          </div>
         }
         <Table striped compact>
           <Table.Header>
@@ -76,18 +107,41 @@ export default class EventList extends React.Component<EventProps> {
   @autobind
   handleCreateEvent(event: EventData) {
     createEvent(event)
-      .then((data: EventData) => {
-        this.props.store?.events.push(data);
+      .then((data: any) => {
+        if (data.exception) {
+          this.setState({
+            createError: true,
+            editError: undefined
+          });
+        } else {
+          this.props.store?.events.push(data);
+          this.setState({
+            createError: false,
+            editError: undefined
+          });
+        }
       });
   }
 
   @autobind
   handleEditEvent(event: EventData) {
     editEvent(event)
-      .then((data: EventData) => {
-        let eventData = this.props.store?.events?.find(x => x.id === event.id);
-        if (eventData) {
-          eventData = { ...eventData };
+      .then((data: any) => {
+        if (data.exception) {
+          this.setState({
+            createError: undefined,
+            editError: true
+          });
+        } else {
+          let eventData = this.props.store?.events?.find(x => x.id === event.id);
+          if (eventData) {
+            eventData = { ...eventData };
+          }
+
+          this.setState({
+            createError: undefined,
+            editError: false
+          });
         }
       });
   }

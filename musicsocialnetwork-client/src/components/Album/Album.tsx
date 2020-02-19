@@ -8,6 +8,7 @@ import Tracks from './Tracks';
 import UserStore from '../../stores/UserStore';
 import autobind from 'autobind-decorator';
 import Comments from '../Comments/Comments';
+import Notification from '../../common/Notification';
 
 interface AlbumProps {
   artistStore?: ArtistStore;
@@ -92,6 +93,13 @@ export default class Album extends React.Component<AlbumProps> {
                                 disabled={!userStore?.isLoggedIn}
                                 onRate={this.handleRateAlbum} />
                             </span>
+                            <Notification
+                              active={userStore.rateError}
+                              dimmed={false}
+                              negative={true}
+                              title="Album rating"
+                              text="Error rating album"
+                            />
                           </div>
                           <div className="info-row">
                             <Button
@@ -102,6 +110,13 @@ export default class Album extends React.Component<AlbumProps> {
                               disabled={userStore?.isAddingToCollection}
                               loading={userStore?.isAddingToCollection}
                               onClick={() => userStore?.handleAddToCollection(album.id)}
+                            />
+                            <Notification
+                              active={false}
+                              dimmed={false}
+                              negative={true}
+                              title="Collection"
+                              text="Error adding album to collection"
                             />
                           </div>
                         </div>

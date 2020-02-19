@@ -3,7 +3,7 @@ import { Form, Button, Popup, Menu, Input, Icon } from 'semantic-ui-react';
 import { inject, observer } from 'mobx-react';
 import UserStore from '../../stores/UserStore';
 import { Link } from 'react-router-dom';
-import './Login.css';
+import './Membership.css';
 
 interface LoginProps {
   userStore?: UserStore;
@@ -55,7 +55,7 @@ export default class Login extends React.Component<LoginProps> {
         </Button>
         {
           loginError === true &&
-          <div className="login-error"><Icon name="warning sign" />Wrong username or password!</div>
+          <div className="membership-error"><Icon name="warning sign" />Wrong username or password!</div>
         }
       </Form>
     );

@@ -3,6 +3,7 @@ import { Menu, Popup, Button, Form, Input, Icon } from 'semantic-ui-react';
 import { inject, observer } from 'mobx-react';
 import UserStore from '../../stores/UserStore';
 import autobind from 'autobind-decorator';
+import './Membership.css';
 
 interface RegistrationProps {
   userStore?: UserStore;
@@ -101,43 +102,36 @@ export class Registration extends React.Component<RegistrationProps, Registratio
     const state = this.state;
 
     return (
-      <Form>
-        <Form.Field>
-          <label>Username</label>
-          <input type="text" value={state.username} onChange={this.handleUsernameChange} disabled={userStore?.isLoading} />
-        </Form.Field>
-        <Form.Field>
-          <label>E-mail</label>
-          <input type="email" value={state.email} onChange={this.handleEmailChange} disabled={userStore?.isLoading} />
-        </Form.Field>
-        <Form.Field>
-          <label>Password</label>
-          <input type="password" value={state.password} onChange={this.handlePasswordChange} disabled={userStore?.isLoading} />
-        </Form.Field>
-        <Form.Field>
-          <label>Repeat password</label>
-          <Input type="password" value={state.repeatPassword} onChange={this.handleRepeatPasswordChange} disabled={userStore?.isLoading} /><Icon name="times circle" color="red" />
-        </Form.Field>
-        <Button
-          type="submit"
-          disabled={this.state.isReadyToRegister === false}
-          loading={userStore?.isLoading}
-          onClick={this.handleRegister}>Sign up
+      <span>
+        <Form>
+          <Form.Field>
+            <label>Username</label>
+            <input type="text" value={state.username} onChange={this.handleUsernameChange} disabled={userStore?.isLoading} />
+          </Form.Field>
+          <Form.Field>
+            <label>E-mail</label>
+            <input type="email" value={state.email} onChange={this.handleEmailChange} disabled={userStore?.isLoading} />
+          </Form.Field>
+          <Form.Field>
+            <label>Password</label>
+            <input type="password" value={state.password} onChange={this.handlePasswordChange} disabled={userStore?.isLoading} />
+          </Form.Field>
+          <Form.Field>
+            <label>Repeat password</label>
+            <Input type="password" value={state.repeatPassword} onChange={this.handleRepeatPasswordChange} disabled={userStore?.isLoading} />
+          </Form.Field>
+          <Button
+            type="submit"
+            disabled={this.state.isReadyToRegister === false}
+            loading={userStore?.isLoading}
+            onClick={this.handleRegister}>Sign up
         </Button>
-        <br />
-        <span>
-          {
-            userStore?.registerIsSuccess === true &&
-            <Icon name="check" color="green" />
-          }
-        </span>
-        <span>
           {
             userStore?.registerIsSuccess === false &&
-            <Icon name="times circle" color="red" />
+            <div className="membership-error"><Icon name="times circle" />Registration unsuccessful!</div>
           }
-        </span>
-      </Form>
+        </Form>
+      </span>
     );
   }
 
