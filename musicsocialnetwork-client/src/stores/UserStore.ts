@@ -165,4 +165,9 @@ export default class UserStore {
   get isLoggedIn(): boolean {
     return this.userData !== undefined;
   }
+
+  @computed
+  get sortedRatings() {
+    return this.albumRatings.sort((x, y) => (new Date(y.createdAt)).getTime() - (new Date(x.createdAt)).getTime());
+  }
 }

@@ -1,3 +1,7 @@
 textarea {
   resize: none !important;
 }
+
+.comment-notification {
+  margin-top: 10px;
+}

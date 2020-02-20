@@ -22,6 +22,7 @@ namespace WebApi.Controllers
         private readonly IRequestClient<GetRatedAlbums, AlbumRated[]> _catalogRequestClient;
         private readonly IRequestClient<GetAverageRating, AlbumAverageRating> _catalogRatingRequestClient;
         private readonly IRequestClient<AddToCollection, AlbumAddedToCollection> _collectionRequestClient;
+        private readonly IRequestClient<GetPopularAlbums, PopularAlbums> _popularRequestClient;
 
         public AlbumsController(
             IRequestClient<SearchAlbum, AlbumFound[]> requestClient,
@@ -29,7 +30,8 @@ namespace WebApi.Controllers
             IRequestClient<RateAlbum, AlbumRated> rateRequestClient,
             IRequestClient<GetRatedAlbums, AlbumRated[]> catalogRequestClient,
             IRequestClient<GetAverageRating, AlbumAverageRating> catalogRatingRequestClient,
-            IRequestClient<AddToCollection, AlbumAddedToCollection> collectionRequestClient)
+            IRequestClient<AddToCollection, AlbumAddedToCollection> collectionRequestClient,
+            IRequestClient<GetPopularAlbums, PopularAlbums> popularRequestClient)
         {
             _requestClient = requestClient;
             _getRequestClient = getRequestClient;
@@ -37,6 +39,7 @@ namespace WebApi.Controllers
             _catalogRequestClient = catalogRequestClient;
             _catalogRatingRequestClient = catalogRatingRequestClient;
             _collectionRequestClient = collectionRequestClient;
+            _popularRequestClient = popularRequestClient;
         }
 
         // GET: api/Albums
@@ -210,6 +213,20 @@ namespace WebApi.Controllers
                 var averageRating = await _catalogRatingRequestClient.Request(new GetAverageRating { AlbumId = albumId });
 
                 return Ok(averageRating);
+            }
+            catch (RequestTimeoutException)
+            {
+                return StatusCode((int)HttpStatusCode.RequestTimeout);
+            }
+        }
+
+        [HttpGet("popular")]
+        public async Task<ActionResult<PopularAlbums>> GetPopularAlbums()
+        {
+            try
+            {
+                var popularAlbums = await _popularRequestClient.Request(new PopularAlbums());
+                return Ok(popularAlbums);
             }
             catch (RequestTimeoutException)
             {

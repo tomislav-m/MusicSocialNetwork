@@ -60,7 +60,7 @@ namespace WebApi.Controllers
 
                 if (result.Exception == null)
                 {
-                    return CreatedAtRoute(nameof(Register), result);
+                    return Ok(result);
                 }
                 else
                 {

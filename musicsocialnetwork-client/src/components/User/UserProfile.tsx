@@ -46,7 +46,7 @@ export default class UserProfile extends React.Component<UserProps, UserState> {
   public render() {
     const userStore = this.props.userStore;
     const events = userStore?.events || [];
-    const albumRatings = this.props.userStore?.albumRatings || [];
+    const albumRatings = this.props.userStore?.sortedRatings || [];
     const pageSize = this.state.pageSize;
     const dict = this.props.userStore?.simpleArtistsDict || {};
 

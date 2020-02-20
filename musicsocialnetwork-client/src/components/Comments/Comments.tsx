@@ -42,7 +42,7 @@ export default class Comments extends React.Component<ICommentsProps, ICommentSt
   }
 
   render() {
-    const { isReplying, comments, isError, isSuccess } = this.state;
+    const { isReplying, comments, isError, isSuccess, text } = this.state;
     const userData = this.props.userStore?.userData;
 
     return (
@@ -61,21 +61,23 @@ export default class Comments extends React.Component<ICommentsProps, ICommentSt
         {
           userData?.id &&
           <Form reply>
-            <Form.TextArea width="14" rows={5} onInput={this.handleCommentInput} disabled={isReplying} />
+            <Form.TextArea width="14" rows={5} onInput={this.handleCommentInput} disabled={isReplying} value={text} />
             <Button content="Add reply" labelPosition="left" icon="edit" onClick={this.handleAddComment} disabled={isReplying} loading={isReplying} />
 
-            <Notification
-              active={isError}
-              dimmed={false}
-              negative={true}
-              title="Comment"
-              text="Error!" />
-            <Notification
-              active={isSuccess}
-              dimmed={false}
-              positive={true}
-              title="Comment"
-              text="Commend added!" />
+            <div className="comment-notification">
+              <Notification
+                active={isError}
+                dimmed={false}
+                negative={true}
+                title="Comment"
+                text="Error!" />
+              <Notification
+                active={isSuccess}
+                dimmed={false}
+                positive={true}
+                title="Comment"
+                text="Commend added!" />
+            </div>
           </Form>
         }
       </Comment.Group>
@@ -109,7 +111,7 @@ export default class Comments extends React.Component<ICommentsProps, ICommentSt
     addComment({ author: userData?.id || 0, date: new Date(), pageType, text, id: 0, parentId })
       .then((result) => {
         if (!result.exception) {
-          this.props.userStore?.comments.push(result);
+          this.state.comments.push(result);
           this.setState({
             text: '',
             isError: false,

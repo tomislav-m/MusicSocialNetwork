@@ -25,8 +25,14 @@ export default class Notification extends React.Component<INotificationProps, IN
     super(props);
 
     this.state = {
-      visible: props.active
+      visible: false
     };
+  }
+
+  componentDidMount() {
+    this.setState({
+      visible: this.props.active
+    });
   }
 
   render() {
@@ -34,11 +40,11 @@ export default class Notification extends React.Component<INotificationProps, IN
       <span>
         {
           this.props.dimmed ?
-          <Dimmer active={this.state.visible} onClickOutside={this.dismissMessage}>
-            {this.renderMessage()}
-          </Dimmer>
-          :
-          this.renderMessage(this.props.dimmed)
+            <Dimmer active={this.state.visible} onClickOutside={this.dismissMessage}>
+              {this.renderMessage()}
+            </Dimmer>
+            :
+            this.renderMessage(this.props.dimmed)
         }
       </span>
     );
@@ -53,16 +59,17 @@ export default class Notification extends React.Component<INotificationProps, IN
 
   @autobind
   renderMessage(dimmed: boolean = false) {
-    const { title, text, positive, negative } = this.props;
+    const { title, text, active, positive, negative } = this.props;
     let props = {};
     if (dimmed) {
-      props = { ...this.props, onDismiss: this.dismissMessage };
+      props = { positive, negative, onDismiss: this.dismissMessage, visible: active };
     } else {
-      props = { ...this.props };
+      props = { positive, negative, visible: active };
     }
     return (
       <span>
         {
+          active &&
           <Message {...props}>
             {
               title && <Message.Header>{title}</Message.Header>

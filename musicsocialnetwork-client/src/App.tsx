@@ -14,6 +14,7 @@ import Album from './components/Album/Album';
 import UserProfile from './components/User/UserProfile';
 import { Registration } from './components/Membership/Registration';
 import Notification from './common/Notification';
+import PopularAlbums from './components/PopularAlbums/PopularAlbums';
 
 @observer
 class App extends React.Component {
@@ -44,6 +45,7 @@ class App extends React.Component {
         </Menu>
 
         <Container className="content-container">
+          <Route path="/" component={PopularAlbums} />
           <Provider userStore={this.userStore}>
             <Route path="/Login" component={Login} />
           </Provider>
