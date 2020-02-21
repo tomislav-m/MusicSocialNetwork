@@ -158,6 +158,11 @@ namespace UserService.Services
 
         public async Task<Comment> AddComment(Comment comment)
         {
+            if (comment.Author == 0)
+            {
+                var author = await _context.Users.SingleOrDefaultAsync(x => x.Username == comment.AuthorName);
+                comment.Author = author.Id;
+            }
             await _context.Comments.AddAsync(comment);
             await _context.SaveChangesAsync();
 

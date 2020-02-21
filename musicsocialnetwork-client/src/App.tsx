@@ -45,7 +45,7 @@ class App extends React.Component {
         </Menu>
 
         <Container className="content-container">
-          <Route path="/" component={PopularAlbums} />
+          <Route path="/" exact component={PopularAlbums} />
           <Provider userStore={this.userStore}>
             <Route path="/Login" component={Login} />
           </Provider>

@@ -38,6 +38,12 @@ namespace Common.Services
             return eventsSlice.Events;
         }
 
+        public async Task<ResolvedEvent[]> ReadFromStreamForward(string stream, int maxCount = 4095)
+        {
+            var eventsSlice = await connection.ReadStreamEventsForwardAsync(stream, 0, maxCount, false);
+            return eventsSlice.Events;
+        }
+
         public async void AddEventToStream(IEvent @event, string stream)
         {
             var myEvent = new EventData(Guid.NewGuid(), @event.Type, true,

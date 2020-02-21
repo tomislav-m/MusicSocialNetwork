@@ -6,6 +6,7 @@ using Common.Services;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -111,8 +112,20 @@ namespace CatalogService.Services
                         break;
                 }
             }
+            var dayDict = dayIds.GroupBy(x => x)
+                .ToDictionary(x => x.Key, y => y.Count())
+                .OrderByDescending(x => x.Value).Take(5)
+                .Select(x => x.Key);
+            var weekDict = weekIds.GroupBy(x => x)
+                .ToDictionary(x => x.Key, y => y.Count())
+                .OrderByDescending(x => x.Value).Take(5)
+                .Select(x => x.Key);
+            var monthDict = monthIds.GroupBy(x => x)
+                .ToDictionary(x => x.Key, y => y.Count())
+                .OrderByDescending(x => x.Value).Take(5)
+                .Select(x => x.Key);
 
-            return (dayIds, weekIds, monthIds);
+            return (dayDict, weekDict, monthDict);
         }
     }
 }

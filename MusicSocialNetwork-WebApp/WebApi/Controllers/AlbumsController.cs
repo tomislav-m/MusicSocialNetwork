@@ -225,7 +225,7 @@ namespace WebApi.Controllers
         {
             try
             {
-                var popularAlbums = await _popularRequestClient.Request(new PopularAlbums());
+                var popularAlbums = await _popularRequestClient.Request(new GetPopularAlbums());
                 return Ok(popularAlbums);
             }
             catch (RequestTimeoutException)

@@ -56,6 +56,7 @@ namespace CatalogService
                     EndpointConvention.Map<RateAlbum>(e.InputAddress);
                     EndpointConvention.Map<GetAverageRating>(e.InputAddress);
                     EndpointConvention.Map<GetRatedAlbums>(e.InputAddress);
+                    EndpointConvention.Map<GetPopularAlbums>(e.InputAddress);
 
                     e.Consumer<CollectionConsumer>(provider);
                     EndpointConvention.Map<AddToCollection>(e.InputAddress);
@@ -69,6 +70,7 @@ namespace CatalogService
             services.AddScoped(provider => provider.GetRequiredService<IBus>().CreateRequestClient<RateAlbum>());
             services.AddScoped(provider => provider.GetRequiredService<IBus>().CreateRequestClient<GetAverageRating>());
             services.AddScoped(provider => provider.GetRequiredService<IBus>().CreateRequestClient<AddToCollection>());
+            services.AddScoped(provider => provider.GetRequiredService<IBus>().CreateRequestClient<GetPopularAlbums>());
             services.AddSingleton<IHostedService, BusService>();
 
             services.AddScoped<EventStoreService>();

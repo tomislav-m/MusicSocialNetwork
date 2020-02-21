@@ -44,6 +44,20 @@ export async function getAlbum(id: number) {
   }
 }
 
+export async function getPopularAlbums() {
+  try {
+    const response = await fetch(`${albumApiUrl}/popular`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    return response.json();
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 export async function getSimpleAlbums(ids: Array<number>) {
   try {
     const response = await fetch(`${albumApiUrl}/simple`, {
