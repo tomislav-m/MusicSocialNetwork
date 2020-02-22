@@ -5,12 +5,14 @@ using Common.MessageContracts.Catalog.Commands;
 using Common.MessageContracts.Catalog.Events;
 using Common.Services;
 using MassTransit;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CatalogService.Consumers
 {
-    public class CollectionConsumer : IConsumer<AddToCollection>, IConsumer<GetPopularAlbums>
+    public class CollectionConsumer : IConsumer<AddToCollection>, IConsumer<GetPopularAlbums>, IConsumer<GetCollection>
     {
         private readonly ICollectionService _service;
         private readonly IMapper _mapper;
@@ -36,9 +38,9 @@ namespace CatalogService.Consumers
                 await context.RespondAsync(@event);
                 _eventStoreService.AddEventToStream(@event, "catalog-stream");
             }
-            catch
+            catch (Exception ex)
             {
-                await context.RespondAsync(null);
+                await context.RespondAsync(new AlbumAddedToCollection { Exception = ex });
             }
         }
 
@@ -53,6 +55,22 @@ namespace CatalogService.Consumers
             catch
             {
                 await context.RespondAsync(null);
+            }
+        }
+
+        public async Task Consume(ConsumeContext<GetCollection> context)
+        {
+            var message = context.Message;
+
+            try
+            {
+                var collection = await _service.GetCollection(message.Id);
+                var @event = new Collection { AlbumIds = collection.Select(x => x.AlbumId) };
+                await context.RespondAsync(@event);
+            }
+            catch (Exception exc)
+            {
+                await context.RespondAsync(new Collection { Exception = exc });
             }
         }
     }

@@ -44,14 +44,14 @@ export default class EventList extends React.Component<EventProps, EventState> {
           this.props.userId &&
           <div>
             <Notification
-              active={createError === true || editError === true }
+              active={createError === true || editError === true}
               dimmed={false}
               negative={true}
               title={`${createError === true ? 'Add' : 'Edit'} event`}
               text="Error!"
             />
             <Notification
-              active={createError === false || editError === false }
+              active={createError === false || editError === false}
               dimmed={false}
               negative={false}
               title={`${createError === false ? 'Add' : 'Edit'} event`}
@@ -85,12 +85,15 @@ export default class EventList extends React.Component<EventProps, EventState> {
                   <Table.Cell><LinkList artists={event.headliners.map(x => { return { id: event.id, name: dict[x] }; })} /></Table.Cell>
                   <Table.Cell><LinkList artists={event.supporters.map(x => { return { id: event.id, name: dict[x] }; })} /></Table.Cell>
                   <Table.Cell>
-                    <Modal trigger={<Button icon compact><Icon name="edit" /></Button>}>
-                      <Modal.Header>Edit event</Modal.Header>
-                      <Modal.Content>
-                        <CreateEditEvent headliner={{ id: artistId, name: dict[artistId] }} oldEvent={event} isEdit={true} onEventSave={this.handleEditEvent} />
-                      </Modal.Content>
-                    </Modal>
+                    {
+                      this.props.userId &&
+                      <Modal trigger={<Button icon compact><Icon name="edit" /></Button>}>
+                        <Modal.Header>Edit event</Modal.Header>
+                        <Modal.Content>
+                          <CreateEditEvent headliner={{ id: artistId, name: dict[artistId] }} oldEvent={event} isEdit={true} onEventSave={this.handleEditEvent} />
+                        </Modal.Content>
+                      </Modal>
+                    }
                   </Table.Cell>
                   <Table.Cell>
                     <EventInfoModal event={event} userId={this.props.userId} userEvent={this.props.userEvents.filter(x => x.eventId === event.id)[0]} />

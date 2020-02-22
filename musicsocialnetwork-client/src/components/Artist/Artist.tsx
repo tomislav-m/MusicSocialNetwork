@@ -99,7 +99,7 @@ export default class Artist extends React.Component<ArtistProps> {
   }
 
   private renderAlbums() {
-    const albums = this.props.artistStore?.albums;
+    const albums = this.props.artistStore?.sortedAlbums;
 
     return (
       <Table striped compact>

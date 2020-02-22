@@ -5,7 +5,7 @@ import { getPopularAlbums, getSimpleAlbums } from '../../actions/Music/MusicActi
 import { AlbumDataSimple } from '../../models/Album';
 import { Link } from 'react-router-dom';
 
-interface PopularAlbumsProps {}
+interface PopularAlbumsProps { }
 
 interface PopularAlbumsState {
   todayAlbums: Array<AlbumDataSimple>;
@@ -32,10 +32,11 @@ export default class PopularAlbums extends React.Component<PopularAlbumsProps, P
   }
 
   render() {
-    const { todayAlbums, weekAlbums, monthAlbums, isLoading } = this.state;
+    const { todayAlbums, weekAlbums, monthAlbums } = this.state;
 
     return (
       <div>
+        <h2>Most popular albums</h2>
         <Grid>
           <Grid.Row>
             <Grid.Column width="5">

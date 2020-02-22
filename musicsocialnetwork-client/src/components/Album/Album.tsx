@@ -30,11 +30,13 @@ export default class Album extends React.Component<AlbumProps> {
   }
 
   public render() {
-    const rating = this.getAlbumRating(parseInt(this.props.match.params.id));
+    const albumId = this.props.match.params.id;
+    const rating = this.getAlbumRating(parseInt(albumId));
     const store = this.props.artistStore;
     const userStore = this.props.userStore;
     const album = store?.album;
     const artist = store?.artist;
+    const inCollection = userStore?.collection.includes(parseInt(albumId));
 
     return (
       <div>
@@ -103,16 +105,16 @@ export default class Album extends React.Component<AlbumProps> {
                           </div>
                           <div className="info-row">
                             <Button
-                              icon="plus"
+                              icon={inCollection ? 'minus' : 'plus'}
                               size="mini"
-                              color="green"
-                              title="Add to collection"
+                              color={inCollection ? 'red' : 'green'}
+                              title={inCollection ? 'Remove to collection' : 'Add to collection'}
                               disabled={userStore?.isAddingToCollection}
                               loading={userStore?.isAddingToCollection}
                               onClick={() => userStore?.handleAddToCollection(album.id)}
                             />
                             <Notification
-                              active={false}
+                              active={userStore.collectionError}
                               dimmed={false}
                               negative={true}
                               title="Collection"

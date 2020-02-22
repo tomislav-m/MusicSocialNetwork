@@ -159,3 +159,17 @@ export async function getRecommendations(userId: number) {
     console.log(err);
   }
 }
+
+export async function getCollection(userId: number) {
+  try {
+    const response = await fetch(`${albumApiUrl}/collection/${userId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    return response.json();
+  } catch (err) {
+    console.log(err);
+  }
+}

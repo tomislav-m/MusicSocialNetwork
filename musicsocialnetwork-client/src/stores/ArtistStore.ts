@@ -93,4 +93,9 @@ export default class ArtistStore {
   get styles(): Array<string> {
     return Array.from(new Set(this.albums.map(x => x.style)));
   }
+
+  @computed
+  get sortedAlbums() {
+    return this.albums.slice().sort((x, y) => x.yearReleased - y.yearReleased);
+  }
 }

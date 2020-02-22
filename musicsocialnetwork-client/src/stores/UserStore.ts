@@ -2,7 +2,7 @@ import { observable, action, computed } from 'mobx';
 import { LoginData, UserData, defaultUserData, Comment } from '../models/User';
 import autobind from 'autobind-decorator';
 import { authenticateAsync, registerAsync } from '../actions/User/UserActions';
-import { rateAlbum, getRatedAlbums, addToCollection, getArtistNames } from '../actions/Music/MusicActions';
+import { rateAlbum, getRatedAlbums, addToCollection, getArtistNames, getCollection } from '../actions/Music/MusicActions';
 import { UserEvent, EventData } from '../models/Event';
 import { getMarkedEvents, getEvents } from '../actions/Events/EventActions';
 
@@ -81,6 +81,12 @@ export default class UserStore {
                   });
               }
             });
+          getCollection(this.userData.id)
+            .then(result => {
+              if (!result.exception) {
+                this.collection = result.albumIds;
+              }
+            });
         }
       })
       .catch(err => console.log(err));
@@ -147,7 +153,13 @@ export default class UserStore {
           console.log(data.exception);
           this.collectionError = true;
         } else {
-          this.collection.push(data);
+          const index = this.collection.findIndex(x => x === albumId);
+          if (index === -1) {
+            this.collection.push(data.albumId);
+          } else {
+            this.collection.splice(index, 1);
+          }
+
           this.collectionError = false;
         }
       })
@@ -168,6 +180,6 @@ export default class UserStore {
 
   @computed
   get sortedRatings() {
-    return this.albumRatings.sort((x, y) => (new Date(y.createdAt)).getTime() - (new Date(x.createdAt)).getTime());
+    return this.albumRatings.slice().sort((x, y) => (new Date(y.createdAt)).getTime() - (new Date(x.createdAt)).getTime());
   }
 }

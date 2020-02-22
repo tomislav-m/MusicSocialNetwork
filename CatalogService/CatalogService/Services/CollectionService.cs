@@ -23,7 +23,15 @@ namespace CatalogService.Services
 
         public async Task<IEnumerable<UserAlbum>> AddToCollection(UserAlbum userAlbum)
         {
-            await _context.UserAlbums.AddAsync(userAlbum);
+            if (await _context.UserAlbums.AnyAsync(x => x.AlbumId == userAlbum.AlbumId && x.UserId == userAlbum.UserId))
+            {
+                _context.UserAlbums.Remove(userAlbum);
+            }
+            else
+            {
+                _context.UserAlbums.Add(userAlbum);
+            }
+
             await _context.SaveChangesAsync();
 
             return await _context.UserAlbums.Where(x => x.UserId == userAlbum.UserId).ToListAsync();

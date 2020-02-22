@@ -60,6 +60,7 @@ namespace CatalogService
 
                     e.Consumer<CollectionConsumer>(provider);
                     EndpointConvention.Map<AddToCollection>(e.InputAddress);
+                    EndpointConvention.Map<GetCollection>(e.InputAddress);
                 });
             }));
 
@@ -71,6 +72,7 @@ namespace CatalogService
             services.AddScoped(provider => provider.GetRequiredService<IBus>().CreateRequestClient<GetAverageRating>());
             services.AddScoped(provider => provider.GetRequiredService<IBus>().CreateRequestClient<AddToCollection>());
             services.AddScoped(provider => provider.GetRequiredService<IBus>().CreateRequestClient<GetPopularAlbums>());
+            services.AddScoped(provider => provider.GetRequiredService<IBus>().CreateRequestClient<GetCollection>());
             services.AddSingleton<IHostedService, BusService>();
 
             services.AddScoped<EventStoreService>();

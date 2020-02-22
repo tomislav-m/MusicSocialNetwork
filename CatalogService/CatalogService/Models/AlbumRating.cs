@@ -9,5 +9,10 @@ namespace CatalogService.Models
         public int UserId { get; set; }
         public float Rating { get; set; }
         public DateTime CreatedAt { get; set; }
+
+        public AlbumRating()
+        {
+            CreatedAt = DateTime.Now;
+        }
     }
 }

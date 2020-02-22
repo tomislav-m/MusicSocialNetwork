@@ -22,6 +22,7 @@ namespace WebApi.Controllers
         private readonly IRequestClient<GetRatedAlbums, AlbumRated[]> _catalogRequestClient;
         private readonly IRequestClient<GetAverageRating, AlbumAverageRating> _catalogRatingRequestClient;
         private readonly IRequestClient<AddToCollection, AlbumAddedToCollection> _collectionRequestClient;
+        private readonly IRequestClient<GetCollection, Collection> _getCollectionRequestClient;
         private readonly IRequestClient<GetPopularAlbums, PopularAlbums> _popularRequestClient;
 
         public AlbumsController(
@@ -31,6 +32,7 @@ namespace WebApi.Controllers
             IRequestClient<GetRatedAlbums, AlbumRated[]> catalogRequestClient,
             IRequestClient<GetAverageRating, AlbumAverageRating> catalogRatingRequestClient,
             IRequestClient<AddToCollection, AlbumAddedToCollection> collectionRequestClient,
+            IRequestClient<GetCollection, Collection> getCollectionRequestClient,
             IRequestClient<GetPopularAlbums, PopularAlbums> popularRequestClient)
         {
             _requestClient = requestClient;
@@ -39,6 +41,7 @@ namespace WebApi.Controllers
             _catalogRequestClient = catalogRequestClient;
             _catalogRatingRequestClient = catalogRatingRequestClient;
             _collectionRequestClient = collectionRequestClient;
+            _getCollectionRequestClient = getCollectionRequestClient;
             _popularRequestClient = popularRequestClient;
         }
 
@@ -170,7 +173,7 @@ namespace WebApi.Controllers
         {
             try
             {
-                var result = await _rateRequestClient.Request(new AddToCollection { UserId = body.UserId, AlbumId = body.AlbumId });
+                var result = await  _collectionRequestClient.Request(new AddToCollection { UserId = body.UserId, AlbumId = body.AlbumId });
 
                 if (result == null)
                 {
@@ -227,6 +230,20 @@ namespace WebApi.Controllers
             {
                 var popularAlbums = await _popularRequestClient.Request(new GetPopularAlbums());
                 return Ok(popularAlbums);
+            }
+            catch (RequestTimeoutException)
+            {
+                return StatusCode((int)HttpStatusCode.RequestTimeout);
+            }
+        }
+
+        [HttpGet("collection/{userId}")]
+        public async Task<ActionResult<Collection>> GetCollection(int userId)
+        {
+            try
+            {
+                var collection = await _getCollectionRequestClient.Request(new GetCollection { Id = userId });
+                return Ok(collection);
             }
             catch (RequestTimeoutException)
             {

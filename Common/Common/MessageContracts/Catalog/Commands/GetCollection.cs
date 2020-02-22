@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Common.MessageContracts.Catalog.Commands
+﻿namespace Common.MessageContracts.Catalog.Commands
 {
     public class GetCollection
     {
+        public int Id { get; set; }
     }
 }

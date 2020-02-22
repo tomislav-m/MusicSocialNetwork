@@ -78,7 +78,7 @@ export default class CreateEditAlbum extends React.Component<CreateEditAlbumProp
 
   @autobind
   private handleArtistSelect(event: any, { result }: any) {
-    const selectedArtist = this.state.artistSearchData.find(x => x.id === result.Id);
+    //const selectedArtist = this.state.artistSearchData.find(x => x.id === result.Id);
     this.setState({  });
   }
 
