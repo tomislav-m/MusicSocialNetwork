@@ -59,7 +59,11 @@ export default class EventList extends React.Component<EventProps, EventState> {
               title={`${createError === false ? 'Add' : 'Edit'} event`}
               text="Success!"
             />
-            <Modal trigger={<Button icon="plus" size="mini" color="green" title="Add event" />} onClick={() => this.setState({ createModalOpen: true })}>
+            <Modal
+              trigger={<Button icon="plus" size="mini" color="green" title="Add event" />}
+              onClick={() => this.setState({ createModalOpen: true })}
+              open={this.state.createModalOpen}
+            >
               <Modal.Header>Edit event</Modal.Header>
               <Modal.Content>
                 <CreateEditEvent isEdit={false} headliner={{ id: artistId, name: dict[artistId] }} onEventSave={this.handleCreateEvent} />
@@ -89,7 +93,11 @@ export default class EventList extends React.Component<EventProps, EventState> {
                   <Table.Cell>
                     {
                       this.props.userId &&
-                      <Modal trigger={<Button icon compact><Icon name="edit" /></Button>}>
+                      <Modal
+                        trigger={<Button icon compact><Icon name="edit" /></Button>}
+                        onClick={() => this.setState({ createModalOpen: true })}
+                        open={this.state.createModalOpen}
+                      >
                         <Modal.Header>Edit event</Modal.Header>
                         <Modal.Content>
                           <CreateEditEvent headliner={{ id: artistId, name: dict[artistId] }} oldEvent={event} isEdit={true} onEventSave={this.handleEditEvent} />
