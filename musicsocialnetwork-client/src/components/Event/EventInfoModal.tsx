@@ -7,7 +7,6 @@ import { defaultArtistDataSimple } from '../../models/Artist';
 import { markEvent, buyTickets } from '../../actions/Events/EventActions';
 import autobind from 'autobind-decorator';
 import Comments from '../Comments/Comments';
-import Notification from '../../common/Notification';
 import './EventInfoModal.css';
 import UserStore from '../../stores/UserStore';
 import { observer, inject } from 'mobx-react';

@@ -24,7 +24,7 @@ namespace EventService.Services
 
         public async override Task RecreateDbAsync()
         {
-            var events = await ReadFromStream("event-stream");
+            var events = await ReadFromStreamForward("event-stream");
             foreach(var @event in events)
             {
                 var type = @event.Event.EventType;

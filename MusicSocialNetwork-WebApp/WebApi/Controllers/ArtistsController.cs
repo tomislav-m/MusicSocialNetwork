@@ -17,15 +17,18 @@ namespace WebApi.Controllers
         private readonly IRequestClient<SearchArtist, ArtistFound[]> _requestClient;
         private readonly IRequestClient<GetArtist, ArtistEvent> _getRequestClient;
         private readonly IRequestClient<GetArtistNamesByIds, ArtistSimple[]> _getNamesRequestClient;
+        private readonly IRequestClient<CreateArtist, ArtistCreated> _createArtistRequestClient;
 
         public ArtistsController(
             IRequestClient<SearchArtist, ArtistFound[]> requestClient,
             IRequestClient<GetArtist, ArtistEvent> getRequestClient,
-            IRequestClient<GetArtistNamesByIds, ArtistSimple[]> getNamesRequestClient)
+            IRequestClient<GetArtistNamesByIds, ArtistSimple[]> getNamesRequestClient,
+            IRequestClient<CreateArtist, ArtistCreated> createArtistRequestClient)
         {
             _requestClient = requestClient;
             _getRequestClient = getRequestClient;
             _getNamesRequestClient = getNamesRequestClient;
+            _createArtistRequestClient = createArtistRequestClient;
         }
 
         // GET: api/Artists
@@ -65,13 +68,19 @@ namespace WebApi.Controllers
             return NoContent();
         }
 
-        // POST: api/Artists
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
-        public async Task<ActionResult<Artist>> PostArtist(Artist artist)
+        public async Task<ActionResult<Artist>> PostArtist(CreateArtist artist)
         {
-            return CreatedAtAction("GetArtist", new { id = artist.Id }, artist);
+            try
+            {
+                var result = await _createArtistRequestClient.Request(artist);
+
+                return Ok(result);
+            }
+            catch (RequestTimeoutException)
+            {
+                return StatusCode((int)HttpStatusCode.RequestTimeout);
+            }
         }
 
         // DELETE: api/Artists/5

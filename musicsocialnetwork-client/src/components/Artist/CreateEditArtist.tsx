@@ -32,7 +32,7 @@ export default class CreateEditArtist extends React.Component<CreateEditArtistPr
       <Form>
         <Form.Field>
           <label>Name</label>
-          <Input name="Name" type="date" value={artist?.name} onChange={this.handleChange} />
+          <Input name="Name" type="text" value={artist?.name} onChange={this.handleChange} />
         </Form.Field>
         <Form.Field>
           <label>Photo URL</label>
