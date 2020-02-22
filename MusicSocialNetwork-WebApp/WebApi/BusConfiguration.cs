@@ -91,7 +91,7 @@ namespace WebApi
                 new MessageRequestClient<GetMarkedEvents, MarkedEvent[]>(x.GetRequiredService<IBus>(), eventServiceAddress, timeout, timeout));
 
 
-            var ticketingServiceAddress = new Uri("rabbitmq://localhost/ticketing-service");
+            var ticketingServiceAddress = new Uri("rabbitmq://localhost/tickets-service");
 
             services.AddScoped<IRequestClient<BuyTickets, TicketBought>>(x =>
                 new MessageRequestClient<BuyTickets, TicketBought>(x.GetRequiredService<IBus>(), ticketingServiceAddress, timeout, timeout));

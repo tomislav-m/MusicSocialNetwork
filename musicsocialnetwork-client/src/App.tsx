@@ -55,6 +55,20 @@ class App extends React.Component {
             <Route path="/User/:id" component={UserProfile} />
 
             <Notification title="Registration" text="Registration successful!" positive={true} dimmed={true} active={this.userStore.registerIsSuccess === true} />
+            <Notification
+              active={this.userStore.buyError === true}
+              dimmed={true}
+              negative={true}
+              text="Error buying ticket!"
+              title="Error"
+            />
+            <Notification
+              active={this.userStore.buyError === false}
+              dimmed={true}
+              positive={true}
+              text="Ticket bought!"
+              title="Success"
+            />
           </Provider>
         </Container>
       </Router>

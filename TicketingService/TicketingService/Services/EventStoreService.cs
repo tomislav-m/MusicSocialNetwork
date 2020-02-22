@@ -4,6 +4,7 @@ using Common.MessageContracts.Ticketing.Events;
 using Common.Services;
 using Newtonsoft.Json;
 using System.Text;
+using System.Threading.Tasks;
 using TicketingService.Models;
 
 namespace TicketingService.Services
@@ -13,14 +14,14 @@ namespace TicketingService.Services
         private readonly IMapper _mapper;
         private readonly ITicketsService _service;
 
-        public EventStoreService(IMapper mapper, TicketsService service)
+        public EventStoreService(IMapper mapper, ITicketsService service)
         {
             _mapper = mapper;
             _service = service;
-            Init();
+            Init().Wait();
         }
 
-        public async override void RecreateDb()
+        public async override Task RecreateDbAsync()
         {
             var events = await ReadFromStream("ticketing-stream");
 

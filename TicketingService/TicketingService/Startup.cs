@@ -48,7 +48,7 @@ namespace TicketingService
             services.AddSingleton(provider => Bus.Factory.CreateUsingRabbitMq(cfg =>
             {
                 cfg.Host("localhost", "/", h => { });
-                cfg.ReceiveEndpoint("ticketing-service", e =>
+                cfg.ReceiveEndpoint("tickets-service", e =>
                 {
                     e.PrefetchCount = 16;
                     e.UseMessageRetry(x => x.Interval(2, 100));

@@ -7,12 +7,16 @@ import { defaultArtistDataSimple } from '../../models/Artist';
 import { markEvent, buyTickets } from '../../actions/Events/EventActions';
 import autobind from 'autobind-decorator';
 import Comments from '../Comments/Comments';
+import Notification from '../../common/Notification';
 import './EventInfoModal.css';
+import UserStore from '../../stores/UserStore';
+import { observer, inject } from 'mobx-react';
 
 interface EventInfoProps {
   event: EventData;
   userId: number | undefined;
   userEvent: UserEvent;
+  userStore?: UserStore;
 }
 
 interface EventInfoState {
@@ -22,8 +26,11 @@ interface EventInfoState {
   isBuyingTicket: boolean;
   userEvent: UserEvent;
   ticketsCount: number;
+  modalOpen: boolean;
 }
 
+@inject('userStore')
+@observer
 export default class EventInfoModal extends React.Component<EventInfoProps, EventInfoState> {
   constructor(props: EventInfoProps) {
     super(props);
@@ -34,7 +41,8 @@ export default class EventInfoModal extends React.Component<EventInfoProps, Even
       isInterestedLoading: false,
       userEvent: props.userEvent,
       isBuyingTicket: false,
-      ticketsCount: 1
+      ticketsCount: 1,
+      modalOpen: false
     };
   }
 
@@ -49,8 +57,11 @@ export default class EventInfoModal extends React.Component<EventInfoProps, Even
 
     return (
       <Modal trigger={
-        <Button size="mini" color="grey" icon><Icon name="angle right" size="big" title="Details" /></Button>
-      } closeIcon>
+        <Button size="mini" color="grey" icon onClick={() => this.setState({ modalOpen: true })}><Icon name="angle right" size="big" title="Details" /></Button>
+      }
+        onClose={() => this.setState({ modalOpen: false })}
+        open={this.state.modalOpen}
+        closeIcon>
         <Modal.Header>Event</Modal.Header>
         <Modal.Content>
           <Grid className="modal-grid">
@@ -173,12 +184,30 @@ export default class EventInfoModal extends React.Component<EventInfoProps, Even
     }
   }
 
+  @autobind
   private handleBuyTickets() {
     const { userId, event } = this.props;
     const { ticketsCount } = this.state;
 
     if (userId && ticketsCount > 0) {
-      buyTickets(userId, event.id, ticketsCount);
+      this.setState({
+        isBuyingTicket: true
+      });
+      buyTickets(userId, event.id, ticketsCount)
+        .then(ticket => {
+          if (ticket.exception) {
+            this.props.userStore?.setBuyError(true);
+          } else {
+            this.props.userStore?.setBuyError(false);
+          }
+        })
+        .catch(() => this.props.userStore?.setBuyError(true))
+        .finally(() => {
+          this.setState({
+            isBuyingTicket: false,
+            modalOpen: false
+          });
+        });
     }
   }
 }

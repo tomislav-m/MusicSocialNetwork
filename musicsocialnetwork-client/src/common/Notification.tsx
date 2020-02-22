@@ -35,6 +35,14 @@ export default class Notification extends React.Component<INotificationProps, IN
     });
   }
 
+  componentDidUpdate(prevProps: INotificationProps) {
+    if (prevProps.active !== this.props.active) {
+      this.setState({
+        visible: this.props.active
+      });
+    }
+  }
+
   render() {
     return (
       <span>

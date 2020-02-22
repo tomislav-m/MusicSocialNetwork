@@ -93,7 +93,7 @@ export async function getMarkedEvents(userId: number) {
 
 export async function buyTickets(userId: number, eventId: number, count: number) {
   try {
-    const response = await fetch(`${ticketingApiUrl}/buy`, {
+    const response = await fetch(`${eventApiUrl}/buy`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

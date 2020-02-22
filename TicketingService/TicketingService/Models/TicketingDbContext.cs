@@ -1,8 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace TicketingService.Models
 {
@@ -11,8 +7,15 @@ namespace TicketingService.Models
         public TicketingDbContext(DbContextOptions<TicketingDbContext> options)
             : base(options) { }
 
-        public DbSet<Ticket> Tickets;
+        public DbSet<Ticket> Tickets { get; set; }
+        public DbSet<EventTicketsInfo> TicketsInfo { get; set; }
 
-        public DbSet<EventTicketsInfo> TicketsInfo;
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Ticket>()
+                .HasKey(o => new { o.EventId, o.UserId, o.DateTimeBought });
+            modelBuilder.Entity<EventTicketsInfo>()
+                .HasKey(o => o.EventId);
+        }
     }
 }

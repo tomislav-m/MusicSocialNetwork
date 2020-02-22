@@ -31,7 +31,7 @@ namespace CatalogService.Services
 
         public override async Task RecreateDbAsync()
         {
-            var events = await ReadFromStream("catalog-stream");
+            var events = await ReadFromStreamForward("catalog-stream");
             foreach (var @event in events)
             {
                 var type = @event.Event.EventType;

@@ -33,6 +33,8 @@ export default class UserStore {
   @observable rateError: boolean = false;
   @observable collectionError: boolean = false;
 
+  @observable buyError: boolean | undefined = undefined;
+
   @autobind
   @action
   handleUsernameChange(event: { target: HTMLInputElement }) {
@@ -166,6 +168,11 @@ export default class UserStore {
       .catch(() => {
         this.collectionError = false;
       });
+  }
+
+  @autobind
+  @action setBuyError(value: boolean) {
+    this.buyError = value;
   }
 
   @computed

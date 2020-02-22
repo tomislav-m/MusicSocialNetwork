@@ -36,12 +36,19 @@ namespace TicketingService.Services
 
         public async Task<Ticket> BuyTicket(int userId, int eventId, DateTime dateTimeBought, int count = 1)
         {
-            var ticket = new Ticket { UserId = userId, EventId = eventId, DateTimeBought = dateTimeBought, Count = count };
+            try
+            {
+                var ticket = new Ticket { UserId = userId, EventId = eventId, DateTimeBought = dateTimeBought, Count = count };
 
-            await _context.AddAsync(ticket);
-            await _context.SaveChangesAsync();
+                await _context.Tickets.AddAsync(ticket);
+                await _context.SaveChangesAsync();
 
-            return ticket;
+                return ticket;
+            }
+            catch (Exception exc)
+            {
+                throw exc;
+            }
         }
 
         public async Task<EventTicketsInfo> GetEventTicketsInfo(int eventId)

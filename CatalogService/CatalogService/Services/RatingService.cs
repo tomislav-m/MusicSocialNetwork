@@ -52,7 +52,8 @@ namespace CatalogService.Services
             if (oldRating == null)
             {
                 _context.AlbumRatings.Add(rating);
-            } else if (oldRating.Rating != rating.Rating)
+            }
+            else if (oldRating.Rating != rating.Rating)
             {
                 oldRating.Rating = rating.Rating;
                 _context.AlbumRatings.Update(oldRating);
