@@ -5,6 +5,7 @@ using Common.MessageContracts.Ticketing.Commands;
 using Common.MessageContracts.Ticketing.Events;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
@@ -70,10 +71,10 @@ namespace WebApi.Controllers
         [HttpPost]
         public async Task<ActionResult<EventAdded>> CreateEvent(AddEvent @event)
         {
-            var result = await _addEventRequestClient.Request(@event);
-
             try
             {
+                var result = await _addEventRequestClient.Request(@event);
+
                 if (result == null)
                 {
                     return NotFound();
@@ -84,6 +85,10 @@ namespace WebApi.Controllers
             catch (RequestTimeoutException)
             {
                 return StatusCode((int)HttpStatusCode.RequestTimeout);
+            }
+            catch (Exception ex)
+            {
+                return Ok(new EventAdded { Exception = ex });
             }
         }
 
@@ -187,7 +192,7 @@ namespace WebApi.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost("add-tickets")]
         public async Task<ActionResult> AddEventTicket(AddEditEventTickets ticket)
         {
             try

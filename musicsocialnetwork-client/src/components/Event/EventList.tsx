@@ -21,6 +21,7 @@ interface EventProps {
 interface EventState {
   createError: boolean | undefined;
   editError: boolean | undefined;
+  createModalOpen: boolean;
 }
 
 export default class EventList extends React.Component<EventProps, EventState> {
@@ -28,7 +29,8 @@ export default class EventList extends React.Component<EventProps, EventState> {
     super(props);
     this.state = {
       createError: undefined,
-      editError: undefined
+      editError: undefined,
+      createModalOpen: false
     };
   }
 
@@ -57,7 +59,7 @@ export default class EventList extends React.Component<EventProps, EventState> {
               title={`${createError === false ? 'Add' : 'Edit'} event`}
               text="Success!"
             />
-            <Modal trigger={<Button icon="plus" size="mini" color="green" title="Add event" />}>
+            <Modal trigger={<Button icon="plus" size="mini" color="green" title="Add event" />} onClick={() => this.setState({ createModalOpen: true })}>
               <Modal.Header>Edit event</Modal.Header>
               <Modal.Content>
                 <CreateEditEvent isEdit={false} headliner={{ id: artistId, name: dict[artistId] }} onEventSave={this.handleCreateEvent} />
@@ -123,7 +125,8 @@ export default class EventList extends React.Component<EventProps, EventState> {
             editError: undefined
           });
         }
-      });
+      })
+      .finally(() => this.setState({ createModalOpen: false }));
   }
 
   @autobind
@@ -146,6 +149,7 @@ export default class EventList extends React.Component<EventProps, EventState> {
             editError: false
           });
         }
-      });
+      })
+      .finally(() => this.setState({ createModalOpen: false }));
   }
 }
