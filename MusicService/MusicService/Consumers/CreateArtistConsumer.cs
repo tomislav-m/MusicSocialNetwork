@@ -3,6 +3,7 @@ using Common.MessageContracts.Music.Commands;
 using Common.MessageContracts.Music.Events;
 using MassTransit;
 using MusicService.Service.Services;
+using System;
 using System.Threading.Tasks;
 using Artist = MusicService.DomainModel.Artist;
 
@@ -29,9 +30,9 @@ namespace MusicService.Service.Consumers
 
                 await context.RespondAsync(_mapper.Map<Artist, ArtistCreated>(artist));
             }
-            catch
+            catch (Exception exc)
             {
-                await context.RespondAsync(null);
+                await context.RespondAsync(new ArtistCreated { Exception = exc });
             }
         }
     }

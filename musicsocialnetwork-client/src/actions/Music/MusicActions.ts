@@ -1,3 +1,5 @@
+import { ArtistData } from '../../models/Artist';
+
 const artistApiUrl: string = 'http://localhost:57415/api/Artists';
 const albumApiUrl: string = 'http://localhost:57415/api/Albums';
 const recsApiUrl: string = 'http://localhost:57415/api/Recommendations';
@@ -9,6 +11,28 @@ export async function searchArtist(searchTerm: string) {
       headers: {
         'Content-Type': 'application/json'
       }
+    });
+    return response.json();
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export async function createArtist(artist: ArtistData) {
+  try {
+    if (!artist.yearBorn) {
+      artist.yearBorn = 0;
+    }
+    if (!artist.yearFormed) {
+      artist.yearFormed = 0;
+    }
+
+    const response = await fetch(`${artistApiUrl}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(artist)
     });
     return response.json();
   } catch (err) {

@@ -13,6 +13,8 @@ namespace MusicService.Service.Helpers
             CreateMap<CreateArtist, DomainModel.Artist>();
             CreateMap<DomainModel.Artist, CreateArtist>();
 
+            CreateMap<DomainModel.Artist, ArtistCreated>();
+
             CreateMap<DomainModel.Artist, Artist>();
 
             CreateMap<DomainModel.Album, AlbumFound>();

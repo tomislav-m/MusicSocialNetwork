@@ -150,7 +150,7 @@ export default class UserProfile extends React.Component<UserProps, UserState> {
         <Button size="small" icon>New artist</Button>
       }>
         <Modal.Content>
-          <CreateEditArtist isEdit={false} onArtistSave={() => null} />
+          <CreateEditArtist isEdit={false} />
         </Modal.Content>
       </Modal>
     );
@@ -193,5 +193,4 @@ export default class UserProfile extends React.Component<UserProps, UserState> {
         });
     });
   }
-
 }
