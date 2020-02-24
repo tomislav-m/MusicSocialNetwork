@@ -1,12 +1,14 @@
 import React from 'react';
 import { observer, inject } from 'mobx-react';
 import ArtistStore from '../../stores/ArtistStore';
-import { Loader, Grid, Label, Icon, Segment, Table, Tab } from 'semantic-ui-react';
+import { Loader, Grid, Label, Icon, Segment, Table, Tab, Modal, Button } from 'semantic-ui-react';
 import './Artist.css';
 import { Link } from 'react-router-dom';
 import EventList from '../Event/EventList';
 import UserStore from '../../stores/UserStore';
 import { arrayToList } from '../../common/helpers';
+import autobind from 'autobind-decorator';
+import CreateEditArtist from './CreateEditArtist';
 
 interface ArtistProps {
   artistStore?: ArtistStore;
@@ -45,7 +47,7 @@ export default class Artist extends React.Component<ArtistProps> {
 
   private panes: any = [
     { menuItem: 'Albums', render: () => <Tab.Pane>{this.renderAlbums()}</Tab.Pane> },
-    { menuItem: 'Events', render: () => <Tab.Pane><EventList store={this.props.artistStore} artistId={this.props.artistStore?.artist.id || 0} simpleArtistsDict={this.props.artistStore?.simpleArtistsDict} userId={this.props.userStore?.userData?.id} userEvents= {this.props.userStore?.userEvents || []} /></Tab.Pane> }
+    { menuItem: 'Events', render: () => <Tab.Pane><EventList store={this.props.artistStore} artistId={this.props.artistStore?.artist.id || 0} simpleArtistsDict={this.props.artistStore?.simpleArtistsDict} userId={this.props.userStore?.userData?.id} userEvents={this.props.userStore?.userEvents || []} /></Tab.Pane> }
   ];
 
   public render() {
@@ -70,6 +72,7 @@ export default class Artist extends React.Component<ArtistProps> {
                 <a href={`//${artist.websiteUrl}`} target="_blank" rel="noopener noreferrer" >
                   <Icon name="globe" link={true} size="large" color="black" />
                 </a>
+                {this.renderEditArtistModal()}
                 <Segment>{artist.bio}</Segment>
               </Grid.Column>
               <Grid.Column width="11" >
@@ -131,6 +134,19 @@ export default class Artist extends React.Component<ArtistProps> {
           }
         </Table.Body>
       </Table>
+    );
+  }
+
+  @autobind
+  private renderEditArtistModal() {
+    return (
+      <Modal trigger={
+        <Button floated="right" size="small" icon>Edit artist</Button>
+      }>
+        <Modal.Content>
+          <CreateEditArtist isEdit={true} artistData={this.props.artistStore?.artist} />
+        </Modal.Content>
+      </Modal>
     );
   }
 }

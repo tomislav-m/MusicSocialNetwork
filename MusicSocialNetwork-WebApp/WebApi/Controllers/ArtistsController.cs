@@ -18,17 +18,20 @@ namespace WebApi.Controllers
         private readonly IRequestClient<GetArtist, ArtistEvent> _getRequestClient;
         private readonly IRequestClient<GetArtistNamesByIds, ArtistSimple[]> _getNamesRequestClient;
         private readonly IRequestClient<CreateArtist, ArtistCreated> _createArtistRequestClient;
+        private readonly IRequestClient<EditArtist, ArtistEdited> _editArtistRequestClient;
 
         public ArtistsController(
             IRequestClient<SearchArtist, ArtistFound[]> requestClient,
             IRequestClient<GetArtist, ArtistEvent> getRequestClient,
             IRequestClient<GetArtistNamesByIds, ArtistSimple[]> getNamesRequestClient,
-            IRequestClient<CreateArtist, ArtistCreated> createArtistRequestClient)
+            IRequestClient<CreateArtist, ArtistCreated> createArtistRequestClient,
+            IRequestClient<EditArtist, ArtistEdited> editArtistRequestClient)
         {
             _requestClient = requestClient;
             _getRequestClient = getRequestClient;
             _getNamesRequestClient = getNamesRequestClient;
             _createArtistRequestClient = createArtistRequestClient;
+            _editArtistRequestClient = editArtistRequestClient;
         }
 
         // GET: api/Artists
@@ -63,9 +66,17 @@ namespace WebApi.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutArtist(long id, Artist artist)
+        public async Task<ActionResult<ArtistEdited>> PutArtist(long id, Artist artist)
         {
-            return NoContent();
+            try
+            {
+                var result = await _editArtistRequestClient.Request(artist);
+                return Ok(result);
+            }
+            catch (RequestTimeoutException)
+            {
+                return StatusCode((int)HttpStatusCode.RequestTimeout);
+            }
         }
 
         [HttpPost]

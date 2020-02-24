@@ -9,7 +9,7 @@ using Artist = MusicService.DomainModel.Artist;
 
 namespace MusicService.Service.Consumers
 {
-    public class CreateArtistConsumer : IConsumer<CreateArtist>
+    public class CreateArtistConsumer : IConsumer<CreateArtist>, IConsumer<EditArtist>
     {
         private readonly IArtistService _service;
         private readonly IMapper _mapper;
@@ -33,6 +33,23 @@ namespace MusicService.Service.Consumers
             catch (Exception exc)
             {
                 await context.RespondAsync(new ArtistCreated { Exception = exc });
+            }
+        }
+
+        public async Task Consume(ConsumeContext<EditArtist> context)
+        {
+            var message = context.Message;
+
+            try
+            {
+                var artist = _mapper.Map<EditArtist, Artist>(message);
+                await _service.Update(artist);
+
+                await context.RespondAsync(_mapper.Map<Artist, ArtistEdited>(artist));
+            }
+            catch (Exception exc)
+            {
+                await context.RespondAsync(new ArtistEdited { Exception = exc });
             }
         }
     }

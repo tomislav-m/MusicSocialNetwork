@@ -2,7 +2,7 @@ import React from 'react';
 import { ArtistData, defaultArtistData } from '../../models/Artist';
 import { Form, Input, Button, TextArea } from 'semantic-ui-react';
 import autobind from 'autobind-decorator';
-import { createArtist } from '../../actions/Music/MusicActions';
+import { createArtist, editArtist } from '../../actions/Music/MusicActions';
 import { Redirect } from 'react-router-dom';
 
 interface CreateEditArtistProps {
@@ -109,6 +109,14 @@ export default class CreateEditArtist extends React.Component<CreateEditArtistPr
             this.setState({
               redirectAddress
             });
+          }
+        })
+        .finally(() => this.setState({ isLoading: false }));
+    } else {
+      editArtist(this.state.artistData)
+        .then(result => {
+          if (!result.exception) {
+            this.setState({ artistData: result });
           }
         })
         .finally(() => this.setState({ isLoading: false }));

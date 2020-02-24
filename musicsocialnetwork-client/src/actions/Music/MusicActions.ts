@@ -40,6 +40,28 @@ export async function createArtist(artist: ArtistData) {
   }
 }
 
+export async function editArtist(artist: ArtistData) {
+  try {
+    if (!artist.yearBorn) {
+      artist.yearBorn = 0;
+    }
+    if (!artist.yearFormed) {
+      artist.yearFormed = 0;
+    }
+
+    const response = await fetch(`${artistApiUrl}/${artist.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(artist)
+    });
+    return response.json();
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 export async function getArtist(id: number) {
   try {
     const response = await fetch(`${artistApiUrl}/${id}`, {

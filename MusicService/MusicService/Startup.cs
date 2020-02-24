@@ -64,6 +64,7 @@ namespace MusicService.Service
 
                     e.Consumer<CreateArtistConsumer>(provider);
                     EndpointConvention.Map<CreateArtist>(e.InputAddress);
+                    EndpointConvention.Map<EditArtist>(e.InputAddress);
 
                     e.Consumer<GetArtistConsumer>(provider);
                     EndpointConvention.Map<GetArtist>(e.InputAddress);

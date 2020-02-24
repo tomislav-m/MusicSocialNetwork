@@ -12,7 +12,7 @@ namespace MusicService.Service.Services
         Task<IEnumerable<Artist>> GetAll(int page, int count);
         Task<Artist> GetById(long id);
         Task<Artist> Create(Artist artist);
-        void Update(Artist artist);
+        Task Update(Artist artist);
         void Delete(Artist artist);
         Task<IEnumerable<Artist>> Search(string searchTerm, int page = 1, int size = 10);
     }
@@ -52,7 +52,7 @@ namespace MusicService.Service.Services
             return artist;
         }
 
-        public async void Update(Artist artist)
+        public async Task Update(Artist artist)
         {
             _context.Artists.Update(artist);
             await _context.SaveChangesAsync();

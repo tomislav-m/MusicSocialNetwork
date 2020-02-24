@@ -15,6 +15,9 @@ namespace MusicService.Service.Helpers
 
             CreateMap<DomainModel.Artist, ArtistCreated>();
 
+            CreateMap<DomainModel.Artist, ArtistEdited>();
+            CreateMap<EditArtist, DomainModel.Artist>();
+
             CreateMap<DomainModel.Artist, Artist>();
 
             CreateMap<DomainModel.Album, AlbumFound>();
